@@ -128,7 +128,7 @@ export default function App() {
       )}
 
       <GeoReadout latLng={globeLatLng} />
-      <SpotPanel spot={selectedSpot} onClose={() => setSelectedSpot(null)} />
+      <SpotPanel spot={selectedSpot} screenPos={null} onClose={() => setSelectedSpot(null)} />
     </div>
   );
 }

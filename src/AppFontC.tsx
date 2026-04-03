@@ -144,7 +144,7 @@ export default function AppFontC() {
       )}
 
       <GeoReadout latLng={globeLatLng} fontMono={FONTS.mono} />
-      <SpotPanel spot={selectedSpot} onClose={() => setSelectedSpot(null)} fontSerif={FONTS.serif} fontSans={FONTS.sans} />
+      <SpotPanel spot={selectedSpot} screenPos={null} onClose={() => setSelectedSpot(null)} fontSerif={FONTS.serif} fontSans={FONTS.sans} />
     </div>
   );
 }

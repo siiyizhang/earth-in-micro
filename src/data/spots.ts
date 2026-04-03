@@ -8,7 +8,7 @@ export interface Spot {
   size: string;
   desc: string;
   imageUrl: string;
-  imageUrl2: string;
+  imageUrl2?: string;
   imageCredit: string;
   color: string;
 }

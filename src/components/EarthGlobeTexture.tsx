@@ -153,15 +153,6 @@ export default function EarthGlobe({ spots, onSpotClick, onSpotHover, onGlobeHov
     earthGroup.add(globeHitMesh);
 
     // Continent labels
-    const continents = [
-      { name: "North America", lat: 45.0,  lng: -100.0 },
-      { name: "South America", lat: -15.0, lng: -60.0  },
-      { name: "Europe",        lat: 54.0,  lng: 15.0   },
-      { name: "Africa",        lat: 0.0,   lng: 20.0   },
-      { name: "Asia",          lat: 48.0,  lng: 100.0  },
-      { name: "Oceania",       lat: -25.0, lng: 135.0  },
-      { name: "Antarctica",    lat: -80.0, lng: 0.0    },
-    ];
 
     const geoLabels = [
       // Continents

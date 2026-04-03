@@ -24,7 +24,6 @@ function PanelImage({ src, alt }: { src: string; alt: string }) {
 }
 
 const CARD_W = 320;
-const CARD_MAX_H = 560;
 
 export default function SpotPanel({
   spot, screenPos, onClose,
@@ -123,7 +122,7 @@ export default function SpotPanel({
             flexShrink: 0, display: "flex", gap: 1, background: C.imgBg,
           }}>
             {hasImg1 && <div style={{ flex: 1, overflow: "hidden" }}><PanelImage src={spot.imageUrl} alt={spot.name} /></div>}
-            {hasImg2 && <div style={{ flex: 1, overflow: "hidden" }}><PanelImage src={spot.imageUrl2} alt={spot.name} /></div>}
+            {hasImg2 && <div style={{ flex: 1, overflow: "hidden" }}><PanelImage src={spot.imageUrl2!} alt={spot.name} /></div>}
           </div>
         )}
 

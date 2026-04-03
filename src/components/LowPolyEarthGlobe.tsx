@@ -103,7 +103,7 @@ function oceanColor(lat: number, faceIndex: number): THREE.Color {
 
 export default function LowPolyEarthGlobe({
   spots, onSpotClick, onSpotHover, onGlobeHover,
-  fontSerif = "'Yaroop', serif",
+  fontSerif: _fontSerif = "'Yaroop', serif",
   fontSans = "'Inter', sans-serif",
   issStyle,
   exploding = false,
