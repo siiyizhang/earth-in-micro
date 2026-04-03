@@ -1,0 +1,1021 @@
+import { useState, useEffect, useRef } from "react";
+import LowPolyEarthGlobe from "./components/LowPolyEarthGlobe";
+import SpotPanel from "./components/SpotPanel";
+import GeoReadout from "./components/GeoReadout";
+import type { Spot } from "./data/spots";
+import { fetchSpots } from "./lib/spotsApi";
+
+// ── Scenario data ─────────────────────────────────────────────────────────────
+
+const SCENARIOS = [
+  {
+    id: "kitchen",
+    name: "Kitchen",
+    bg: "/images/scenarios/kitchen.png",
+    bgActive: "/images/scenarios/kitchen w.png",
+    micro: {
+      img: "",
+      label: "Yeast cell",
+      desc: "Your fridge is full of science waiting to be discovered.",
+    },
+  },
+  {
+    id: "bedroom",
+    name: "Bedroom",
+    bg: "/images/scenarios/bedroom.png",
+    bgActive: "/images/scenarios/bedroom w.png",
+    micro: {
+      img: "",
+      label: "Dust mite",
+      desc: "Turn the desk into a lab.",
+    },
+  },
+  {
+    id: "pond",
+    name: "Backyard",
+    bg: "/images/scenarios/backyard.png",
+    bgActive: "/images/scenarios/backyard w.png",
+    micro: {
+      img: "/images/hero gallery/UZH pond ciliate.mp4",
+      label: "Pond ciliate",
+      desc: "A single drop of pond water holds more life than you'd expect.",
+    },
+  },
+  {
+    id: "forest",
+    name: "Forest",
+    bg: "/images/scenarios/forest.png",
+    bgActive: "/images/scenarios/forest w.png",
+    micro: {
+      img: "/images/hero gallery/asplanchna rotifer.mp4",
+      label: "Rotifer",
+      desc: "What's the life hidden in a mushroom?",
+    },
+  },
+  {
+    id: "coast",
+    name: "Beach",
+    bg: "/images/scenarios/beach.png",
+    bgActive: "/images/scenarios/beach w.png",
+    micro: {
+      img: "",
+      label: "Marine diatom",
+      desc: "Scoop some seawater and dive into the microcosmos.",
+    },
+  },
+];
+
+// ── PowerfulScreen ─────────────────────────────────────────────────────────────
+
+function TooltipIcon({ fonts, colors }: { fonts: typeof FONTS; colors: typeof C }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+      <div
+        onMouseEnter={() => setShow(true)}
+        onMouseLeave={() => setShow(false)}
+        style={{
+          width: 14, height: 14, borderRadius: "50%",
+          border: `1px solid ${colors.textLight}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "default", flexShrink: 0,
+          fontFamily: fonts.sans, fontSize: 9, color: colors.textLight,
+          userSelect: "none",
+        }}
+      >?</div>
+      {show && (
+        <div style={{
+          position: "absolute", top: "50%", left: "calc(100% + 10px)",
+          transform: "translateY(-50%)",
+          width: 480, background: "#ffffff",
+          border: "1px solid rgba(26,42,60,0.1)",
+          borderRadius: 12, padding: "14px 16px",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+          fontFamily: fonts.sans, fontSize: 12, color: colors.textMid,
+          lineHeight: 1.7, zIndex: 50,
+          pointerEvents: "none",
+        }}>
+          Most people associate microscope performance with magnification. But magnification alone can be misleading, especially in digital microscopes. Without sufficient resolution, increasing magnification only results in a larger, blurrier image. This phenomenon is known as <em>empty magnification</em>: the image appears bigger, but no new detail is revealed.
+          <br /><br />
+          What truly matters is resolution, the ability to distinguish fine details that are close together. To evaluate this, we use the USAF 1951 resolution test chart, a standard tool featuring groups of fine lines at varying distances.
+          <br /><br />
+          In the lower right corner of the chart image is Group 7, Element 6, where the space between lines is 2.2 µm. If a microscope can clearly resolve these lines, it can distinguish details at least as small as 2.2 µm. (For reference, the diameter of human red blood cells is 7–8 µm.)
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PowerfulScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof C }) {
+  const comparisons = [
+    { src: "/images/product/20.jpg",     price: "~$20",    name: "Toy 1",        highlight: false },
+    { src: "/images/product/80.png",     price: "~$80",    name: "Toy 2",      highlight: false },
+    { src: "/images/product/150.jpg",    price: "~$150",   name: "Toy 3",  highlight: false },
+    { src: "/images/product/eureka.png", price: "$239",    name: "Eureka",     highlight: true  },
+    { src: "/images/product/5000.png",   price: "~$5,000", name: "Lab grade",  highlight: false },
+  ];
+
+  const PAD = "clamp(64px,9vw,120px)";
+
+  return (
+    <div style={{ margin: "0 24px", background: "#f5f3ee", borderRadius: 24, overflow: "hidden" }}>
+
+      {/* ── Header: slogan ── */}
+      <div style={{ padding: `clamp(28px,4vh,52px) ${PAD}`, textAlign: "center" }}>
+        <h2 style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(32px,4vw,56px)", color: colors.text, margin: 0, letterSpacing: "-0.01em", lineHeight: 1.1 }}>
+          Not just another toy microscope.
+        </h2>
+      </div>
+
+      {/* ── Row 1: video left + right column (text top, comparison bottom) ── */}
+      {/* Padding is dynamic: content has a fixed inner width, margins absorb the rest */}
+      <div style={{ display: "flex", justifyContent: "center", padding: `clamp(20px,3vh,40px) 0` }}>
+      <div style={{ display: "flex", gap: 32, alignItems: "flex-end", width: "min(88vw, 1100px)" }}>
+
+        {/* Left: 9:16 video + credit below — height matches right column via alignSelf stretch */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, alignSelf: "stretch" }}>
+          <div style={{ flex: 1, position: "relative", overflow: "hidden", background: "#1a1a2e", borderRadius: 12, aspectRatio: "9/16" }}>
+            <video
+              src="/video/Testimonial Francesco.mp4"
+              autoPlay muted loop playsInline
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+          <div style={{ fontFamily: fonts.sans, fontSize: 11, color: colors.textLight, letterSpacing: "0.06em", paddingLeft: 2, flexShrink: 0 }}>
+            Dr. Francesco Pomati · Freshwater Ecologist
+          </div>
+        </div>
+
+        {/* Right column: text top + comparison bottom */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+
+          {/* Right-top: resolution text */}
+          <div style={{ flex: "0 0 auto" }}>
+            <div style={{ fontFamily: fonts.sans, fontSize: 25, fontWeight: 600, color: colors.text, marginBottom: 8 }}>Lab-grade Image Quality</div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.65 }}>
+              Most microscopes advertise magnification, but the image still looks blurry. With 1.6 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
+            </div>
+          </div>
+
+          {/* Right-bottom: resolution comparison — chart reference + 5-way grid */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontFamily: fonts.sans, fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: colors.textLight }}>
+                USAF 1951 resolution test chart
+              </span>
+              <TooltipIcon fonts={fonts} colors={colors} />
+            </div>
+
+            {/* Row 1: reference chart, full width */}
+            <div style={{ borderRadius: 8, overflow: "hidden", flexShrink: 0, maxHeight: 260 }}>
+              <img
+                src="/images/product/chart long.png"
+                alt="USAF 1951 chart"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            </div>
+
+            {/* Row 2: 5 microscope images, full image visible */}
+            <div style={{ height: 160, display: "flex", gap: 4, flexShrink: 0 }}>
+              {comparisons.map(c => (
+                <div key={c.src} style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                  border: c.highlight ? `2px solid ${colors.teal}` : "1px solid rgba(26,42,60,0.08)",
+                  background: "#ffffff",
+                  position: "relative",
+                }}>
+                  {/* price tag */}
+                  <div style={{
+                    position: "absolute", top: 5, left: 0, right: 0,
+                    display: "flex", justifyContent: "center", zIndex: 1,
+                  }}>
+                    <div style={{
+                      fontFamily: fonts.sans, fontSize: 9, fontWeight: 600,
+                      padding: "2px 7px", borderRadius: 20,
+                      background: c.highlight ? colors.teal : "rgba(26,42,60,0.08)",
+                      color: c.highlight ? "#fff" : colors.textMid,
+                      letterSpacing: "0.04em",
+                    }}>{c.price}</div>
+                  </div>
+                  {/* image: contain so full image is always visible */}
+                  <img src={c.src} alt={c.name} style={{
+                    width: "100%", height: "100%", objectFit: "contain", display: "block",
+                  }} />
+                  {/* name label */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    padding: "10px 4px 5px",
+                    background: "linear-gradient(to top, rgba(255,255,255,0.9), transparent)",
+                    textAlign: "center",
+                    fontFamily: fonts.sans, fontSize: 9,
+                    color: c.highlight ? colors.teal : colors.textMid,
+                    fontWeight: c.highlight ? 600 : 400,
+                    letterSpacing: "0.04em",
+                  }}>{c.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+      </div>
+
+      {/* ── Row 3 (~50vh): Durable & Portable ── */}
+      <div style={{ height: "50vh", display: "flex", alignItems: "center", justifyContent: "center", padding: `0 ${PAD}`, gap: 48 }}>
+        <div style={{ flex: "0 0 38%", borderRadius: 16, overflow: "hidden", height: "72%" }}>
+          <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+        <div style={{ flex: "0 0 auto", maxWidth: 400, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ fontFamily: fonts.sans, fontSize: 25, fontWeight: 600, color: colors.text, marginBottom: 14 }}>Durable & Portable</div>
+          <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.7 }}>
+            Drop-tested and IP67-waterproof. Built to survive curious hands and backpack adventures — from kitchen counter to forest floor.
+          </div>
+        </div>
+      </div>
+
+      {/* ── Row 4 (~50vh): Multi-mode illumination ── */}
+      <div style={{ height: "50vh", display: "flex", alignItems: "center", justifyContent: "center", padding: `0 ${PAD}`, gap: 48 }}>
+        <div style={{ flex: "0 0 auto", maxWidth: 400, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ fontFamily: fonts.sans, fontSize: 25, fontWeight: 600, color: colors.text, marginBottom: 14 }}>Multi-mode Illumination</div>
+          <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.7 }}>
+            With just a tap on the app, you can switch between bright, dark, and oblique lighting to reveal hidden details. Add a polarization filter set, and even a simple crystal transforms into a dazzling rainbow kaleidoscope. Every change reveals something new to be curious about.
+          </div>
+        </div>
+        <div style={{ flex: "0 0 52%", borderRadius: 16, overflow: "hidden", aspectRatio: "3355/1970", maxHeight: "80%" }}>
+          <img src="/images/product/4.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+// ── SimpleScreen ───────────────────────────────────────────────────────────────
+
+function SimpleScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof C }) {
+  const PAD = "clamp(40px, 8vw, 120px)";
+  const cardBg = "#F7F9FB";
+  const cardRadius = 20;
+
+  const ageGroups = [
+    { age: "7–10", tag: "First wonder",        desc: "Observe insects, rocks, flowers, food, and everyday objects." },
+    { age: "11–14", tag: "Independent explorer", desc: "Prepare their own slides. Run structured experiments. Textbook content becomes reality." },
+    { age: "15–17", tag: "Young scientist",      desc: "Design their own research projects. Use advanced imaging modes. Contribute real data to citizen science programs." },
+  ];
+
+  return (
+    <div style={{ width: "100vw", background: "#ffffff", padding: `clamp(48px,7vh,96px) ${PAD}`, boxSizing: "border-box" }}>
+
+      {/* Slogan */}
+      <h2 style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(32px,4vw,58px)", color: colors.text, lineHeight: 1.15, margin: "0 0 clamp(40px,6vh,72px)", letterSpacing: "-0.01em", textAlign: "center" }}>
+        Easy to start.<br />
+        <span style={{ color: colors.teal }}>Hard to outgrow.</span>
+      </h2>
+
+      {/* Cards */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+        {/* Card 1: Kids do it independently + girl.png */}
+        <div style={{ background: cardBg, borderRadius: cardRadius, display: "flex", minHeight: 320, padding: 12, gap: 12 }}>
+          <div style={{ flex: 1, padding: "24px 28px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 14 }}>
+            <div style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(20px,2vw,28px)", color: colors.text, lineHeight: 1.2 }}>Pick it up and explore</div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.75, fontWeight: 300, maxWidth: 480 }}>
+              Children aged 7+ can set it up on their own. No previous experience needed.
+            </div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.75, fontWeight: 300, maxWidth: 480 }}>
+              Eureka connects to any phone, tablet, or computer via WiFi. Cast it to a TV for family viewing. 
+            </div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 16, color: colors.textMid, lineHeight: 1.75, fontWeight: 300, maxWidth: 480 }}>
+              Project it in a classroom. No cables, no adapters. USB connection to the laptop is also possible.
+            </div>
+          </div>
+          <div style={{ flex: "0 0 auto", aspectRatio: "2014/1605", maxWidth: "45%", borderRadius: cardRadius - 4, overflow: "hidden" }}>
+            <img src="/images/product/girl.png" alt="kid using microscope"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          </div>
+        </div>
+
+        {/* Card 2: Built-in guides in the app + two images */}
+        <div style={{ background: cardBg, borderRadius: cardRadius, display: "flex", minHeight: 280, padding: 12, gap: 12 }}>
+          {/* Two images side by side */}
+          <div style={{ flex: "0 0 45%", display: "flex", gap: 8 }}>
+            <div style={{ flex: 1, borderRadius: cardRadius - 4, overflow: "hidden" }}>
+              <img src="/images/product/app1.jpg" alt="app guide" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ flex: 1, borderRadius: cardRadius - 4, overflow: "hidden" }}>
+              <img src="/images/product/app2.jpg" alt="app interface" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          </div>
+          <div style={{ flex: 1, padding: "24px 28px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 14 }}>
+            <div style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(20px,2vw,28px)", color: colors.text, lineHeight: 1.2 }}>Built-in guides in the app</div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 15, color: colors.textMid, lineHeight: 1.75, fontWeight: 300, maxWidth: 480 }}>
+              It helps make sense of what’s being seen, and encourages asking questions along the way. Simple tutorial cards offer gentle guidance of what to look for and what to try next,
+with new ideas added over time, without turning it into homework.
+            </div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 15, color: colors.textMid, lineHeight: 1.75, fontWeight: 300, maxWidth: 480 }}>
+              Behind it, an AI system adapts to what’s being observed and who’s exploring. It turns discoveries into small interactive stories.
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: Different ages, different depth + two images */}
+        <div style={{ background: cardBg, borderRadius: cardRadius, display: "flex", minHeight: 480, padding: 12, gap: 12 }}>
+          <div style={{ flex: 1, padding: "24px 28px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 20 }}>
+            <div style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(20px,2vw,28px)", color: colors.text, lineHeight: 1.2 }}>Different ages, different depth.</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {ageGroups.map(g => (
+                <div key={g.age} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                  <div style={{ flex: "0 0 48px", textAlign: "right" }}>
+                    <div style={{ fontFamily: fonts.mono, fontSize: 11, color: colors.teal, letterSpacing: "0.06em", whiteSpace: "nowrap" }}>{g.age}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: fonts.sans, fontSize: 13, fontWeight: 600, color: colors.text, marginBottom: 3 }}>{g.tag}</div>
+                    <div style={{ fontFamily: fonts.sans, fontSize: 13, color: colors.textMid, lineHeight: 1.65, fontWeight: 300 }}>{g.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Two images + caption */}
+          <div style={{ flex: "0 0 45%", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ flex: 1, display: "flex", gap: 8, minHeight: 0 }}>
+              <div style={{ flex: 1, borderRadius: cardRadius - 4, overflow: "hidden" }}>
+                <img src="/images/product/thesis.png" alt="student thesis" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
+              <div style={{ flex: 1, borderRadius: cardRadius - 4, overflow: "hidden" }}>
+                <img src="/images/product/sophie.png" alt="Sophie" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
+            </div>
+            <div style={{ fontFamily: fonts.sans, fontSize: 11, color: colors.textLight, letterSpacing: "0.06em", paddingLeft: 2 }}>
+              A Swiss high-school student finished her graduation thesis with our prototype
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ── ScenarioScreen component ───────────────────────────────────────────────────
+
+function ScenarioScreen({
+  fonts,
+  colors,
+}: {
+  fonts: typeof FONTS;
+  colors: typeof C;
+}) {
+  const [hovered, setHovered] = useState<string | null>(null);
+  const active = hovered ?? null;
+
+
+  return (
+    <div style={{ width: "100vw", height: "100vh", background: "#ffffff", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
+
+      {/* ── Slogan above panels ── */}
+      <div style={{ padding: "clamp(28px,4vh,48px) clamp(32px,5vw,72px) clamp(20px,2.5vh,32px)", textAlign: "center" }}>
+        <div style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(32px,4vw,58px)", color: colors.text, lineHeight: 1.15, letterSpacing: "-0.01em" }}>
+          One portable microscope.<br /><span style={{ color: colors.teal }}>Endless discoveries.</span>
+        </div>
+      </div>
+
+      {/* ── Accordion panels ── */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", margin: "0 clamp(16px,3vw,40px) clamp(16px,3vw,40px)", borderRadius: 20, gap: 0 }}>
+        {SCENARIOS.map((s) => {
+          const isActive = active === s.id;
+          return (
+            <div
+              key={s.id}
+              onMouseEnter={() => setHovered(s.id)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                position: "relative",
+                flex: isActive ? "4 0 0" : "1 0 0",
+                transition: "flex 0.55s cubic-bezier(0.77,0,0.18,1)",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+            >
+              {/* Background image — base */}
+              <div style={{
+                position: "absolute", inset: 0,
+                backgroundImage: s.bg ? `url(${s.bg})` : undefined,
+                backgroundColor: "#1a2b3c",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }} />
+              {/* Background image — active (w/ microscope), fades in on hover */}
+              {/* {s.bgActive && (
+                <div style={{
+                  position: "absolute", inset: 0,
+                  backgroundImage: `url(${s.bgActive.replace(/ /g, "%20")})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: isActive ? 1 : 0,
+                  transition: "opacity 0.4s ease",
+                }} />
+              )} */}
+
+              {/* Dark scrim */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: isActive
+                  ? "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)"
+                  : "rgba(0,0,0,0.45)",
+                transition: "background 0.4s ease",
+              }} />
+
+              {/* Collapsed label (vertical) */}
+              {!isActive && (
+                <div style={{
+                  position: "absolute", inset: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <div style={{
+                    writingMode: "vertical-rl",
+                    textOrientation: "mixed",
+                    transform: "rotate(180deg)",
+                    fontFamily: fonts.sans,
+                    fontSize: 11,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,0.75)",
+                    whiteSpace: "nowrap",
+                  }}>
+                    {s.name}
+                  </div>
+                </div>
+              )}
+
+              {/* Expanded content — text only */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                padding: "0 32px 32px",
+                opacity: isActive ? 1 : 0,
+                transform: isActive ? "translateY(0)" : "translateY(12px)",
+                transition: "opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s",
+              }}>
+                <h2 style={{ fontFamily: fonts.serif, fontWeight: 100, fontSize: "clamp(22px, 2.2vw, 34px)", color: "#ffffff", margin: "0 0 12px", lineHeight: 1.2 }}>
+                  {s.name}
+                </h2>
+                <p style={{ fontFamily: fonts.sans, fontSize: 12, lineHeight: 1.7, color: "rgba(255,255,255,0.65)", margin: 0, fontWeight: 300, maxWidth: 320 }}>
+                  {s.micro.desc}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  );
+}
+
+const FONTS = {
+  serif: "'Yaroop', serif",
+  sans: "'Inter', sans-serif",
+  mono: "'JetBrains Mono', monospace",
+};
+
+// Brand colors
+const C = {
+  navy:       "#1A3A5C",
+  teal:       "#0ABFBC",
+  tealLight:  "#E6F9F9",
+  green:      "#2ECC71",
+  text:       "#1A2B3C",
+  textMid:    "rgba(26,42,60,0.55)",
+  textLight:  "rgba(26,42,60,0.35)",
+  border:     "rgba(26,42,60,0.12)",
+};
+
+interface AppProps {
+  issStyle?: "glow" | "line";
+}
+
+export default function AppLowPoly({ issStyle }: AppProps = {}) {
+  const wixCheckoutUrl = (import.meta.env.VITE_WIX_CHECKOUT_URL as string | undefined) || "";
+  const wixContactUrl = (import.meta.env.VITE_WIX_CONTACT_URL as string | undefined) || "";
+
+  const [spots, setSpots] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [spotsError, setSpotsError] = useState<string | null>(null);
+  const [selectedSpot, setSelectedSpot] = useState<Spot | null>(null);
+  const [selectedPos, setSelectedPos] = useState<{ x: number; y: number } | null>(null);
+  const [hoveredSpot, setHoveredSpot] = useState<Spot | null>(null);
+  const [globeLatLng, setGlobeLatLng] = useState<{ lat: number; lng: number } | null>(null);
+  const [navVisible, setNavVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const openExternal = (url: string) => {
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const scrollToScreen = (screenIndex: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.scrollTo({ top: window.innerHeight * screenIndex, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    fetchSpots().then(({ spots: s, source, error }) => {
+      setSpots(s);
+      setSpotsError(source === "fallback" ? error : null);
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onScroll = () => setNavVisible(el.scrollTop > window.innerHeight * 0.9);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div ref={containerRef} style={{ width: "100vw", height: "100vh", overflowY: "scroll", background: "#ffffff" }}>
+
+      {/* ── Global floating navbar ── */}
+      <div style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        padding: "14px clamp(24px,4vw,48px)",
+        display: "flex", alignItems: "center",
+        background: navVisible ? "rgba(255,255,255,0.82)" : "transparent",
+        backdropFilter: navVisible ? "blur(12px)" : "none",
+        borderBottom: navVisible ? "1px solid rgba(26,42,60,0.06)" : "none",
+        transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 16 }}>
+          <img src={navVisible ? "/Black text.png" : "/White text.png"} alt="Earth in Micro" style={{ height: 28, display: "block" }} />
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {wixContactUrl && (
+              <button
+                type="button"
+                onClick={() => openExternal(wixContactUrl)}
+                style={{
+                  fontFamily: FONTS.sans,
+                  fontSize: 11,
+                  fontWeight: 500,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: navVisible ? C.text : "rgba(255,255,255,0.92)",
+                  background: navVisible ? "rgba(26,42,60,0.06)" : "rgba(255,255,255,0.18)",
+                  border: navVisible ? "1px solid rgba(26,42,60,0.08)" : "1px solid rgba(255,255,255,0.18)",
+                  borderRadius: 999,
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                Get Updates
+              </button>
+            )}
+
+            {wixCheckoutUrl && (
+              <button
+                type="button"
+                onClick={() => openExternal(wixCheckoutUrl)}
+                style={{
+                  fontFamily: FONTS.sans,
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "#ffffff",
+                  background: C.teal,
+                  border: "1px solid rgba(0,0,0,0)",
+                  borderRadius: 999,
+                  padding: "8px 12px",
+                  cursor: "pointer",
+                  boxShadow: "0 6px 20px rgba(10,191,188,0.25)",
+                }}
+              >
+                Buy
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+        {spotsError && (
+          <div
+            style={{
+              position: "fixed",
+              top: 18,
+              right: 18,
+              zIndex: 50,
+              maxWidth: 520,
+              padding: "10px 12px",
+              background: "rgba(20,30,50,0.07)",
+              border: "1px solid rgba(20,30,50,0.12)",
+              borderRadius: 10,
+              color: "rgba(20,30,50,0.7)",
+              fontFamily: FONTS.sans,
+              fontSize: 11,
+              lineHeight: 1.5,
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <div>
+              Spots API not available — showing built-in demo spots. Check that `server.ts` is running and `.env` has `NOTION_TOKEN` + `NOTION_DATABASE_ID`.
+            </div>
+            <div style={{ marginTop: 6, opacity: 0.85, fontSize: 10, wordBreak: "break-word" }}>
+              {spotsError}
+            </div>
+          </div>
+        )}
+
+        {/* ── Screen 0: Hero ── */}
+        <div style={{ width: "100vw", height: "100vh", overflow: "hidden", background: "#ffffff", display: "flex", flexDirection: "column", position: "relative" }}>
+
+          {/* ── Video section (fills top, ~62% height) ── */}
+          <div style={{ position: "relative", flex: "0 0 62%", overflow: "hidden" }}>
+
+            {/* Video */}
+            <video
+              src="/video/education 1.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
+
+            {/* Left-side text overlay — occupies left ~38% */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to right, rgba(8,14,24,0.88) 0%, rgba(8,14,24,0.72) 2%, rgba(8,14,24,0.0) 60%)",
+              display: "flex", alignItems: "center",
+            }}>
+              <div style={{ padding: "0 0 0 clamp(32px, 6vw, 80px)", maxWidth: "38vw" }}>
+                <h1 style={{
+                  fontFamily: FONTS.serif,
+                  fontWeight: 100,
+                  fontSize: "clamp(28px, 3.6vw, 52px)",
+                  color: "rgba(255,255,255,0.95)",
+                  lineHeight: 1.18,
+                  letterSpacing: "-0.01em",
+                  margin: "0 0 16px",
+                }}>
+                  <span style={{ textTransform: "uppercase", letterSpacing: "0.04em" }}>BIG THINGS START WITH</span><br />
+                  <span style={{ fontStyle: "italic" }}>small discoveries.</span>
+                </h1>
+                <p style={{
+                  fontFamily: FONTS.sans,
+                  fontSize: "clamp(12px, 1.1vw, 15px)",
+                  lineHeight: 1.7,
+                  color: "rgba(255,255,255,0.9)",
+                  fontWeight: 300,
+                  margin: "0 0 20px",
+                }}>
+                  Eureka Microscope turns everyday life<br />into a nature &amp; science adventure.
+                </p>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {["Age 7–17", "No prior experience needed"].map(tag => (
+                    <div key={tag} style={{
+                      fontFamily: FONTS.sans,
+                      fontSize: "clamp(9px, 0.85vw, 11px)",
+                      letterSpacing: "0.1em",
+                      color: "rgba(255,255,255,0.6)",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                      borderRadius: 20,
+                      padding: "4px 12px",
+                      whiteSpace: "nowrap",
+                    }}>{tag}</div>
+                  ))}
+                </div>
+
+                {(wixCheckoutUrl || wixContactUrl) && (
+                  <div style={{ marginTop: 18, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                    {wixCheckoutUrl && (
+                      <button
+                        type="button"
+                        onClick={() => openExternal(wixCheckoutUrl)}
+                        style={{
+                          fontFamily: FONTS.sans,
+                          fontSize: 12,
+                          fontWeight: 600,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          color: "#ffffff",
+                          background: C.teal,
+                          border: "none",
+                          borderRadius: 999,
+                          padding: "10px 16px",
+                          cursor: "pointer",
+                          boxShadow: "0 8px 26px rgba(10,191,188,0.22)",
+                        }}
+                      >
+                        Buy on Wix →
+                      </button>
+                    )}
+                    {wixContactUrl && (
+                      <button
+                        type="button"
+                        onClick={() => openExternal(wixContactUrl)}
+                        style={{
+                          fontFamily: FONTS.sans,
+                          fontSize: 12,
+                          fontWeight: 500,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                          color: "rgba(255,255,255,0.92)",
+                          background: "rgba(255,255,255,0.14)",
+                          border: "1px solid rgba(255,255,255,0.22)",
+                          borderRadius: 999,
+                          padding: "10px 16px",
+                          cursor: "pointer",
+                          backdropFilter: "blur(8px)",
+                        }}
+                      >
+                        Join Newsletter →
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          {/* ── Scrolling gallery strip ── */}
+          <div style={{ flex: "0 0 auto", padding: "0 0 8px", overflow: "hidden", position: "relative" }}>
+            <div style={{ textAlign: "center", padding: "12px 0 10px", fontFamily: FONTS.sans, fontSize: 9, letterSpacing: "0.22em", color: C.textLight, textTransform: "uppercase" }}>
+              Captured with current prototype
+            </div>
+            {/* Fade edges */}
+            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 60, background: "linear-gradient(to right, #ffffff, transparent)", zIndex: 2, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 60, background: "linear-gradient(to left, #ffffff, transparent)", zIndex: 2, pointerEvents: "none" }} />
+
+            <div style={{
+              display: "flex",
+              gap: 14,
+              animation: "galleryScroll 36s linear infinite",
+              width: "max-content",
+            }}>
+              {/* Two sets for seamless loop */}
+              {[...Array(2)].map((_, setIdx) =>
+                [
+                  { src: "/images/hero gallery/UZH pond ciliate.mp4",                        label: "pond ciliate" },
+                  { src: "/images/hero gallery/asplanchna rotifer.mp4",                       label: "rotifer" },
+                  { src: "/images/hero gallery/insect wing.png",                              label: "insect wing" },
+                  { src: "/images/hero gallery/onion cell.png",                               label: "onion cell" },
+                  { src: "/images/hero gallery/pollen.png",                                   label: "pollen" },
+                  { src: "/images/hero gallery/stentor-ezgif.com-video-to-gif-converter.mp4", label: "stentor" },
+                  { src: "/images/hero gallery/sugar crystal 2.jpg",                          label: "sugar crystal" },
+                ].map((item, i) => (
+                  <div key={`${setIdx}-${i}`} style={{
+                    width: "clamp(140px, 14vw, 220px)",
+                    height: "clamp(105px, 10.5vw, 165px)",
+                    borderRadius: 14,
+                    overflow: "hidden",
+                    flexShrink: 0,
+                    position: "relative",
+                    border: "1px solid rgba(26,42,60,0.1)",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+                  }}>
+                    {item.src.endsWith(".mp4") ? (
+                      <video src={item.src} autoPlay muted loop playsInline
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                    ) : (
+                      <img src={item.src} alt={item.label}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                    )}
+                    <div style={{
+                      position: "absolute", bottom: 0, left: 0, right: 0,
+                      padding: "14px 10px 7px",
+                      background: "linear-gradient(to top, rgba(0,0,0,0.45), transparent)",
+                    }}>
+                      <span style={{ fontFamily: FONTS.sans, fontSize: 9, color: "rgba(255,255,255,0.8)", letterSpacing: "0.12em", textTransform: "uppercase" }}>{item.label}</span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <style>{`
+              @keyframes galleryScroll {
+                from { transform: translateX(0); }
+                to   { transform: translateX(-50%); }
+              }
+            `}</style>
+          </div>
+
+          {/* ── CTA button ── */}
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "clamp(20px, 3vh, 40px)", paddingTop: 4 }}>
+            <button
+              onClick={() => scrollToScreen(1)}
+              style={{
+                fontFamily: FONTS.sans,
+                fontSize: 13,
+                fontWeight: 500,
+                letterSpacing: "0.06em",
+                color: "#ffffff",
+                background: C.teal,
+                border: "none",
+                borderRadius: 40,
+                padding: "14px 40px",
+                cursor: "pointer",
+                transition: "background 0.2s, transform 0.15s",
+                boxShadow: `0 4px 24px rgba(10,191,188,0.35)`,
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#0dd4d1"; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.03)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = C.teal; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
+            >
+              Explore Eureka Microscope →
+            </button>
+          </div>
+        </div>
+
+        {/* ── Screen 1: Powerful ── */}
+        <PowerfulScreen fonts={FONTS} colors={C} />
+
+        {/* ── Screen 2: Simple ── */}
+        <SimpleScreen fonts={FONTS} colors={C} />
+
+        {/* ── Screen 3: Scenarios ── */}
+        <ScenarioScreen fonts={FONTS} colors={C} />
+
+        {/* ── Screen 4: Globe ── */}
+        <div
+          className="relative select-none"
+          style={{ width: "100vw", height: "100vh", overflow: "hidden", background: "#ffffff" }}
+        >
+          {!loading && (
+            <div className="w-full h-full">
+              <LowPolyEarthGlobe
+                spots={spots}
+                onSpotClick={(spot, pos) => { setSelectedSpot(spot); setSelectedPos(pos); }}
+                onSpotHover={setHoveredSpot}
+                onGlobeHover={setGlobeLatLng}
+                fontSerif={FONTS.serif}
+                fontSans={FONTS.sans}
+                issStyle={issStyle}
+                exploding={false}
+              />
+            </div>
+          )}
+
+          {loading && (
+            <div
+              className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+              style={{ fontFamily: FONTS.sans, color: "rgba(20,30,50,0.2)", fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase" }}
+            >
+              Loading
+            </div>
+          )}
+
+          {hoveredSpot && !selectedSpot && (
+            <div className="absolute bottom-10 left-1/2 z-10 pointer-events-none" style={{ transform: "translateX(-50%)" }}>
+              <div style={{
+                background: "rgba(255,255,255,0.92)",
+                backdropFilter: "blur(16px)",
+                border: `1px solid ${C.border}`,
+                borderRadius: 12,
+                padding: "7px 20px 8px",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+              }}>
+                <div style={{ fontFamily: FONTS.serif, fontSize: 15, color: C.text, letterSpacing: "0.01em" }}>
+                  {hoveredSpot.name}
+                </div>
+                <div style={{ fontFamily: FONTS.sans, fontSize: 10, color: C.textLight, marginTop: 2, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                  {hoveredSpot.location}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!loading && (
+            <div className="absolute left-1/2 z-10 pointer-events-none" style={{ top: 56, transform: "translateX(-50%)", textAlign: "center" }}>
+              <div style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(22px,2.2vw,34px)", color: C.text, letterSpacing: "-0.01em", whiteSpace: "nowrap", marginBottom: 10 }}>
+                Expand curiosity to the globe.
+              </div>
+              <div style={{ fontFamily: FONTS.sans, fontSize: 11, color: C.textLight, letterSpacing: "0.15em", textTransform: "uppercase", whiteSpace: "nowrap" }}>
+                Drag to rotate · click to explore
+              </div>
+            </div>
+          )}
+
+          <GeoReadout latLng={globeLatLng} fontMono={FONTS.mono} />
+
+        </div>
+
+        {/* ── Screen 5: CTA ── */}
+        <div style={{ padding: "0 24px 24px" }}>
+        <div style={{
+          minHeight: "calc(100vh - 48px)",
+          background: "#f5f5f3",
+          borderRadius: 24,
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          padding: "80px clamp(24px,8vw,120px)",
+          gap: 0,
+        }}>
+          {/* Early bird price */}
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ fontFamily: FONTS.sans, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(20,30,50,0.4)", marginBottom: 16 }}>
+              Limited offer
+            </div>
+            <div style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(36px,5vw,72px)", color: "rgba(20,30,50,0.9)", letterSpacing: "-0.01em", lineHeight: 1 }}>
+              Early Bird Price
+            </div>
+            <div style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(48px,7vw,96px)", color: "rgba(20,30,50,0.9)", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
+              $239
+            </div>
+          </div>
+
+          {/* Two columns: subscribe + deposit */}
+          <div style={{ display: "flex", gap: "clamp(24px,5vw,80px)", width: "100%", maxWidth: 860, alignItems: "flex-start", flexWrap: "wrap" }}>
+
+            {/* Left: subscribe */}
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <div style={{ fontFamily: FONTS.sans, fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(20,30,50,0.4)", marginBottom: 12 }}>
+                Stay in the loop
+              </div>
+              <div style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(20px,2vw,28px)", color: "rgba(20,30,50,0.88)", marginBottom: 12, lineHeight: 1.2 }}>
+                Subscribe for updates
+              </div>
+              <div style={{ fontFamily: FONTS.sans, fontSize: 14, color: "rgba(20,30,50,0.5)", lineHeight: 1.7, fontWeight: 300, marginBottom: 24 }}>
+                Be the first to know when we launch. Get exclusive early access to our Kickstarter campaign and special offers.
+              </div>
+              {wixContactUrl ? (
+                <button
+                  onClick={() => openExternal(wixContactUrl)}
+                  style={{
+                    fontFamily: FONTS.sans, fontSize: 13, fontWeight: 500,
+                    letterSpacing: "0.06em", color: "rgba(20,30,50,0.9)",
+                    background: "transparent",
+                    border: "1.5px solid rgba(20,30,50,0.3)",
+                    borderRadius: 40, padding: "12px 28px",
+                    cursor: "pointer", transition: "border-color 0.2s, color 0.2s",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget).style.borderColor = "rgba(20,30,50,0.8)"; (e.currentTarget).style.color = "rgba(20,30,50,1)"; }}
+                  onMouseLeave={e => { (e.currentTarget).style.borderColor = "rgba(20,30,50,0.3)"; (e.currentTarget).style.color = "rgba(20,30,50,0.9)"; }}
+                >
+                  Subscribe →
+                </button>
+              ) : (
+                <div style={{ fontFamily: FONTS.sans, fontSize: 12, color: "rgba(20,30,50,0.3)", fontStyle: "italic" }}>
+                  Subscribe link coming soon
+                </div>
+              )}
+            </div>
+
+            {/* Divider */}
+            <div style={{ width: 1, background: "rgba(20,30,50,0.1)", alignSelf: "stretch", flexShrink: 0 }} />
+
+            {/* Right: deposit */}
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <div style={{ fontFamily: FONTS.sans, fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: C.teal, marginBottom: 12 }}>
+                Pre-order deposit
+              </div>
+              <div style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(20px,2vw,28px)", color: "rgba(20,30,50,0.88)", marginBottom: 12, lineHeight: 1.2 }}>
+                Lock in your price
+              </div>
+              <div style={{ fontFamily: FONTS.sans, fontSize: 14, color: "rgba(20,30,50,0.5)", lineHeight: 1.7, fontWeight: 300, marginBottom: 24 }}>
+                Put down 3 CHF (~$3.8) now to secure the early bird price at launch. Your deposit also helps us show investors that people really want this.
+              </div>
+              {wixCheckoutUrl ? (
+                <button
+                  onClick={() => openExternal(wixCheckoutUrl)}
+                  style={{
+                    fontFamily: FONTS.sans, fontSize: 13, fontWeight: 600,
+                    letterSpacing: "0.06em", color: "#ffffff",
+                    background: C.teal,
+                    border: "none", borderRadius: 40, padding: "12px 28px",
+                    cursor: "pointer", transition: "background 0.2s, transform 0.15s",
+                    boxShadow: "0 8px 26px rgba(10,191,188,0.22)",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; (e.currentTarget).style.transform = "scale(1.03)"; }}
+                  onMouseLeave={e => { (e.currentTarget).style.background = C.teal; (e.currentTarget).style.transform = "scale(1)"; }}
+                >
+                  Put a Deposit →
+                </button>
+              ) : (
+                <div style={{ fontFamily: FONTS.sans, fontSize: 12, color: "rgba(20,30,50,0.3)", fontStyle: "italic" }}>
+                  Deposit link coming soon
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Footer note */}
+          <div style={{ marginTop: 80, fontFamily: FONTS.sans, fontSize: 11, color: "rgba(20,30,50,0.25)", letterSpacing: "0.08em", textAlign: "center" }}>
+            © Eureka Microscope · earth-in-micro.com
+          </div>
+        </div>
+        </div>
+
+      <SpotPanel spot={selectedSpot} screenPos={selectedPos} onClose={() => { setSelectedSpot(null); setSelectedPos(null); }} fontSerif={FONTS.serif} fontSans={FONTS.sans} theme="light" />
+    </div>
+  );
+}
