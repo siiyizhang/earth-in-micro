@@ -16,7 +16,6 @@ export default function AppIndex() {
     }}>
 
       {/* ── "For you..." — split colour: dark left / white right ─────────── */}
-      {/* Rendered as one absolutely-centred element, then clipped twice     */}
       {/* Left clip (dark) */}
       <div style={{
         position: "absolute", top: 0, left: 0, width: "50%",
@@ -68,7 +67,6 @@ export default function AppIndex() {
           <LowPolyGlobeBackground />
         </div>
 
-        {/* Dim overlay when leisure is hovered */}
         <div style={{
           position: "absolute", inset: 0,
           background: "rgba(232,239,246,0.45)",
@@ -119,7 +117,6 @@ export default function AppIndex() {
           <DotGlobeBackground />
         </div>
 
-        {/* Dim overlay when education is hovered */}
         <div style={{
           position: "absolute", inset: 0,
           background: "rgba(10,14,26,0.4)",
