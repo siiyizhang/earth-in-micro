@@ -11,8 +11,6 @@ interface SpotPanelProps {
   theme?: "dark" | "light";
   portalToBody?: boolean;
   portalTarget?: HTMLElement | null;
-  scrollContainer?: HTMLElement | null;
-  openedScrollTop?: number | null;
 }
 
 const MOBILE_BP = 640;
@@ -39,8 +37,6 @@ export default function SpotPanel({
   theme = "dark",
   portalToBody = true,
   portalTarget = null,
-  scrollContainer = null,
-  openedScrollTop = null,
 }: SpotPanelProps) {
   const dark = theme === "dark";
   const C = {
