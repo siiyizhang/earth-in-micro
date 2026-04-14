@@ -634,13 +634,26 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const onScroll = () => setNavVisible(el.scrollTop > window.innerHeight * 0.2);
+    const onScroll = () => {
+      setNavVisible(el.scrollTop > window.innerHeight * 0.2);
+      setSelectedSpot(null);
+      setSelectedPos(null);
+    };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <div ref={containerRef} style={{ width: "100vw", height: "100vh", overflowY: "scroll", background: "#ffffff" }}>
+    <div
+      ref={containerRef}
+      style={{
+        width: "100vw",
+        height: "100vh",
+        overflowY: "scroll",
+        background: "#ffffff",
+        position: "relative",
+      }}
+    >
 
       {/* ── Global floating navbar ── */}
       <div style={{
@@ -949,7 +962,10 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             } : { width: "100%", height: "100%" }}>
               <LowPolyEarthGlobe
                 spots={spots}
-                onSpotClick={(spot, pos) => { setSelectedSpot(spot); setSelectedPos(pos); }}
+                onSpotClick={(spot, pos) => {
+                  setSelectedSpot(spot);
+                  setSelectedPos(pos);
+                }}
                 onSpotHover={setHoveredSpot}
                 onGlobeHover={setGlobeLatLng}
                 fontSerif={FONTS.serif}
@@ -1159,7 +1175,14 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
 
         </div>
 
-      <SpotPanel spot={selectedSpot} screenPos={selectedPos} onClose={() => { setSelectedSpot(null); setSelectedPos(null); }} fontSerif={FONTS.serif} fontSans={FONTS.sans} theme="light" />
+      <SpotPanel
+        spot={selectedSpot}
+        screenPos={selectedPos}
+        onClose={() => { setSelectedSpot(null); setSelectedPos(null); }}
+        fontSerif={FONTS.serif}
+        fontSans={FONTS.sans}
+        theme="light"
+      />
     </div>
   );
 }

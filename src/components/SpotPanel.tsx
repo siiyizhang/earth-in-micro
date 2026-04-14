@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Spot } from "../data/spots";
 
@@ -10,7 +10,12 @@ interface SpotPanelProps {
   fontSans?: string;
   theme?: "dark" | "light";
   portalToBody?: boolean;
+  portalTarget?: HTMLElement | null;
+  scrollContainer?: HTMLElement | null;
+  openedScrollTop?: number | null;
 }
+
+const MOBILE_BP = 640;
 
 function PanelImage({ src, alt }: { src: string; alt: string }) {
   const [error, setError] = useState(false);
@@ -33,6 +38,9 @@ export default function SpotPanel({
   fontSans = "'Inter', sans-serif",
   theme = "dark",
   portalToBody = true,
+  portalTarget = null,
+  scrollContainer = null,
+  openedScrollTop = null,
 }: SpotPanelProps) {
   const dark = theme === "dark";
   const C = {
@@ -61,19 +69,42 @@ export default function SpotPanel({
     else setVisible(false);
   }, [spot]);
 
+  const posStyle = useMemo(() => {
+    const isMobile = window.innerWidth < MOBILE_BP;
+    if (isMobile) {
+      return {
+        position: "absolute" as const,
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      };
+    }
+    // Desktop: anchored to left or right side of viewport, vertically centered
+    const onRight = (screenPos?.x ?? 0) > window.innerWidth / 2;
+    const sideMargin = 32;
+    return {
+      position: "absolute" as const,
+      top: "50%",
+      ...(onRight
+        ? { right: sideMargin, left: "auto" }
+        : { left: sideMargin, right: "auto" }),
+    };
+  }, [screenPos]);
+
   if (!spot || !screenPos) return null;
 
-  // Fixed position on same side as thumbnail, vertically centered in viewport
-  const vw = window.innerWidth;
-  const thumbnailOnRight = screenPos.x > vw / 2;
-  const sideMargin = 24;
-  const left = thumbnailOnRight
-    ? vw - CARD_W - sideMargin
-    : sideMargin;
+  const isMobile = window.innerWidth < MOBILE_BP;
+  const CARD_W_MOBILE = Math.min(window.innerWidth - 32, 360);
 
   const hasImg1 = !!spot.imageUrl;
   const hasImg2 = !!spot.imageUrl2;
   const imgCount = (hasImg1 ? 1 : 0) + (hasImg2 ? 1 : 0);
+
+  const cardWidth = isMobile ? CARD_W_MOBILE : CARD_W;
+
+  const visTransform = isMobile
+    ? `translate(-50%, -50%) scale(${visible ? 1 : 0.95})`
+    : `translateY(-50%) scale(${visible ? 1 : 0.95})`;
 
   const panel = (
     <>
@@ -82,12 +113,11 @@ export default function SpotPanel({
       <div
         onWheel={e => e.stopPropagation()}
         style={{
-          position: "fixed",
-          left,
-          top: "calc(50% + 28px)",
-          width: CARD_W,
-          maxHeight: "calc(100vh - 120px)",
+          ...posStyle,
+          width: cardWidth,
+          maxHeight: "calc(100vh - 80px)",
           zIndex: 150,
+          pointerEvents: "auto",
           display: "flex",
           flexDirection: "column",
           background: C.bg,
@@ -97,7 +127,7 @@ export default function SpotPanel({
           overflow: "hidden",
           boxShadow: C.shadow,
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(-50%)" : "translateY(-50%) scale(0.95)",
+          transform: visTransform,
           transition: "opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
@@ -169,6 +199,11 @@ export default function SpotPanel({
     </>
   );
 
-  if (!portalToBody || typeof document === "undefined") return panel;
-  return createPortal(panel, document.body);
+  if (typeof document === "undefined") return panel;
+  if (portalTarget) return createPortal(panel, portalTarget);
+  if (!portalToBody) return panel;
+  const portalRoot = document.getElementById("portal-root") ?? document.body;
+
+
+  return createPortal(panel, portalRoot);
 }

@@ -248,7 +248,7 @@ function QualityScreen() {
     { src: "/images/product/20.jpg",     price: "~$20",    name: "Toy 1",     highlight: false },
     { src: "/images/product/80.png",     price: "~$80",    name: "Toy 2",     highlight: false },
     { src: "/images/product/150.jpg",    price: "~$150",   name: "Toy 3",     highlight: false },
-    { src: "/images/product/eureka.png", price: "$239",    name: "Eureka",    highlight: true  },
+    { src: "/images/product/eureka.png", price: "$259",    name: "Eureka",    highlight: true  },
     { src: "/images/product/5000.png",   price: "~$5,000", name: "Lab grade", highlight: false },
   ];
   const PAD = isMobile ? "16px" : "clamp(40px,6vw,80px)";
@@ -911,21 +911,26 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const onScroll = () => setNavVisible(el.scrollTop > window.innerHeight * 0.02);
+    const onScroll = () => {
+      setNavVisible(el.scrollTop > window.innerHeight * 0.02);
+      setSelectedSpot(null);
+      setSelectedPos(null);
+    };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const onWheel = (e: WheelEvent) => { if (selectedSpot) e.preventDefault(); };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [selectedSpot]);
-
   return (
-    <div ref={containerRef} style={{ width: "100vw", height: "100vh", overflowY: "scroll", background: "#0a0c12" }}>
+    <div
+      ref={containerRef}
+      style={{
+        width: "100vw",
+        height: "100vh",
+        overflowY: "scroll",
+        background: "#0a0c12",
+        position: "relative",
+      }}
+    >
 
       <style>{`
         @keyframes leisureGallery {
@@ -1016,7 +1021,10 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           }}>
             <EarthGlobe
               spots={spots}
-              onSpotClick={(spot, pos) => { setSelectedSpot(spot); setSelectedPos(pos); }}
+              onSpotClick={(spot, pos) => {
+                setSelectedSpot(spot);
+                setSelectedPos(pos);
+              }}
               onSpotHover={setHoveredSpot}
               onGlobeHover={() => {}}
               fontSerif={FONTS.serif}
@@ -1034,13 +1042,13 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           </div>
         )}
 
-        {!selectedSpot && !loading && (
+        {!selectedSpot && !loading && !isMobile && (
           <div style={{
-            position: isMobile ? "relative" : "absolute",
-            top: isMobile ? undefined : "7%",
-            left: isMobile ? undefined : "50%",
-            transform: isMobile ? undefined : "translateX(-50%)",
-            textAlign: "center", padding: isMobile ? "8px 0 0" : undefined,
+            position: "absolute",
+            top: "7%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            textAlign: "center",
             zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none",
           }}>
             <span style={{ ...TEXT.label }}>
@@ -1113,14 +1121,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           </div>
         )}
 
-        <SpotPanel
-          spot={selectedSpot}
-          screenPos={selectedPos}
-          onClose={() => { setSelectedSpot(null); setSelectedPos(null); }}
-          fontSerif={FONTS.serif}
-          fontSans={FONTS.sans}
-          theme="dark"
-        />
       </div>
 
       {/* ── Screen 0.5: Sketches + Gallery ── */}
@@ -1174,6 +1174,15 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
       {/* ── Screen 4: CTA ── */}
       <CTAScreen />
+
+      <SpotPanel
+        spot={selectedSpot}
+        screenPos={selectedPos}
+        onClose={() => { setSelectedSpot(null); setSelectedPos(null); }}
+        fontSerif={FONTS.serif}
+        fontSans={FONTS.sans}
+        theme="dark"
+      />
 
     </div>
   );
