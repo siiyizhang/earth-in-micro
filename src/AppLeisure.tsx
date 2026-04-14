@@ -843,9 +843,14 @@ function CTAScreen() {
               <div>
                 <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* footer section heading */, marginBottom: 16 }}>Quick Menu</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {["About Us", "Blog"].map(label => (
-                    <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
-                      style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer links */, textDecoration: "none" }}
+                  {[
+                    { label: "About Us", href: "/about" },
+                    { label: "Blog", href: "https://www.eurekamicroscope.com/blog" },
+                  ].map(({ label, href }) => (
+                    <a key={label} href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}
                       onMouseEnter={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.8)"; }}
                       onMouseLeave={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.4)"; }}
                     >{label}</a>
@@ -1008,7 +1013,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             />
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
               {[
-                { label: "About Us", href: "#about", external: false },
+                { label: "About Us", href: "/about", external: false },
                 { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
               ].map(({ label, href, external }) => (
                 <a
@@ -1066,7 +1071,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           boxShadow: menuOpen ? "0 8px 32px rgba(0,0,0,0.4)" : "none",
         }}>
           {[
-            { label: "About Us", href: "#about", external: false },
+            { label: "About Us", href: "/about", external: false },
             { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
           ].map(({ label, href, external }) => (
             <a

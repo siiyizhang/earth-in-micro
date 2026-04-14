@@ -4,6 +4,7 @@ import './index.css'
 import AppIndex from './AppIndex.tsx'
 import AppLowPoly from './AppLowPoly.tsx'
 import AppLeisure from './AppLeisure.tsx'
+import AppAbout from './AppAbout.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Route path="/index" element={<AppIndex />} />
       <Route path="/education" element={<AppLowPoly issStyle="line" />} />
       <Route path="/leisure" element={<AppLeisure issStyle="line" />} />
+      <Route path="/about" element={<AppAbout />} />
     </Routes>
   </BrowserRouter>
 )

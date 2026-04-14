@@ -726,7 +726,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             />
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
               {[
-                { label: "About Us", href: "#about" },
+                { label: "About Us", href: "/about" },
                 { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
               ].map(({ label, href, external }) => (
                 <a
@@ -784,7 +784,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
           boxShadow: menuOpen ? "0 8px 32px rgba(26,42,60,0.12)" : "none",
         }}>
           {[
-            { label: "About Us", href: "#about", external: false },
+            { label: "About Us", href: "/about", external: false },
             { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
           ].map(({ label, href, external }) => (
             <a
@@ -1228,8 +1228,13 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                   <div>
                     <div style={{ fontFamily: FONTS.sans, fontWeight: 400, fontSize: "clamp(10px,0.8vw,12px)", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(26,42,60,0.8)", marginBottom: 16 }}>Quick Menu</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {["About Us", "Blog"].map(label => (
-                        <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
+                      {[
+                        { label: "About Us", href: "/about" },
+                        { label: "Blog", href: "https://www.eurekamicroscope.com/blog" },
+                      ].map(({ label, href }) => (
+                        <a key={label} href={href}
+                          target={href.startsWith("http") ? "_blank" : undefined}
+                          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                           style={{ fontFamily: FONTS.sans, fontWeight: 300, fontSize: "clamp(13px,1vw,15px)", color: "rgba(26,42,60,0.4)", textDecoration: "none" }}
                           onMouseEnter={e => { (e.currentTarget).style.color = "rgba(26,42,60,0.9)"; }}
                           onMouseLeave={e => { (e.currentTarget).style.color = "rgba(26,42,60,0.4)"; }}
