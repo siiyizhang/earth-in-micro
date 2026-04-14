@@ -307,17 +307,17 @@ function PowerfulScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof
             <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
         ) : (
-          <div style={{ flex: "0 0 52%", display: "flex", gap: 10, alignSelf: "center", alignItems: "flex-end", height: 320 }}>
-            <div style={{ flex: "0 0 auto", height: "100%", display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ flex: 1, borderRadius: 12, overflow: "hidden", width: 180 }}>
+          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 320 }}>
+            <div style={{ flex: 1, display: "flex", gap: 10, minHeight: 0 }}>
+              <div style={{ flex: "0 0 auto", width: 180, borderRadius: 12, overflow: "hidden" }}>
                 <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
-              <div style={{ ...TEXT.caption, color: "rgba(26,42,60,0.35)", paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
+              <div style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
+                <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
             </div>
-            <div style={{ flex: 1, borderRadius: 16, overflow: "hidden", height: "100%" }}>
-              <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            </div>
+            <div style={{ ...TEXT.caption, color: "rgba(26,42,60,0.35)", paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
           </div>
         )}
 
@@ -754,7 +754,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
 
             {/* Video */}
             <video
-              src="/video/education 2.mp4"
+              src="/video/education 2 compressed.mp4"
               autoPlay
               muted
               loop

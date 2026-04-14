@@ -352,17 +352,17 @@ function QualityScreen() {
             <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
         ) : (
-          <div style={{ flex: "0 0 52%", display: "flex", gap: 10, alignSelf: "center", alignItems: "flex-end", height: 320 }}>
-            <div style={{ flex: "0 0 auto", height: "100%", display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ flex: 1, borderRadius: 12, overflow: "hidden", width: 180 }}>
+          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 320 }}>
+            <div style={{ flex: 1, display: "flex", gap: 10, minHeight: 0 }}>
+              <div style={{ flex: "0 0 auto", width: 180, borderRadius: 12, overflow: "hidden" }}>
                 <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
-              <div style={{ ...TEXT.caption, paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
+              <div style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
+                <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
             </div>
-            <div style={{ flex: 1, borderRadius: 16, overflow: "hidden", height: "100%" }}>
-              <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            </div>
+            <div style={{ ...TEXT.caption, paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
           </div>
         )}
         <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400 }}>
