@@ -953,12 +953,12 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         {/* ── Screen 4: Globe ── */}
         <div
           className="relative select-none"
-          style={{ width: "100vw", height: isMobile ? "auto" : "100vh", minHeight: isMobile ? 0 : "100vh", overflow: "hidden", background: "#ffffff" }}
+          style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", minHeight: isMobile ? 0 : "100vh", overflow: "hidden", background: "#ffffff" }}
         >
           {!loading && (
             <div style={isMobile ? {
-              width: "90vw", height: "90vw",
-              margin: "50px auto 0",
+              width: "130vw", height: "130vw",
+              position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
             } : { width: "100%", height: "100%" }}>
               <LowPolyEarthGlobe
                 spots={spots}
