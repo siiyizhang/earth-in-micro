@@ -953,7 +953,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         {/* ── Screen 4: Globe ── */}
         <div
           className="relative select-none"
-          style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", minHeight: isMobile ? 0 : "100vh", overflow: "hidden", background: "#ffffff" }}
+          style={{ width: "100vw", height: isMobile ? "calc(100vw + 130px)" : "100vh", minHeight: isMobile ? 0 : "100vh", overflow: "hidden", background: "#ffffff" }}
         >
           {!loading && (
             <div style={isMobile ? {
