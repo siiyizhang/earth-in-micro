@@ -612,6 +612,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
   const [hoveredSpot, setHoveredSpot] = useState<Spot | null>(null);
   const [globeLatLng, setGlobeLatLng] = useState<{ lat: number; lng: number } | null>(null);
   const [navVisible, setNavVisible] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [lightbox, setLightbox] = useState<{ thumb: string; full: string; label: string; isVideo: boolean } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -665,59 +666,145 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         borderBottom: navVisible ? "1px solid rgba(26,42,60,0.06)" : "none",
         transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease",
       }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
-          <img
-            src={navVisible ? "/Black text.png" : "/White text.png"}
-            alt="Earth in Micro"
-            style={{ height: isMobile ? 24 : 29, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
-          />
-
-          <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : "clamp(8px,2vw,20px)" }}>
-            {!isMobile && [
-              { label: "About Us", href: "#about" },
-              { label: "Blog",     href: "#blog"  },
-            ].map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                style={{
-                  ...TEXT.nav,
-                  color: navVisible ? TEXT.nav.color : "rgba(255,255,255,0.75)",
-                  textDecoration: "none",
-                  transition: "color 0.2s, opacity 0.3s",
-                  whiteSpace: "nowrap",
-                  opacity: navVisible ? 1 : 0,
-                  pointerEvents: navVisible ? "auto" : "none",
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = navVisible ? "rgba(26,42,60,1)" : "#ffffff"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = navVisible ? "rgba(26,42,60,0.7)" : "rgba(255,255,255,0.75)"; }}
-              >
-                {label}
-              </a>
-            ))}
-
+        {isMobile ? (
+          /* ── Mobile nav layout: hamburger | logo (center) | waitlist ── */
+          <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+            {/* Hamburger */}
             <button
               type="button"
-              onClick={() => document.getElementById("cta-edu")?.scrollIntoView({ behavior: "smooth" })}
-              style={{
-                ...TEXT.nav, fontWeight: 600,
-                color: "#ffffff", background: C.teal,
-                border: "none", borderRadius: 999,
-                padding: isMobile ? "7px 14px" : "8px 18px",
-                cursor: "pointer", whiteSpace: "nowrap",
-                boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
-                opacity: navVisible ? 1 : 0,
-                pointerEvents: navVisible ? "auto" : "none",
-                transition: "opacity 0.3s, background 0.2s",
-              }}
-              onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-              onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
+              onClick={() => setMenuOpen(o => !o)}
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5, opacity: navVisible ? 1 : 0, pointerEvents: navVisible ? "auto" : "none", transition: "opacity 0.3s" }}
+              aria-label="Menu"
             >
-              {isMobile ? "Join Waitlist" : "Join the Waitlist"}
+              {menuOpen ? (
+                /* X icon */
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <line x1="3" y1="3" x2="17" y2="17" stroke={navVisible ? "rgba(26,42,60,0.7)" : "rgba(255,255,255,0.75)"} strokeWidth="1.8" strokeLinecap="round"/>
+                  <line x1="17" y1="3" x2="3" y2="17" stroke={navVisible ? "rgba(26,42,60,0.7)" : "rgba(255,255,255,0.75)"} strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+              ) : (
+                /* Hamburger lines */
+                [0,1,2].map(i => (
+                  <span key={i} style={{ display: "block", width: 20, height: 1.5, borderRadius: 2, background: navVisible ? "rgba(26,42,60,0.7)" : "rgba(255,255,255,0.75)" }} />
+                ))
+              )}
             </button>
+            {/* Logo centered */}
+            <img
+              src={navVisible ? "/Black text.png" : "/White text.png"}
+              alt="Earth in Micro"
+              style={{ height: 24, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", position: "absolute", left: "50%", transform: "translateX(-50%)" }}
+            />
+            {/* Join Waitlist right */}
+            <div style={{ marginLeft: "auto" }}>
+              <button
+                type="button"
+                onClick={() => document.getElementById("cta-edu")?.scrollIntoView({ behavior: "smooth" })}
+                style={{
+                  ...TEXT.nav, fontWeight: 600,
+                  color: "#ffffff", background: C.teal,
+                  border: "none", borderRadius: 999,
+                  padding: "7px 14px",
+                  cursor: "pointer", whiteSpace: "nowrap",
+                  boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
+                  opacity: navVisible ? 1 : 0,
+                  pointerEvents: navVisible ? "auto" : "none",
+                  transition: "opacity 0.3s, background 0.2s",
+                }}
+              >
+                Join Waitlist
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          /* ── Desktop nav layout ── */
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
+            <img
+              src={navVisible ? "/Black text.png" : "/White text.png"}
+              alt="Earth in Micro"
+              style={{ height: 29, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
+            />
+            <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
+              {[
+                { label: "About Us", href: "#about" },
+                { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+              ].map(({ label, href, external }) => (
+                <a
+                  key={label}
+                  href={href}
+                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  style={{
+                    ...TEXT.nav,
+                    color: navVisible ? TEXT.nav.color : "rgba(255,255,255,0.75)",
+                    textDecoration: "none",
+                    transition: "color 0.2s, opacity 0.3s",
+                    whiteSpace: "nowrap",
+                    opacity: navVisible ? 1 : 0,
+                    pointerEvents: navVisible ? "auto" : "none",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = navVisible ? "rgba(26,42,60,1)" : "#ffffff"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = navVisible ? "rgba(26,42,60,0.7)" : "rgba(255,255,255,0.75)"; }}
+                >
+                  {label}
+                </a>
+              ))}
+              <button
+                type="button"
+                onClick={() => document.getElementById("cta-edu")?.scrollIntoView({ behavior: "smooth" })}
+                style={{
+                  ...TEXT.nav, fontWeight: 600,
+                  color: "#ffffff", background: C.teal,
+                  border: "none", borderRadius: 999,
+                  padding: "8px 18px",
+                  cursor: "pointer", whiteSpace: "nowrap",
+                  boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
+                  opacity: navVisible ? 1 : 0,
+                  pointerEvents: navVisible ? "auto" : "none",
+                  transition: "opacity 0.3s, background 0.2s",
+                }}
+                onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
+                onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
+              >
+                Join the Waitlist
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* ── Mobile hamburger dropdown menu ── */}
+      {isMobile && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 99,
+          background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)",
+          padding: "72px 32px 28px",
+          display: "flex", flexDirection: "column", gap: 0,
+          transform: menuOpen ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.3s ease",
+          boxShadow: menuOpen ? "0 8px 32px rgba(26,42,60,0.12)" : "none",
+        }}>
+          {[
+            { label: "About Us", href: "#about", external: false },
+            { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+          ].map(({ label, href, external }) => (
+            <a
+              key={label}
+              href={href}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                fontFamily: FONTS.serif, fontWeight: 300,
+                fontSize: 22, letterSpacing: "0.02em",
+                color: "rgba(26,42,60,0.85)", textDecoration: "none",
+                padding: "14px 0",
+                borderBottom: "1px solid rgba(26,42,60,0.07)",
+              }}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      )}
         {spotsError && (
           <div
             style={{

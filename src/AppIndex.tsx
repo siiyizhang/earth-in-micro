@@ -20,7 +20,7 @@ export default function AppIndex() {
 
   return (
     <div style={{
-      width: "100vw", height: "100vh",
+      width: "100vw", height: "100dvh",
       display: "flex", overflow: "hidden", position: "relative",
       flexDirection: isMobile ? "column" : "row",
     }}>
