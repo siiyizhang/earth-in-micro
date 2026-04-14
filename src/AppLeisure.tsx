@@ -40,58 +40,69 @@ const TEXT = {
   hero: {
     fontFamily: FONTS.serif, fontWeight: 100,
     fontSize: "clamp(20px,2.6vw,42px)", lineHeight: 1.15, letterSpacing: "-0.01em",
+    color: "rgba(255,255,255,0.92)",
   },
   // Section headings (h1-level: ScenarioScreen slogan, CTA price)
   h1: {
     fontFamily: FONTS.serif, fontWeight: 100,
     fontSize: "clamp(28px,3.6vw,52px)", lineHeight: 1.15, letterSpacing: "-0.01em",
+    color: "rgba(255,255,255,0.88)",
   },
   // Sub-headings (h2: scenario name, sketch caption, subscribe headline)
   h2: {
     fontFamily: FONTS.serif, fontWeight: 100,
     fontSize: "clamp(20px,2vw,28px)", lineHeight: 1.2, letterSpacing: "-0.01em",
+    color: "rgba(255,255,255,0.88)",
   },
   // Card / feature titles ("Lab-grade Image Quality", "Durable & Portable")
   h3: {
     fontFamily: FONTS.sans, fontWeight: 600,
     fontSize: "clamp(20px,2.2vw,28px)", lineHeight: 1.3,
+    color: "rgba(255,255,255,0.88)",
   },
   // Body text
   body: {
     fontFamily: FONTS.sans, fontWeight: 300,
     fontSize: "clamp(15px,1.2vw,18px)", lineHeight: 1.7,
+    color: "rgba(255,255,255,0.75)",
   },
   // Small body / tooltip
   bodySmall: {
     fontFamily: FONTS.sans, fontWeight: 300,
     fontSize: "clamp(13px,1vw,15px)", lineHeight: 1.7,
+    color: "rgba(255,255,255,0.7)",
   },
   // Captions (credit lines, photo labels)
   caption: {
     fontFamily: FONTS.sans, fontWeight: 400,
     fontSize: "clamp(11px,0.9vw,13px)", letterSpacing: "0.06em",
+    color: "rgba(255,255,255,0.7)",
   },
   // ALL-CAPS labels / eyebrows
   label: {
     fontFamily: FONTS.sans, fontWeight: 400,
-    fontSize: "clamp(10px,0.8vw,12px)", letterSpacing: "0.18em",
+    fontSize: "clamp(12px,1vw,15px)", letterSpacing: "0.18em",
     textTransform: "uppercase" as const,
+    color: "rgba(255,255,255,0.7)",
   },
   // Navbar links
   nav: {
     fontFamily: FONTS.sans, fontWeight: 400,
     fontSize: "clamp(12px,1vw,14px)", letterSpacing: "0.04em",
+    color: "rgba(255,255,255,0.75)",
   },
   // Specs bar value (large mono number)
   specValue: {
     fontFamily: FONTS.mono, fontWeight: 400,
     fontSize: "clamp(18px,2vw,28px)", letterSpacing: "-0.02em", lineHeight: 1.1,
+    color: "#ffffff",
   },
   // Specs bar label
   specLabel: {
     fontFamily: FONTS.sans, fontWeight: 400,
     fontSize: "clamp(10px,0.75vw,12px)", letterSpacing: "0.12em",
     textTransform: "uppercase" as const, lineHeight: 1.4,
+    color: "rgba(255,255,255,0.5)",
   },
 };
 
@@ -178,7 +189,7 @@ function TooltipIcon() {
           border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: 12, padding: "14px 16px",
           boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
-          ...TEXT.bodySmall, color: "rgba(255,255,255,0.5)",
+          ...TEXT.bodySmall,
           zIndex: 50, pointerEvents: "none",
         }}>
           Most people associate microscope performance with magnification. But magnification alone can be misleading — without sufficient resolution, increasing magnification only results in a larger, blurrier image. This is known as <em>empty magnification</em>.<br /><br />
@@ -214,11 +225,11 @@ function SpecsBar() {
         >
           {row.map((s) => (
             <div key={s.label} style={{ textAlign: "center" }}>
-              <div style={{ ...TEXT.specValue, color: "#ffffff", marginBottom: 8 }}>
+              <div style={{ ...TEXT.specValue, marginBottom: 8 }}>
                 {s.value}
               </div>
               <div style={{ height: 1, width: "40%", margin: "0 auto 8px", background: "rgba(255,255,255,0.12)" }} />
-              <div style={{ ...TEXT.specLabel, color: "rgba(255,255,255,0.5)" }}>
+              <div style={{ ...TEXT.specLabel }}>
                 {s.label}
               </div>
             </div>
@@ -248,35 +259,51 @@ function QualityScreen() {
       {/* ── Specs strip ── */}
       <SpecsBar />
 
-      {/* Row 1: video left + right column */}
+      {/* Testimonial videos — below SpecsBar, mobile only */}
+      {isMobile && (
+        <div style={{ display: "flex", gap: 10, padding: `clamp(32px,5vh,56px) ${PAD} 0` }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16" }}>
+              <video src="/video/Testimonial Francesco.mp4" autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ ...TEXT.caption, paddingLeft: 2 }}>Dr. Francesco Pomati · Freshwater Ecology Group Leader</div>
+          </div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16" }}>
+              <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ ...TEXT.caption, paddingLeft: 2 }}>Marta Reyes · Freshwater Ecologist</div>
+          </div>
+        </div>
+      )}
+
+      {/* Row 1: quality content */}
       <div style={{ display: "flex", justifyContent: "center", padding: `clamp(40px,6vh,72px) ${PAD} clamp(10px,2vh,20px)` }}>
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 32, alignItems: isMobile ? "stretch" : "flex-end", width: "100%", maxWidth: 1100 }}>
 
-          {/* Left: video — hidden on mobile to save space */}
+          {/* Left: Francesco video — desktop only */}
           {!isMobile && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, alignSelf: "stretch", minWidth: 140, flex: "0 0 auto", width: "22%" }}>
+            <div style={{ flex: "0 0 auto", width: "22%", display: "flex", flexDirection: "column", gap: 10, alignSelf: "stretch" }}>
               <div style={{ flex: 1, position: "relative", overflow: "hidden", background: "#1a1a2e", borderRadius: 12, aspectRatio: "9/16" }}>
                 <video src="/video/Testimonial Francesco.mp4" autoPlay muted loop playsInline
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.5)", paddingLeft: 2, flexShrink: 0 }}>
-                Dr. Francesco Pomati · Freshwater Ecologist
-              </div>
+              <div style={{ ...TEXT.caption, paddingLeft: 2 }}>Dr. Francesco Pomati · Freshwater Ecology Group Leader</div>
             </div>
           )}
 
           {/* Right column */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ flex: "0 0 auto" }}>
-              <div style={{ ...TEXT.h3, color: "rgba(255,255,255,1)", marginBottom: 10 }}>Lab-grade Image Quality</div>
-              <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.8)" }}>
+              <div style={{ ...TEXT.h3, marginBottom: 10 }}>Lab-grade Image Quality</div>
+              <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.8)" /* brighter than default 0.5 */ }}>
                 Most microscopes advertise magnification, but the image still looks blurry. With 1.4 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
               </div>
             </div>
 
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ ...TEXT.label, color: "rgba(255,255,255,0.5)" }}>
+                <span style={{ ...TEXT.label }}>
                   USAF 1951 resolution test chart
                 </span>
                 <TooltipIcon />
@@ -320,13 +347,28 @@ function QualityScreen() {
 
       {/* Row 2: Durable & Portable */}
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "center", padding: isMobile ? `clamp(32px,5vh,56px) ${PAD}` : `0 ${PAD}`, gap: isMobile ? 20 : 48 }}>
-        <div style={{ flex: isMobile ? "none" : "0 0 38%", borderRadius: 16, overflow: "hidden", height: isMobile ? 220 : "72%", alignSelf: isMobile ? "auto" : "center" }}>
-          <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-        </div>
+        {isMobile ? (
+          <div style={{ borderRadius: 16, overflow: "hidden", height: 220 }}>
+            <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          </div>
+        ) : (
+          <div style={{ flex: "0 0 52%", display: "flex", gap: 10, alignSelf: "center", alignItems: "flex-end", height: 320 }}>
+            <div style={{ flex: "0 0 auto", height: "100%", display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ flex: 1, borderRadius: 12, overflow: "hidden", width: 180 }}>
+                <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              </div>
+              <div style={{ ...TEXT.caption, paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
+            </div>
+            <div style={{ flex: 1, borderRadius: 16, overflow: "hidden", height: "100%" }}>
+              <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          </div>
+        )}
         <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400 }}>
-          <div style={{ ...TEXT.h3, color: "rgba(255,255,255,0.88)", marginBottom: 14 }}>Durable & Portable</div>
-          <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.5)" }}>
-            Drop-tested and IP67-waterproof. Built to survive in the wild nature.
+          <div style={{ ...TEXT.h3, marginBottom: 14 }}>Durable & Portable</div>
+          <div style={{ ...TEXT.body }}>
+            Drop-tested and water-resistant. Built to survive in the wild nature.
           </div>
         </div>
       </div>
@@ -334,8 +376,8 @@ function QualityScreen() {
       {/* Row 3: Multi-mode Illumination */}
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "stretch", justifyContent: "center", padding: `clamp(32px,6vh,72px) ${PAD}`, gap: isMobile ? 20 : 48 }}>
         <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ ...TEXT.h3, color: "rgba(255,255,255,0.88)", marginBottom: 14 }}>Multi-mode Illumination</div>
-          <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.5)" }}>
+          <div style={{ ...TEXT.h3, marginBottom: 14 }}>Multi-mode Illumination</div>
+          <div style={{ ...TEXT.body }}>
             With just a tap on the app, switch between bright, dark, and oblique lighting to reveal hidden details. Add a polarization filter set, and even a simple crystal transforms into a dazzling rainbow kaleidoscope.
           </div>
         </div>
@@ -359,7 +401,7 @@ function ScenarioScreen() {
     return (
       <div style={{ width: "100vw", background: "#0a0c12" }}>
         <div style={{ padding: "clamp(28px,4vh,48px) 24px clamp(20px,2.5vh,32px)", textAlign: "center" }}>
-          <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.88)" }}>
+          <div style={{ ...TEXT.h1 }}>
             One microscope.<br /><span style={{ color: C.teal }}>Endless environment.</span>
           </div>
         </div>
@@ -375,7 +417,7 @@ function ScenarioScreen() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)" }} />
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 24px 24px" }}>
             <h2 style={{ ...TEXT.h2, color: "#ffffff", margin: "0 0 8px" }}>{activeScenario.name}</h2>
-            <p style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.65)", margin: 0 }}>{activeScenario.micro.desc}</p>
+            <p style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.65)" /* scenario desc, slightly brighter */, margin: 0 }}>{activeScenario.micro.desc}</p>
           </div>
         </div>
 
@@ -451,7 +493,7 @@ function ScenarioScreen() {
                 <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <div style={{
                     writingMode: "vertical-rl", textOrientation: "mixed", transform: "rotate(180deg)",
-                    ...TEXT.label, color: "rgba(255,255,255,0.65)", whiteSpace: "nowrap",
+                    ...TEXT.label, color: "rgba(255,255,255,0.65)" /* inactive panel name */, whiteSpace: "nowrap",
                   }}>
                     {s.name}
                   </div>
@@ -465,10 +507,10 @@ function ScenarioScreen() {
                 transform: isActive ? "translateY(0)" : "translateY(12px)",
                 transition: "opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s",
               }}>
-                <h2 style={{ ...TEXT.h2, color: "#ffffff", margin: "0 0 12px" }}>
+                <h2 style={{ ...TEXT.h2, color: "#ffffff" /* active scenario: full white */, margin: "0 0 12px" }}>
                   {s.name}
                 </h2>
-                <p style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.65)", margin: 0, maxWidth: 320 }}>
+                <p style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.65)" /* scenario desc */, margin: 0, maxWidth: 320 }}>
                   {s.micro.desc}
                 </p>
               </div>
@@ -480,24 +522,67 @@ function ScenarioScreen() {
   );
 }
 
+// ── AppGuideScreen ─────────────────────────────────────────────────────────────
+
+function AppGuideScreen() {
+  const isMobile = useIsMobile();
+  const PAD = isMobile ? "20px" : "clamp(40px,6vw,80px)";
+  const APP_IMAGES = [
+    { src: "/images/app/app1.png" },
+    { src: "/images/app/app2.png" },
+    { src: "/images/app/app3.png" },
+  ];
+
+  return (
+    <div style={{ width: "100vw", background: "#0a0c12", padding: `clamp(48px,7vh,80px) ${PAD}` }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "clamp(28px,4vh,48px)" }}>
+          <div style={{ ...TEXT.h1 }}>
+            App guides &amp; identification
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: isMobile ? 12 : 24, justifyContent: "center" }}>
+          {APP_IMAGES.map((img, i) => (
+            <div key={i} style={{
+              flex: 1, maxWidth: isMobile ? "none" : 213,
+              borderRadius: 16, overflow: "hidden",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+            }}>
+              <img src={img.src} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── GalleryScreen ──────────────────────────────────────────────────────────────
 
 function GalleryScreen() {
+  const isMobile = useIsMobile();
   return (
     <div style={{ width: "100vw", background: "#0a0c12", padding: "0", display: "flex", flexDirection: "column" }}>
       <div style={{ textAlign: "center", padding: "0 24px 12px" }}>
-        <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.5)" }}>
+        <div style={{ ...TEXT.label }}>
           Captured with the prototype
         </div>
       </div>
 
       {/* Scrolling strip */}
-      <div style={{ position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />
-        <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />
+      <div style={{ position: "relative" }}>
+        {isMobile && <div style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, pointerEvents: "none", fontSize: 18, color: "rgba(255,255,255,0.5)" }}>‹</div>}
+        {isMobile && <div style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, pointerEvents: "none", fontSize: 18, color: "rgba(255,255,255,0.5)" }}>›</div>}
+      <div style={{ position: "relative", overflow: isMobile ? "auto" : "hidden",
+        ...(isMobile ? { WebkitOverflowScrolling: "touch" as "touch" } : {}),
+      }}>
+        {!isMobile && <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />}
+        {!isMobile && <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />}
 
-        <div style={{ display: "flex", gap: 16, animation: "leisureGallery 42s linear infinite", width: "max-content", padding: "0 24px" }}>
-          {[...Array(2)].map((_, setIdx) =>
+        <div style={{ display: "flex", gap: 16, padding: "0 24px",
+          ...(isMobile ? { width: "max-content" } : { animation: "leisureGallery 42s linear infinite", width: "max-content" }),
+        }}>
+          {(isMobile ? [0] : [0, 1]).map((setIdx) =>
             GALLERY.map((item, i) => (
               <div key={`${setIdx}-${i}`} style={{
                 width: "clamp(160px, 40vw, 340px)",
@@ -517,12 +602,13 @@ function GalleryScreen() {
                   padding: "20px 14px 10px",
                   background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)",
                 }}>
-                  <span style={{ ...TEXT.label, color: "rgba(255,255,255,0.7)" }}>{item.label}</span>
+                  <span style={{ ...TEXT.label, color: "rgba(255,255,255,0.7)" /* gallery caption, slightly brighter */ }}>{item.label}</span>
                 </div>
               </div>
             ))
           )}
         </div>
+      </div>
       </div>
     </div>
   );
@@ -564,10 +650,10 @@ function CTAScreen() {
         padding: isMobile ? "clamp(32px,6vh,56px) 20px" : "clamp(48px,8vh,80px) clamp(24px,8vw,120px)",
       }}>
         <div style={{ width: "100%", maxWidth: 640, textAlign: "center" }}>
-          <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>
+          <div style={{ ...TEXT.label, marginBottom: 16 }}>
             Shape the product
           </div>
-          <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.88)", marginBottom: 8 }}>
+          <div style={{ ...TEXT.h2, marginBottom: 8 }}>
             What feature would be the greatest extra?
           </div>
           {submitted ? (
@@ -586,7 +672,7 @@ function CTAScreen() {
                         style={{
                           ...TEXT.bodySmall, fontWeight: isSelected ? 500 : 300,
                           letterSpacing: "0.04em", width: "100%",
-                          color: isSelected ? "#ffffff" : "rgba(255,255,255,0.6)",
+                          color: isSelected ? "#ffffff" : "rgba(255,255,255,0.7)",
                           background: isSelected ? "rgba(10,191,188,0.12)" : "rgba(255,255,255,0.04)",
                           border: isSelected ? `1px solid ${C.teal}` : "1px solid rgba(255,255,255,0.1)",
                           borderRadius: 12, padding: "14px 24px",
@@ -639,7 +725,7 @@ function CTAScreen() {
                   transition: "background 0.2s, color 0.2s",
                 }}
               >
-                Submit
+                Vote
               </button>
             </>
           )}
@@ -655,10 +741,10 @@ function CTAScreen() {
       }}>
         {/* Price */}
         <div style={{ textAlign: "center" }}>
-          <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>
+          <div style={{ ...TEXT.label, marginBottom: 16 }}>
             Limited offer
           </div>
-          <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" }}>
+          <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" /* slightly dimmer than default 0.88 */ }}>
             Early Bird Price
           </div>
           <div style={{
@@ -675,10 +761,10 @@ function CTAScreen() {
 
           {/* Left: Mailchimp subscribe */}
           <div style={{ flex: 1, width: isMobile ? "100%" : undefined }}>
-            <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.82)", marginBottom: 12 }}>
+            <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.82)" /* waitlist heading */, marginBottom: 12 }}>
               Join the waitlist
             </div>
-            <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.5)", marginBottom: 24 }}>
+            <div style={{ ...TEXT.body, marginBottom: 24 }}>
               Be the first to know when we launch. Get exclusive early access to our Kickstarter campaign and special offers.
             </div>
             <MailchimpForm
@@ -695,8 +781,8 @@ function CTAScreen() {
             <div style={{ ...TEXT.h2, color: C.teal, marginBottom: 12 }}>
               Lock in your price
             </div>
-            <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.5)", marginBottom: 24 }}>
-              Put down 3 CHF (~$3.8) now to secure the early bird price at launch. Your deposit also helps us show investors that people really want this. Your support will help us build and deliver the product for you sooner and in a better way.
+            <div style={{ ...TEXT.body, marginBottom: 24 }}>
+              Put down 3 CHF (~$3.8) now to secure the early bird price at launch. Your deposit also helps us build and deliver the product for you sooner and in a better way.
             </div>
             <StripeButton href={(import.meta.env.VITE_STRIPE_LEISURE_URL as string) || ""} />
           </div>
@@ -710,32 +796,37 @@ function CTAScreen() {
         padding: "clamp(24px,4vh,40px) clamp(24px,5vw,64px)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}>
-        <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)", marginBottom: 0 }}>Supported by</div>
-        <img src="/sponsor/SPH_logo_white.png" alt="SPH" style={{ height: 36, opacity: 0.6 }} />
-        <img src="/sponsor/logo_VENTUREKICK_cmyk-1.avif" alt="Venture Kick" style={{ height: 36, opacity: 0.6, filter: "brightness(0) invert(1)" }} />
-        <img src="/sponsor/IN_Logo.svg" alt="Innosuisse" style={{ height: 36, opacity: 0.6, filter: "brightness(0) invert(1)" }} />
+        <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* sponsors row: brighter */, marginBottom: 0 }}>Supported by</div>
+        <img src="/sponsor/SPH_logo_white.png" alt="SPH" style={{ height: 80, opacity: 0.8 }} />
+        <img src="/sponsor/logo_VENTUREKICK_cmyk-1.avif" alt="Venture Kick" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
+        <img src="/sponsor/IN_Logo.svg" alt="Innosuisse" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
       </div>
 
       {/* Footer */}
       <div style={{
         borderTop: "1px solid rgba(255,255,255,0.06)",
-        padding: "clamp(40px,6vh,64px) clamp(24px,6vw,80px)",
+        padding: "clamp(32px,5vh,52px) clamp(24px,6vw,80px)",
         display: "flex", justifyContent: "center",
       }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 40, maxWidth: 900, width: "100%" }}>
+        <div style={{
+          display: "flex", flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 32 : "clamp(32px,5vw,64px)",
+          alignItems: isMobile ? "center" : "flex-start",
+        }}>
           {/* Brand */}
-          <div>
-            <img src="/White text.png" alt="Earth in Micro" style={{ height: 36, display: "block", marginBottom: 12 }} />
-            <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)", lineHeight: 1.6 }}>
-              Making microscopy more accessible —<br />anyone, anywhere, anytime.
+          <div style={{ width: isMobile ? "100%" : 200, textAlign: isMobile ? "center" : "left" }}>
+            <img src="/White text.png" alt="Earth in Micro" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
+            <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer tagline */, lineHeight: 1.6 }}>
+              Making microscopy more accessible — anyone, anywhere, anytime.
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: isMobile ? 32 : "clamp(32px,6vw,80px)", flexWrap: "wrap" }}>
-            {/* Contact */}
-            <div>
-              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)", marginBottom: 16 }}>Contact</div>
-              <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)", lineHeight: 2 }}>
+          {/* Links columns */}
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : "clamp(24px,4vw,56px)", alignItems: isMobile ? "center" : "flex-start" }}>
+            {/* Contact — full row on mobile */}
+            <div style={{ textAlign: isMobile ? "center" : "left" }}>
+              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* footer section heading */, marginBottom: 16 }}>Contact</div>
+              <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer body */, lineHeight: 2 }}>
                 Clausiusstrasse 16<br />
                 8006 Zurich<br />
                 <a href="mailto:eureka@eurekamicroscope.com"
@@ -746,35 +837,38 @@ function CTAScreen() {
               </div>
             </div>
 
-            {/* Quick Menu */}
-            <div>
-              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)", marginBottom: 16 }}>Quick Menu</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {["About Us", "Blog"].map(label => (
-                  <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
-                    style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}
-                    onMouseEnter={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.8)"; }}
-                    onMouseLeave={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.4)"; }}
-                  >{label}</a>
-                ))}
+            {/* Quick Menu + Socials — same row on mobile */}
+            <div style={{ display: "flex", gap: isMobile ? 32 : "clamp(24px,4vw,56px)" }}>
+              {/* Quick Menu */}
+              <div>
+                <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* footer section heading */, marginBottom: 16 }}>Quick Menu</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {["About Us", "Blog"].map(label => (
+                    <a key={label} href={`#${label.toLowerCase().replace(" ", "-")}`}
+                      style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer links */, textDecoration: "none" }}
+                      onMouseEnter={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.8)"; }}
+                      onMouseLeave={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.4)"; }}
+                    >{label}</a>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Socials */}
-            <div>
-              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)", marginBottom: 16 }}>Socials</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {[
-                  { label: "Instagram", href: "https://instagram.com" },
-                  { label: "LinkedIn",  href: "https://linkedin.com" },
-                  { label: "TikTok",    href: "https://tiktok.com" },
-                ].map(({ label, href }) => (
-                  <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)", textDecoration: "none" }}
-                    onMouseEnter={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.8)"; }}
-                    onMouseLeave={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.4)"; }}
-                  >{label}</a>
-                ))}
+              {/* Socials */}
+              <div>
+                <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* footer section heading */, marginBottom: 16 }}>Socials</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {[
+                    { label: "Instagram", href: "https://www.instagram.com/eureka.microscope_/" },
+                    { label: "LinkedIn",  href: "https://www.linkedin.com/company/eureka-microscope" },
+                    { label: "TikTok",    href: "https://www.tiktok.com/@eureka.microscope" },
+                  ].map(({ label, href }) => (
+                    <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                      style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer links */, textDecoration: "none" }}
+                      onMouseEnter={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.8)"; }}
+                      onMouseLeave={e => { (e.currentTarget).style.color = "rgba(255,255,255,0.4)"; }}
+                    >{label}</a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -898,17 +992,28 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
               onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
               onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
             >
-              {isMobile ? "Waitlist" : "Join the Waitlist"}
+              {isMobile ? "Join Waitlist" : "Join the Waitlist"}
             </button>
           </div>
         </div>
       </div>
 
       {/* ── Screen 0: Hero ── */}
-      <div style={{ width: "100vw", height: "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
+      <div style={{ width: "100vw", height: isMobile ? "auto" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
+
+        {!selectedSpot && !loading && isMobile && (
+          <div style={{ textAlign: "center", padding: "20px 0 0", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
+            <span style={{ ...TEXT.label }}>Drag to rotate · click to explore</span>
+          </div>
+        )}
 
         {!loading && (
-          <div className="absolute" style={{ top: "-5%", left: "-20%", right: "-20%", bottom: "-5%" }}>
+          <div style={isMobile ? {
+            width: "90vw", height: "90vw",
+            margin: "8px auto 0",
+          } : {
+            position: "absolute", top: "-5%", left: "-20%", right: "-20%", bottom: "-5%",
+          }}>
             <EarthGlobe
               spots={spots}
               onSpotClick={(spot, pos) => { setSelectedSpot(spot); setSelectedPos(pos); }}
@@ -924,16 +1029,21 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            style={{ ...TEXT.label, color: "rgba(255,255,255,0.15)", letterSpacing: "0.2em" }}>
+            style={{ ...TEXT.label, color: "rgba(255,255,255,0.15)" /* loading: very dim */, letterSpacing: "0.2em" }}>
             Loading
           </div>
         )}
 
         {!selectedSpot && !loading && (
-          <div className="absolute pointer-events-none" style={{
-            top: "7%", left: "50%", transform: "translateX(-50%)", zIndex: 10, whiteSpace: "nowrap",
+          <div style={{
+            position: isMobile ? "relative" : "absolute",
+            top: isMobile ? undefined : "7%",
+            left: isMobile ? undefined : "50%",
+            transform: isMobile ? undefined : "translateX(-50%)",
+            textAlign: "center", padding: isMobile ? "8px 0 0" : undefined,
+            zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none",
           }}>
-            <span style={{ ...TEXT.label, color: "rgba(255,255,255,0.5)", letterSpacing: "0.18em" }}>
+            <span style={{ ...TEXT.label }}>
               Drag to rotate · click to explore
             </span>
           </div>
@@ -941,15 +1051,18 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
         {/* Bottom text + CTA */}
         <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0,
+          position: isMobile ? "relative" : "absolute",
+          bottom: isMobile ? undefined : 0,
+          left: isMobile ? undefined : 0,
+          right: isMobile ? undefined : 0,
           height: isMobile ? "auto" : "18%",
-          padding: isMobile ? "32px 20px 24px" : "0 clamp(16px,4vw,48px)",
+          padding: isMobile ? "12px 20px 24px" : "0 clamp(16px,4vw,48px)",
           display: "flex", flexDirection: isMobile ? "column" : "row",
           alignItems: isMobile ? "flex-start" : "center",
           justifyContent: isMobile ? "flex-end" : "center",
           gap: isMobile ? 14 : "clamp(24px,4vw,60px)",
           pointerEvents: "none", zIndex: 5,
-          background: "linear-gradient(to bottom, transparent, rgba(0,0,8,0.72) 60%)",
+          background: isMobile ? "none" : "linear-gradient(to bottom, transparent, rgba(0,0,8,0.72) 60%)",
         }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: isMobile ? "flex-start" : "flex-end", gap: "clamp(6px,1vh,10px)" }}>
             <h1 style={{
@@ -993,7 +1106,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
               <div style={{ fontFamily: FONTS.serif, fontStyle: "italic", fontSize: "clamp(14px,1.2vw,17px)", color: "rgba(255,255,255,0.88)" }}>
                 {hoveredSpot.name}
               </div>
-              <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.5)", marginTop: 2, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+              <div style={{ ...TEXT.caption, marginTop: 2, letterSpacing: "0.14em", textTransform: "uppercase" }}>
                 {hoveredSpot.location}
               </div>
             </div>
@@ -1024,13 +1137,13 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             { src: "/images/product/sketch ver3.png", label: "Ver 3" },
             { src: "/images/product/sketch ver2.png", label: "Ver 2" },
             { src: "/images/product/sketch ver1.png", label: "Ver 1" },
-          ].filter((_, i) => !isMobile || i < 2).map(({ src, label }) => (
+          ].map(({ src, label }) => (
             <div key={src} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, maxWidth: 220 }}>
               <img
                 src={src} alt={label}
                 style={{ width: "100%", height: "auto", objectFit: "contain", filter: "invert(1)", opacity: 0.8, display: "block" }}
               />
-              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.75)" }}>
+              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.75)" /* sketch labels: slightly brighter */ }}>
                 {label}
               </div>
             </div>
@@ -1039,7 +1152,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
         {/* Sketch caption */}
         <div style={{ textAlign: "center", padding: "0 clamp(24px,5vw,80px) clamp(30px,5vh,54px)" }}>
-          <div style={{ ...TEXT.h2, color: "rgba(255,255,255,1)", fontSize: "clamp(25px,3vw,40px)" }}>
+          <div style={{ ...TEXT.h2, color: "#ffffff" /* sketch caption: full white */, fontSize: "clamp(25px,3vw,40px)" }}>
             Multiple iterations for one thing:<br /><span style={{ color: C.teal }}>functionality without complexity.</span>
           </div>
         </div>
@@ -1055,6 +1168,9 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
       {/* ── Screen 1: Scenarios ── */}
       <ScenarioScreen />
+
+      {/* ── App guides & identification ── */}
+      <AppGuideScreen />
 
       {/* ── Screen 4: CTA ── */}
       <CTAScreen />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Spot } from "../data/spots";
 
 interface SpotPanelProps {
@@ -8,6 +9,7 @@ interface SpotPanelProps {
   fontSerif?: string;
   fontSans?: string;
   theme?: "dark" | "light";
+  portalToBody?: boolean;
 }
 
 function PanelImage({ src, alt }: { src: string; alt: string }) {
@@ -30,6 +32,7 @@ export default function SpotPanel({
   fontSerif = "'Yaroop', serif",
   fontSans = "'Inter', sans-serif",
   theme = "dark",
+  portalToBody = true,
 }: SpotPanelProps) {
   const dark = theme === "dark";
   const C = {
@@ -72,7 +75,7 @@ export default function SpotPanel({
   const hasImg2 = !!spot.imageUrl2;
   const imgCount = (hasImg1 ? 1 : 0) + (hasImg2 ? 1 : 0);
 
-  return (
+  const panel = (
     <>
 
       {/* Floating card */}
@@ -84,7 +87,7 @@ export default function SpotPanel({
           top: "calc(50% + 28px)",
           width: CARD_W,
           maxHeight: "calc(100vh - 120px)",
-          zIndex: 20,
+          zIndex: 150,
           display: "flex",
           flexDirection: "column",
           background: C.bg,
@@ -165,4 +168,7 @@ export default function SpotPanel({
       </div>
     </>
   );
+
+  if (!portalToBody || typeof document === "undefined") return panel;
+  return createPortal(panel, document.body);
 }
