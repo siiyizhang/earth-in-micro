@@ -430,8 +430,8 @@ function SimpleScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof C
             </div>
           </div>
           {/* Two images + caption */}
-          <div style={{ flex: "0 0 45%", display: "flex", flexDirection: "column", gap: 8, height: isMobile ? 220 : "auto" }}>
-            <div style={{ flex: 1, display: "flex", gap: 8, minHeight: 0 }}>
+          <div style={{ flex: isMobile ? "0 0 auto" : "0 0 45%", display: "flex", flexDirection: "column", gap: 8, height: isMobile ? 200 : "auto" }}>
+            <div style={{ flex: 1, display: "flex", gap: 8, minHeight: 0, height: isMobile ? 192 : undefined }}>
               <div style={{ flex: 1, borderRadius: cardRadius - 4, overflow: "hidden" }}>
                 <img src="/images/product/thesis.png" alt="student thesis" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
