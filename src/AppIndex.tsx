@@ -135,7 +135,7 @@ export default function AppIndex() {
             color: hovered === "education" ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.88)",
             transition: "color 0.5s ease", userSelect: "none",
           }}>
-            Leisure
+            Nature Observation
           </span>
           <span style={{
             fontFamily: FONT_SERIF, fontWeight: 100, fontStyle: "italic",
@@ -143,7 +143,7 @@ export default function AppIndex() {
             color: hovered === "education" ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.7)",
             transition: "color 0.5s ease", userSelect: "none",
           }}>
-            Capture the world on a micro dimension.
+            Capture nature on a new dimension.
           </span>
         </div>
       </div>
