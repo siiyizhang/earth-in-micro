@@ -1003,14 +1003,15 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         </div>
       </div>
 
+      {/* ── Drag hint — mobile only, above globe ── */}
+      {!selectedSpot && !loading && isMobile && (
+        <div style={{ width: "100vw", textAlign: "center", padding: "14px 0", background: "#000008", pointerEvents: "none" }}>
+          <span style={{ ...TEXT.label }}>Drag to rotate · click to explore</span>
+        </div>
+      )}
+
       {/* ── Screen 0: Hero ── */}
       <div style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
-
-        {!selectedSpot && !loading && isMobile && (
-          <div style={{ position: "absolute", top: 16, left: 0, right: 0, textAlign: "center", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
-            <span style={{ ...TEXT.label }}>Drag to rotate · click to explore</span>
-          </div>
-        )}
 
         {!loading && (
           <div style={isMobile ? {
