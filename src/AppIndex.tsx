@@ -80,7 +80,7 @@ export default function AppIndex() {
         <div style={{
           position: "absolute",
           ...(isMobile
-            ? { top: "50%", left: "50%", width: "70%", aspectRatio: "1", transform: "translate(-50%, -50%)" }
+            ? { top: "50%", left: "50%", width: "110%", aspectRatio: "1", transform: "translate(-50%, -50%)" }
             : { inset: 0 }
           ),
           filter: (!isMobile && hovered !== "education") ? "blur(6px)" : "none",
@@ -156,7 +156,7 @@ export default function AppIndex() {
         <div style={{
           position: "absolute",
           ...(isMobile
-            ? { top: "50%", left: "50%", width: "70%", aspectRatio: "1", transform: "translate(-50%, -50%)" }
+            ? { top: "50%", left: "50%", width: "110%", aspectRatio: "1", transform: "translate(-50%, -50%)" }
             : { inset: 0 }
           ),
           filter: (!isMobile && hovered !== "leisure") ? "blur(1px)" : "none",
