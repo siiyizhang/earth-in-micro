@@ -1004,7 +1004,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
       </div>
 
       {/* ── Screen 0: Hero ── */}
-      <div style={{ width: "100vw", height: isMobile ? "auto" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
+      <div style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
 
         {!selectedSpot && !loading && isMobile && (
           <div style={{ textAlign: "center", padding: "20px 0 0", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
@@ -1014,8 +1014,8 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
         {!loading && (
           <div style={isMobile ? {
-            width: "90vw", height: "90vw",
-            margin: "8px auto 0",
+            width: "130vw", height: "130vw",
+            position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
           } : {
             position: "absolute", top: "-5%", left: "-20%", right: "-20%", bottom: "-5%",
           }}>
@@ -1057,52 +1057,50 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           </div>
         )}
 
-        {/* Bottom text + CTA */}
-        <div style={{
-          position: isMobile ? "relative" : "absolute",
-          bottom: isMobile ? undefined : 0,
-          left: isMobile ? undefined : 0,
-          right: isMobile ? undefined : 0,
-          height: isMobile ? "auto" : "18%",
-          padding: isMobile ? "12px 20px 24px" : "0 clamp(16px,4vw,48px)",
-          display: "flex", flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "flex-start" : "center",
-          justifyContent: isMobile ? "flex-end" : "center",
-          gap: isMobile ? 14 : "clamp(24px,4vw,60px)",
-          pointerEvents: "none", zIndex: 5,
-          background: isMobile ? "none" : "linear-gradient(to bottom, transparent, rgba(0,0,8,0.72) 60%)",
-        }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: isMobile ? "flex-start" : "flex-end", gap: "clamp(6px,1vh,10px)" }}>
-            <h1 style={{
-              ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
-              color: "rgba(255,255,255,0.92)", margin: 0,
-              textAlign: isMobile ? "left" : "right",
-            }}>
-              Capture nature on a new dimension.
-            </h1>
-            <div style={{
-              fontFamily: "'YaroSt', serif", fontSize: "clamp(11px,0.9vw,16px)",
-              letterSpacing: "0.18em", textTransform: "uppercase",
-              color: "rgba(255,255,255,1)", textAlign: isMobile ? "left" : "right",
-            }}>
-              The first prosumer portable microscopic camera
+        {/* Bottom text + CTA — desktop only (absolute overlay) */}
+        {!isMobile && (
+          <div style={{
+            position: "absolute",
+            bottom: 0, left: 0, right: 0,
+            height: "18%",
+            padding: "0 clamp(16px,4vw,48px)",
+            display: "flex", flexDirection: "row",
+            alignItems: "center", justifyContent: "center",
+            gap: "clamp(24px,4vw,60px)",
+            pointerEvents: "none", zIndex: 5,
+            background: "linear-gradient(to bottom, transparent, rgba(0,0,8,0.72) 60%)",
+          }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "clamp(6px,1vh,10px)" }}>
+              <h1 style={{
+                ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
+                color: "rgba(255,255,255,0.92)", margin: 0, textAlign: "right",
+              }}>
+                Capture nature on a new dimension.
+              </h1>
+              <div style={{
+                fontFamily: "'YaroSt', serif", fontSize: "clamp(11px,0.9vw,16px)",
+                letterSpacing: "0.18em", textTransform: "uppercase",
+                color: "rgba(255,255,255,1)", textAlign: "right",
+              }}>
+                The first prosumer portable microscopic camera
+              </div>
             </div>
+            <button
+              onClick={() => scrollToScreen(1)}
+              style={{
+                pointerEvents: "all", marginTop: "clamp(6px,1vh,12px)",
+                ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
+                color: "#ffffff", background: C.teal,
+                border: "none", borderRadius: 999, padding: "12px 28px",
+                cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
+              }}
+              onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
+              onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
+            >
+              Explore Eureka Microscope →
+            </button>
           </div>
-          <button
-            onClick={() => scrollToScreen(1)}
-            style={{
-              pointerEvents: "all", marginTop: "clamp(6px,1vh,12px)",
-              ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
-              color: "#ffffff", background: C.teal,
-              border: "none", borderRadius: 999, padding: "12px 28px",
-              cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
-            }}
-            onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-            onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
-          >
-            Explore Eureka Microscope →
-          </button>
-        </div>
+        )}
 
         {hoveredSpot && !selectedSpot && (
           <div className="absolute left-1/2 z-10 pointer-events-none" style={{ bottom: "34%", transform: "translateX(-50%)" }}>
@@ -1122,6 +1120,43 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         )}
 
       </div>
+
+      {/* ── Mobile slogan + CTA (below globe) ── */}
+      {isMobile && (
+        <div style={{
+          width: "100vw", background: "#000008",
+          padding: "20px 24px 32px",
+          display: "flex", flexDirection: "column",
+          alignItems: "flex-start", gap: 14,
+        }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <h1 style={{
+              ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
+              color: "rgba(255,255,255,0.92)", margin: 0,
+            }}>
+              Capture nature on a new dimension.
+            </h1>
+            <div style={{
+              fontFamily: "'YaroSt', serif", fontSize: "clamp(11px,3vw,14px)",
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(255,255,255,1)",
+            }}>
+              The first prosumer portable microscopic camera
+            </div>
+          </div>
+          <button
+            onClick={() => scrollToScreen(1)}
+            style={{
+              ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
+              color: "#ffffff", background: C.teal,
+              border: "none", borderRadius: 999, padding: "12px 28px",
+              cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
+            }}
+          >
+            Explore Eureka Microscope →
+          </button>
+        </div>
+      )}
 
       {/* ── Screen 0.5: Sketches + Gallery ── */}
       <div style={{ width: "100vw", background: "#000008", paddingTop: "clamp(28px,4vh,50px)", paddingBottom: "clamp(28px,4vh,50px)", boxSizing: "border-box", display: "flex", flexDirection: "column" }}>

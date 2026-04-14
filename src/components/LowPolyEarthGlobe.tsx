@@ -744,11 +744,43 @@ export default function LowPolyEarthGlobe({
       }
     };
 
+    // Touch handlers
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      isDragging   = true;
+      prevMouse    = { x: t.clientX, y: t.clientY };
+      mouseDownPos = { x: t.clientX, y: t.clientY };
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      e.preventDefault();
+      const t = e.touches[0];
+      earthGroup.rotation.y += (t.clientX - prevMouse.x) * 0.004;
+      earthGroup.rotation.x  = Math.max(-Math.PI / 2.5,
+        Math.min(Math.PI / 2.5, earthGroup.rotation.x + (t.clientY - prevMouse.y) * 0.004));
+      prevMouse = { x: t.clientX, y: t.clientY };
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      isDragging = false;
+      const t = e.changedTouches[0];
+      if (Math.abs(t.clientX - mouseDownPos.x) < 8 && Math.abs(t.clientY - mouseDownPos.y) < 8) {
+        const synth = { clientX: t.clientX, clientY: t.clientY } as MouseEvent;
+        const hit = getHit(synth);
+        const pos = { x: t.clientX, y: t.clientY };
+        if (hit && "iss" in hit) onSpotClickRef.current(hit.rotiferSpot ?? ISS_SPOT, pos);
+        else if (hit)            onSpotClickRef.current(spots[hit.spotIndex], pos);
+      }
+    };
+
     renderer.domElement.style.cursor = "grab";
     renderer.domElement.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
     renderer.domElement.addEventListener("mouseleave", onMouseLeave);
+    renderer.domElement.addEventListener("touchstart", onTouchStart, { passive: true });
+    renderer.domElement.addEventListener("touchmove", onTouchMove, { passive: false });
+    renderer.domElement.addEventListener("touchend", onTouchEnd);
 
     // ── Cleanup ────────────────────────────────────────────────────────────
     return () => {
@@ -758,6 +790,9 @@ export default function LowPolyEarthGlobe({
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
       renderer.domElement.removeEventListener("mouseleave", onMouseLeave);
+      renderer.domElement.removeEventListener("touchstart", onTouchStart);
+      renderer.domElement.removeEventListener("touchmove", onTouchMove);
+      renderer.domElement.removeEventListener("touchend", onTouchEnd);
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
       renderer.dispose();
     };
