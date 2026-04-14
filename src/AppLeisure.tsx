@@ -1007,7 +1007,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
       <div style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
 
         {!selectedSpot && !loading && isMobile && (
-          <div style={{ textAlign: "center", padding: "20px 0 0", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
+          <div style={{ position: "absolute", top: 16, left: 0, right: 0, textAlign: "center", zIndex: 10, whiteSpace: "nowrap", pointerEvents: "none" }}>
             <span style={{ ...TEXT.label }}>Drag to rotate · click to explore</span>
           </div>
         )}
