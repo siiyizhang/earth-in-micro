@@ -239,7 +239,7 @@ function PowerfulScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof
           <div style={{ flex: "0 0 auto" }}>
             <div style={{ ...TEXT.h3, marginBottom: 8 }}>Lab-grade Image Quality</div>
             <div style={{ ...TEXT.body }}>
-              Most microscopes advertise magnification, but the image still looks blurry. With 1.6 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
+              Most microscopes advertise magnification, but the image still looks blurry. With 1.4 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
             </div>
           </div>
 
