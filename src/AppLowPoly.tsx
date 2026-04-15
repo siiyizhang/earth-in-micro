@@ -303,11 +303,11 @@ function PowerfulScreen({ fonts, colors }: { fonts: typeof FONTS; colors: typeof
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "center", padding: isMobile ? `32px ${PAD}` : `0 ${PAD}`, gap: isMobile ? 20 : 48 }}>
 
         {isMobile ? (
-          <div style={{ borderRadius: 16, overflow: "hidden", height: 220 }}>
+          <div style={{ borderRadius: 16, overflow: "hidden", height: 320 }}>
             <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
         ) : (
-          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 320 }}>
+          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 440 }}>
             <div style={{ flex: 1, display: "flex", gap: 10, minHeight: 0 }}>
               <div style={{ flex: "0 0 auto", width: 180, borderRadius: 12, overflow: "hidden" }}>
                 <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
@@ -836,8 +836,8 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         {/* ── Screen 0: Hero ── */}
         <div style={{ width: "100vw", height: "100vh", minHeight: 560, overflow: "hidden", background: "#ffffff", display: "flex", flexDirection: "column", position: "relative" }}>
 
-          {/* ── Video section (fills top, ~62% height) ── */}
-          <div style={{ position: "relative", flex: "0 0 62%", overflow: "hidden" }}>
+          {/* ── Video section (fills remaining space above gallery) ── */}
+          <div style={{ position: "relative", flex: 1, minHeight: 0, overflow: "hidden" }}>
 
             {/* Video */}
             <video
@@ -874,7 +874,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                 <p style={{ ...TEXT.body, color: "rgba(255,255,255,0.85)", margin: "0 0 16px" }}>
                   Eureka Microscope turns everyday life into a nature &amp; science adventure.
                 </p>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
                   {["Age 7+", "No prior experience needed"].map(tag => (
                     <div key={tag} style={{
                       fontFamily: FONTS.sans,
@@ -888,6 +888,28 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                     }}>{tag}</div>
                   ))}
                 </div>
+                <button
+                  onClick={() => scrollToScreen(1)}
+                  style={{
+                    fontFamily: FONTS.sans,
+                    fontSize: 13,
+                    fontWeight: 500,
+                    letterSpacing: "0.06em",
+                    color: "#ffffff",
+                    background: C.teal,
+                    border: "none",
+                    borderRadius: 40,
+                    padding: "14px 40px",
+                    cursor: "pointer",
+                    transition: "background 0.2s, transform 0.15s",
+                    boxShadow: "0 4px 24px rgba(10,191,188,0.35)",
+                    alignSelf: "flex-start",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#0dd4d1"; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.03)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = C.teal; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
+                >
+                  Explore Eureka Microscope →
+                </button>
               </div>
             </div>
 
@@ -926,8 +948,8 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                             key={`${setIdx}-${i}`}
                             onClick={() => setLightbox(item)}
                             style={{
-                              width: "clamp(100px, 25vw, 160px)",
-                              height: "clamp(75px, 19vw, 120px)",
+                              width: "clamp(160px, 30vh, 340px)",
+                              height: "clamp(120px, 22vh, 255px)",
                               borderRadius: 14, overflow: "hidden",
                               flexShrink: 0, position: "relative",
                               border: "1px solid rgba(26,42,60,0.1)",
@@ -1002,30 +1024,6 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             );
           })()}
 
-          {/* ── CTA button ── */}
-          <div style={{ flex: 1, minHeight: 80, display: "flex", alignItems: "center", justifyContent: "center", paddingBottom: "clamp(20px, 3vh, 40px)", paddingTop: 4 }}>
-            <button
-              onClick={() => scrollToScreen(1)}
-              style={{
-                fontFamily: FONTS.sans,
-                fontSize: 13,
-                fontWeight: 500,
-                letterSpacing: "0.06em",
-                color: "#ffffff",
-                background: C.teal,
-                border: "none",
-                borderRadius: 40,
-                padding: "14px 40px",
-                cursor: "pointer",
-                transition: "background 0.2s, transform 0.15s",
-                boxShadow: `0 4px 24px rgba(10,191,188,0.35)`,
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#0dd4d1"; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.03)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = C.teal; (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)"; }}
-            >
-              Explore Eureka Microscope →
-            </button>
-          </div>
         </div>
 
         {/* ── Screen 1: Powerful ── */}
@@ -1185,6 +1183,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             <img src="/sponsor/SPH_logo.avif" alt="SPH" style={{ height: 80, opacity: 0.9 }} />
             <img src="/sponsor/logo_VENTUREKICK_cmyk-1.avif" alt="Venture Kick" style={{ height: 36, opacity: 0.9 }} />
             <img src="/sponsor/IN_Logo.svg" alt="Innosuisse" style={{ height: 36, opacity: 0.9 }} />
+            <img src="/sponsor/tribecraft.jpeg" alt="Tribecraft" style={{ height: 120, opacity: 0.9 }} />
           </div>
 
           {/* Footer */}

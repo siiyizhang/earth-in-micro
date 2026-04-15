@@ -174,7 +174,7 @@ function TooltipIcon() {
         onMouseLeave={() => setShow(false)}
         style={{
           width: 16, height: 16, borderRadius: "50%",
-          border: "1px solid rgba(255,255,255,0.3)",
+          border: "1px solid rgba(255,255,255,0.8)",
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: "default", flexShrink: 0,
           ...TEXT.label, fontSize: 10, color: "rgba(255,255,255,0.3)",
@@ -348,11 +348,11 @@ function QualityScreen() {
       {/* Row 2: Durable & Portable */}
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "center", padding: isMobile ? `clamp(32px,5vh,56px) ${PAD}` : `0 ${PAD}`, gap: isMobile ? 20 : 48 }}>
         {isMobile ? (
-          <div style={{ borderRadius: 16, overflow: "hidden", height: 220 }}>
+          <div style={{ borderRadius: 16, overflow: "hidden", height: 320 }}>
             <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
         ) : (
-          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 320 }}>
+          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 440 }}>
             <div style={{ flex: 1, display: "flex", gap: 10, minHeight: 0 }}>
               <div style={{ flex: "0 0 auto", width: 180, borderRadius: 12, overflow: "hidden" }}>
                 <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
@@ -538,13 +538,13 @@ function AppGuideScreen() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "clamp(28px,4vh,48px)" }}>
           <div style={{ ...TEXT.h1 }}>
-            App guides &amp; identification
+            App guides &amp;Identification
           </div>
         </div>
         <div style={{ display: "flex", gap: isMobile ? 12 : 24, justifyContent: "center" }}>
           {APP_IMAGES.map((img, i) => (
             <div key={i} style={{
-              flex: 1, maxWidth: isMobile ? "none" : 213,
+              flex: 1, maxWidth: isMobile ? "none" : 400,
               borderRadius: 16, overflow: "hidden",
               boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
             }}>
@@ -619,7 +619,7 @@ function GalleryScreen() {
 const VOTE_OPTIONS = [
   { id: "z-stacking",             label: "Automatic focus stacking" },
   { id: "object-tracking",        label: "Object tracking" },
-  { id: "species-identification",  label: "Species identification" },
+  { id: "species-identification",  label: "More precise species identification" },
   { id: "inaturalist",            label: "iNaturalist integration" },
   { id: "others",                 label: "Others" },
 ];
@@ -800,6 +800,7 @@ function CTAScreen() {
         <img src="/sponsor/SPH_logo_white.png" alt="SPH" style={{ height: 80, opacity: 0.8 }} />
         <img src="/sponsor/logo_VENTUREKICK_cmyk-1.avif" alt="Venture Kick" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
         <img src="/sponsor/IN_Logo.svg" alt="Innosuisse" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
+        <img src="/sponsor/tribecraft.jpeg" alt="Tribecraft" style={{ height: 120, opacity: 0.8 }} />
       </div>
 
       {/* Footer */}
