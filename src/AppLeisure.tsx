@@ -846,7 +846,7 @@ function CTAScreen() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {[
                     { label: "About Us", href: "/about" },
-                    { label: "Blog", href: "https://www.eurekamicroscope.com/blog" },
+                    { label: "Blog", href: "/blog" },
                   ].map(({ label, href }) => (
                     <a key={label} href={href}
                       target={href.startsWith("http") ? "_blank" : undefined}
@@ -1015,7 +1015,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
               {[
                 { label: "About Us", href: "/about", external: false },
-                { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+                { label: "Blog",     href: "/blog", external: false },
               ].map(({ label, href, external }) => (
                 <a
                   key={label}
@@ -1073,7 +1073,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         }}>
           {[
             { label: "About Us", href: "/about", external: false },
-            { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+            { label: "Blog",     href: "/blog", external: false },
           ].map(({ label, href, external }) => (
             <a
               key={label}

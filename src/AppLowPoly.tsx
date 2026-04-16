@@ -727,7 +727,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
               {[
                 { label: "About Us", href: "/about" },
-                { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+                { label: "Blog",     href: "/blog", external: false },
               ].map(({ label, href, external }) => (
                 <a
                   key={label}
@@ -785,7 +785,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         }}>
           {[
             { label: "About Us", href: "/about", external: false },
-            { label: "Blog",     href: "https://www.eurekamicroscope.com/blog", external: true },
+            { label: "Blog",     href: "/blog", external: false },
           ].map(({ label, href, external }) => (
             <a
               key={label}
@@ -878,7 +878,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                   {["Age 7+", "No prior experience needed"].map(tag => (
                     <div key={tag} style={{
                       fontFamily: FONTS.sans,
-                      fontSize: "clamp(9px, 0.85vw, 11px)",
+                      fontSize: "clamp(12px, 0.85vw, 15px)",
                       letterSpacing: "0.1em",
                       color: "rgba(255,255,255,0.6)",
                       border: "1px solid rgba(255,255,255,0.25)",
@@ -1229,7 +1229,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       {[
                         { label: "About Us", href: "/about" },
-                        { label: "Blog", href: "https://www.eurekamicroscope.com/blog" },
+                        { label: "Blog", href: "/blog" },
                       ].map(({ label, href }) => (
                         <a key={label} href={href}
                           target={href.startsWith("http") ? "_blank" : undefined}

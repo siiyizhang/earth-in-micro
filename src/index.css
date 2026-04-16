@@ -17,3 +17,74 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Blog pages need scrolling */
+.blog-page {
+  overflow: auto;
+}
+
+.blog-body p {
+  margin: 0 0 1.4em;
+}
+.blog-body h2 {
+  font-family: 'Yaroop', serif;
+  font-weight: 100;
+  font-size: 1.3em;
+  letter-spacing: -0.01em;
+  color: #1A3A5C;
+  margin: 2em 0 0.8em;
+}
+.blog-body hr {
+  border: none;
+  border-top: 1px solid rgba(26,42,60,0.1);
+  margin: 2.5em 0;
+}
+.blog-body ol {
+  padding-left: 1.4em;
+  margin: 0 0 1.4em;
+}
+.blog-body li {
+  margin-bottom: 0.4em;
+}
+.blog-body em {
+  font-style: italic;
+}
+.blog-body strong {
+  font-weight: 600;
+  color: rgba(26,42,60,0.9);
+}
+
+.blog-figure {
+  margin: 2em 0;
+}
+.blog-img {
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+}
+.blog-caption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(26,42,60,0.4);
+  font-style: italic;
+}
+
+.blog-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 2em 0;
+}
+.blog-gallery-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+@media (max-width: 640px) {
+  .blog-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
