@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import './index.css'
 import AppIndex from './AppIndex.tsx'
 import AppLowPoly from './AppLowPoly.tsx'
@@ -15,5 +16,6 @@ createRoot(document.getElementById('root')!).render(
       <Route path="/leisure" element={<AppLeisure issStyle="line" />} />
       <Route path="/about" element={<AppAbout />} />
     </Routes>
+    <Analytics />
   </BrowserRouter>
 )
