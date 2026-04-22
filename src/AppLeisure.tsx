@@ -112,31 +112,31 @@ const SCENARIOS = [
   {
     id: "kitchen",
     name: "Kitchen",
-    bg: "/images/scenarios/kitchen.png",
+    bg: "/images/scenarios/kitchen.webp",
     micro: { label: "Yeast cell", desc: "Your fridge is full of science waiting to be discovered." },
   },
   {
     id: "desk",
     name: "Desk",
-    bg: "/images/scenarios/desk.png",
+    bg: "/images/scenarios/desk.webp",
     micro: { label: "Dust mite", desc: "Turn the desk into a lab." },
   },
   {
     id: "pond",
     name: "Backyard",
-    bg: "/images/scenarios/backyard.png",
+    bg: "/images/scenarios/backyard.webp",
     micro: { label: "Pond ciliate", desc: "A single drop of pond water holds more life than you'd expect." },
   },
   {
     id: "forest",
     name: "Forest",
-    bg: "/images/scenarios/forest.png",
+    bg: "/images/scenarios/forest.webp",
     micro: { label: "Rotifer", desc: "What's the life hidden in a mushroom?" },
   },
   {
     id: "coast",
     name: "Beach",
-    bg: "/images/scenarios/beach.png",
+    bg: "/images/scenarios/beach.webp",
     micro: { label: "Marine diatom", desc: "Scoop some seawater and dive into the microcosmos." },
   },
 ];
@@ -144,11 +144,11 @@ const SCENARIOS = [
 const GALLERY = [
   { src: "/images/hero gallery/UZH pond ciliate.mp4",                        label: "pond protist" },
   { src: "/images/hero gallery/asplanchna rotifer.mp4",                       label: "lake plankton" },
-  { src: "/images/hero gallery/insect wing.png",                              label: "insect wing" },
-  { src: "/images/hero gallery/onion cell.png",                               label: "onion cell" },
-  { src: "/images/hero gallery/pollen.png",                                   label: "pollen" },
+  { src: "/images/hero gallery/insect wing.webp",                              label: "insect wing" },
+  { src: "/images/hero gallery/onion cell.webp",                               label: "onion cell" },
+  { src: "/images/hero gallery/pollen.webp",                                   label: "pollen" },
   { src: "/images/hero gallery/stentor-ezgif.com-video-to-gif-converter.mp4", label: "pond protist" },
-  { src: "/images/hero gallery/sugar crystal 2.jpg",                          label: "sugar crystal" },
+  { src: "/images/hero gallery/sugar crystal 2.webp",                          label: "sugar crystal" },
 ];
 
 // Spec data for the SpecsBar above QualityScreen
@@ -245,11 +245,11 @@ function SpecsBar() {
 function QualityScreen() {
   const isMobile = useIsMobile();
   const comparisons = [
-    { src: "/images/product/20.jpg",     price: "~$20",    name: "Toy 1",     highlight: false },
-    { src: "/images/product/80.png",     price: "~$80",    name: "Toy 2",     highlight: false },
-    { src: "/images/product/150.jpg",    price: "~$150",   name: "Toy 3",     highlight: false },
-    { src: "/images/product/eureka.png", price: "$289",    name: "Eureka",    highlight: true  },
-    { src: "/images/product/5000.png",   price: "~$5,000", name: "Lab grade", highlight: false },
+    { src: "/images/product/20.webp",     price: "~$20",    name: "Toy 1",     highlight: false },
+    { src: "/images/product/80.webp",     price: "~$80",    name: "Toy 2",     highlight: false },
+    { src: "/images/product/150.webp",    price: "~$150",   name: "Toy 3",     highlight: false },
+    { src: "/images/product/eureka.webp", price: "$289",    name: "Eureka",    highlight: true  },
+    { src: "/images/product/5000.webp",   price: "~$5,000", name: "Lab grade", highlight: false },
   ];
   const PAD = isMobile ? "16px" : "clamp(40px,6vw,80px)";
 
@@ -309,7 +309,7 @@ function QualityScreen() {
                 <TooltipIcon />
               </div>
               <div style={{ borderRadius: 8, overflow: "hidden", flexShrink: 0, maxHeight: 260 }}>
-                <img src="/images/product/chart long.png" alt="USAF 1951 chart"
+                <img src="/images/product/chart long.webp" alt="USAF 1951 chart"
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
@@ -349,7 +349,7 @@ function QualityScreen() {
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "center", padding: isMobile ? `clamp(32px,5vh,56px) ${PAD}` : `0 ${PAD}`, gap: isMobile ? 20 : 48 }}>
         {isMobile ? (
           <div style={{ borderRadius: 16, overflow: "hidden", height: 320 }}>
-            <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            <img src="/images/product/portable.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
           </div>
         ) : (
           <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 440 }}>
@@ -359,7 +359,7 @@ function QualityScreen() {
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
-                <img src="/images/product/portable.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                <img src="/images/product/portable.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               </div>
             </div>
             <div style={{ ...TEXT.caption, paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
@@ -382,7 +382,7 @@ function QualityScreen() {
           </div>
         </div>
         <div style={{ flex: isMobile ? "none" : "0 0 52%", borderRadius: 16, overflow: "hidden", height: isMobile ? 220 : "auto" }}>
-          <img src="/images/product/4.png" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          <img src="/images/product/4.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
         </div>
       </div>
 
@@ -528,9 +528,9 @@ function AppGuideScreen() {
   const isMobile = useIsMobile();
   const PAD = isMobile ? "20px" : "clamp(40px,6vw,80px)";
   const APP_IMAGES = [
-    { src: "/images/app/app1.png" },
-    { src: "/images/app/app2.png" },
-    { src: "/images/app/app3.png" },
+    { src: "/images/app/app1.webp" },
+    { src: "/images/app/app2.webp" },
+    { src: "/images/app/app3.webp" },
   ];
 
   return (
@@ -797,10 +797,10 @@ function CTAScreen() {
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}>
         <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.8)" /* sponsors row: brighter */, marginBottom: 0 }}>Supported by</div>
-        <img src="/sponsor/SPH_logo_white.png" alt="SPH" style={{ height: 80, opacity: 0.8 }} />
+        <img src="/sponsor/SPH_logo_white.webp" alt="SPH" style={{ height: 80, opacity: 0.8 }} />
         <img src="/sponsor/logo_VENTUREKICK_cmyk-1.avif" alt="Venture Kick" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
         <img src="/sponsor/IN_Logo.svg" alt="Innosuisse" style={{ height: 36, opacity: 0.8, filter: "brightness(0) invert(1)" }} />
-        <img src="/sponsor/tribecraft.jpeg" alt="Tribecraft" style={{ height: 120, opacity: 0.8 }} />
+        <img src="/sponsor/tribecraft.webp" alt="Tribecraft" style={{ height: 120, opacity: 0.8 }} />
       </div>
 
       {/* Footer */}
@@ -816,7 +816,7 @@ function CTAScreen() {
         }}>
           {/* Brand */}
           <div style={{ width: isMobile ? "100%" : 200, textAlign: isMobile ? "center" : "left" }}>
-            <img src="/White text.png" alt="Earth in Micro" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
+            <img src="/White text.webp" alt="Earth in Micro" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
             <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer tagline */, lineHeight: 1.6 }}>
               Making microscopy more accessible — anyone, anywhere, anytime.
             </div>
@@ -979,7 +979,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             </button>
             {/* Logo centered */}
             <img
-              src="/White text.png"
+              src="/White text.webp"
               alt="Earth in Micro"
               style={{ height: 26, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", position: "absolute", left: "50%", transform: "translateX(-50%)" }}
             />
@@ -1008,7 +1008,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           /* ── Desktop nav layout ── */
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
             <img
-              src="/White text.png"
+              src="/White text.webp"
               alt="Earth in Micro"
               style={{ height: 32, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
             />
@@ -1260,10 +1260,10 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           padding: `0 ${isMobile ? "16px" : "clamp(24px,5vw,80px)"} clamp(12px,5vh,45px)`,
         }}>
           {[
-            { src: "/images/product/sketch ver4.png", label: "Current" },
-            { src: "/images/product/sketch ver3.png", label: "Ver 3" },
-            { src: "/images/product/sketch ver2.png", label: "Ver 2" },
-            { src: "/images/product/sketch ver1.png", label: "Ver 1" },
+            { src: "/images/product/sketch ver4.webp", label: "Current" },
+            { src: "/images/product/sketch ver3.webp", label: "Ver 3" },
+            { src: "/images/product/sketch ver2.webp", label: "Ver 2" },
+            { src: "/images/product/sketch ver1.webp", label: "Ver 1" },
           ].map(({ src, label }) => (
             <div key={src} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, maxWidth: 220 }}>
               <img
