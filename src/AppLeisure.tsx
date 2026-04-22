@@ -248,7 +248,7 @@ function QualityScreen() {
     { src: "/images/product/20.jpg",     price: "~$20",    name: "Toy 1",     highlight: false },
     { src: "/images/product/80.png",     price: "~$80",    name: "Toy 2",     highlight: false },
     { src: "/images/product/150.jpg",    price: "~$150",   name: "Toy 3",     highlight: false },
-    { src: "/images/product/eureka.png", price: "$259",    name: "Eureka",    highlight: true  },
+    { src: "/images/product/eureka.png", price: "$289",    name: "Eureka",    highlight: true  },
     { src: "/images/product/5000.png",   price: "~$5,000", name: "Lab grade", highlight: false },
   ];
   const PAD = isMobile ? "16px" : "clamp(40px,6vw,80px)";
@@ -752,7 +752,7 @@ function CTAScreen() {
             fontSize: "clamp(48px,7vw,96px)", color: "rgba(255,255,255,0.9)",
             letterSpacing: "-0.02em", lineHeight: 1.05,
           }}>
-            $259
+            $289
           </div>
         </div>
 
