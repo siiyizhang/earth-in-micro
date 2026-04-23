@@ -765,7 +765,7 @@ function CTAScreen() {
               Join the waitlist
             </div>
             <div style={{ ...TEXT.body, marginBottom: 24 }}>
-              Be the first to know when we launch. Get exclusive early access to our Kickstarter campaign and special offers.
+              We need your opinions! Leave your email so we can send you updates and ask for feedback as we build the product. We promise not to spam you, just one email every few weeks.
             </div>
             <MailchimpForm
               dark={true}
@@ -782,7 +782,7 @@ function CTAScreen() {
               Lock in your price
             </div>
             <div style={{ ...TEXT.body, marginBottom: 24 }}>
-              Put down 3 CHF (~$3.8) now to secure the early bird price at launch. Your deposit also helps us build and deliver the product for you sooner and in a better way.
+              Put down 3 CHF (~$3.8) now to secure the early bird price when we launch. Your deposit also helps us build and deliver the product for you sooner and in a better way.
             </div>
             <StripeButton href={(import.meta.env.VITE_STRIPE_LEISURE_URL as string) || ""} />
           </div>
