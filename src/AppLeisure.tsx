@@ -403,7 +403,7 @@ function ScenarioScreen() {
       <div style={{ width: "100vw", background: "#0a0c12" }}>
         <div style={{ padding: "clamp(28px,4vh,48px) 24px clamp(20px,2.5vh,32px)", textAlign: "center" }}>
           <div style={{ ...TEXT.h1 }}>
-            One microscope.<br /><span style={{ color: C.teal }}>Endless environment.</span>
+            One portable microscope.<br /><span style={{ color: C.teal }}>Endless environment.</span>
           </div>
         </div>
 
@@ -453,7 +453,7 @@ function ScenarioScreen() {
     }}>
       <div style={{ padding: "clamp(28px,4vh,48px) clamp(32px,5vw,72px) clamp(20px,2.5vh,32px)", textAlign: "center" }}>
         <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.88)" }}>
-          One microscope.<br /><span style={{ color: C.teal }}>Endless environment.</span>
+          One portable microscope.<br /><span style={{ color: C.teal }}>Endless environment.</span>
         </div>
       </div>
 
