@@ -1181,7 +1181,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
                 letterSpacing: "0.18em", textTransform: "uppercase",
                 color: "rgba(255,255,255,1)", textAlign: "right",
               }}>
-                The first prosumer portable microscopic camera
+                The first prosumer portable microscope
               </div>
             </div>
             <button
@@ -1240,7 +1240,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
               letterSpacing: "0.18em", textTransform: "uppercase",
               color: "rgba(255,255,255,1)",
             }}>
-              The first prosumer portable microscopic camera
+              The first prosumer portable microscope
             </div>
           </div>
           <button
