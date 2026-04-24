@@ -292,7 +292,7 @@ export default function AppBlogPost() {
     <Helmet>
       <title>{post.title} | Eureka! Blog</title>
       <meta name="description" content={`${post.title} — ${post.readTime}. Science writing from the Eureka! microscope team.`} />
-      <link rel="canonical" href={`https://earthinmicro.com/blog/${post.slug}`} />
+      <link rel="canonical" href={`https://eurekamicroscope.com/blog/${post.slug}`} />
     </Helmet>
     <div style={{
       minHeight: "100dvh",

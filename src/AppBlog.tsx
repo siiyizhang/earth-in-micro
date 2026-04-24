@@ -50,7 +50,7 @@ export default function AppBlog() {
     <Helmet>
       <title>Blog | Eureka! Microscope</title>
       <meta name="description" content="Explore articles about the microscopic world — from diatoms to radiolarians. Science writing for curious minds, by the Eureka! team." />
-      <link rel="canonical" href="https://earthinmicro.com/blog" />
+      <link rel="canonical" href="https://eurekamicroscope.com/blog" />
     </Helmet>
     <div style={{
       minHeight: "100dvh",

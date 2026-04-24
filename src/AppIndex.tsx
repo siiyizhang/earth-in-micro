@@ -24,7 +24,7 @@ export default function AppIndex() {
     <Helmet>
       <title>Eureka! Microscope | Portable Microscope</title>
       <meta name="description" content="Eureka! is a portable microscope that reveals the microscopic world around you — for science education or everyday curiosity." />
-      <link rel="canonical" href="https://earthinmicro.com/index" />
+      <link rel="canonical" href="https://eurekamicroscope.com/index" />
     </Helmet>
     <div style={{
       width: "100vw", height: "100dvh",

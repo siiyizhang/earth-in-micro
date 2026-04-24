@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://earthinmicro.com/sitemap.xml
+Sitemap: https://eurekamicroscope.com/sitemap.xml

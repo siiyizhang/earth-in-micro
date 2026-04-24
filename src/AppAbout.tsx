@@ -29,7 +29,7 @@ export default function AppAbout() {
     <Helmet>
       <title>About | Eureka! Microscope</title>
       <meta name="description" content="Learn about the team behind Eureka! — a portable microscope built to make the microscopic world accessible to everyone." />
-      <link rel="canonical" href="https://earthinmicro.com/about" />
+      <link rel="canonical" href="https://eurekamicroscope.com/about" />
     </Helmet>
     <div style={{
       minHeight: "100dvh",
