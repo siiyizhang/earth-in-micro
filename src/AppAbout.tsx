@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSyncExternalStore } from "react";
+import { Helmet } from "react-helmet-async";
 
 const FONTS = {
   serif: "'Yaroop', serif",
@@ -24,6 +25,12 @@ export default function AppAbout() {
   const isMobile = useIsMobile();
 
   return (
+    <>
+    <Helmet>
+      <title>About | Eureka! Microscope</title>
+      <meta name="description" content="Learn about the team behind Eureka! — a portable microscope built to make the microscopic world accessible to everyone." />
+      <link rel="canonical" href="https://earthinmicro.com/about" />
+    </Helmet>
     <div style={{
       minHeight: "100dvh",
       background: "#ffffff",
@@ -161,5 +168,6 @@ export default function AppAbout() {
         </div>
       </div>
     </div>
+    </>
   );
 }

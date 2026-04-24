@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { Helmet } from "react-helmet-async";
 
 // ── Mobile hook ────────────────────────────────────────────────────────────────
 function useIsMobile(bp = 640) {
@@ -645,6 +646,12 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
   }, []);
 
   return (
+    <>
+    <Helmet>
+      <title>Eureka! Microscope | For Science Education</title>
+      <meta name="description" content="Bring microscopy into the classroom with Eureka! — a portable microscope designed for science education. Help students explore biology and earth science hands-on." />
+      <link rel="canonical" href="https://earthinmicro.com/education" />
+    </Helmet>
     <div
       ref={containerRef}
       style={{
@@ -1275,5 +1282,6 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         theme="light"
       />
     </div>
+    </>
   );
 }

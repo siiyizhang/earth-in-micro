@@ -1,5 +1,6 @@
 import { useState, useSyncExternalStore } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import LowPolyGlobeBackground from "./components/LowPolyGlobeBackground";
 import DotGlobeBackground from "./components/DotGlobeBackground";
 
@@ -19,6 +20,12 @@ export default function AppIndex() {
   const isMobile = useIsMobile();
 
   return (
+    <>
+    <Helmet>
+      <title>Eureka! Microscope | Portable Microscope</title>
+      <meta name="description" content="Eureka! is a portable microscope that reveals the microscopic world around you — for science education or everyday curiosity." />
+      <link rel="canonical" href="https://earthinmicro.com/index" />
+    </Helmet>
     <div style={{
       width: "100vw", height: "100dvh",
       display: "flex", overflow: "hidden", position: "relative",
@@ -207,5 +214,6 @@ export default function AppIndex() {
       </div>
 
     </div>
+    </>
   );
 }

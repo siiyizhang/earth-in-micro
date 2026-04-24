@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useSyncExternalStore } from "react";
+import { Helmet } from "react-helmet-async";
 import { POSTS } from "./AppBlog";
 
 const FONTS = {
@@ -287,6 +288,12 @@ export default function AppBlogPost() {
   }
 
   return (
+    <>
+    <Helmet>
+      <title>{post.title} | Eureka! Blog</title>
+      <meta name="description" content={`${post.title} — ${post.readTime}. Science writing from the Eureka! microscope team.`} />
+      <link rel="canonical" href={`https://earthinmicro.com/blog/${post.slug}`} />
+    </Helmet>
     <div style={{
       minHeight: "100dvh",
       height: "100dvh",
@@ -367,5 +374,6 @@ export default function AppBlogPost() {
 
       </div>
     </div>
+    </>
   );
 }
