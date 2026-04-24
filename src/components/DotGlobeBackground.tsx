@@ -4,6 +4,8 @@
  */
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import landDotsData from "../data/land-dots.json";
+import oceanDotsData from "../data/ocean-dots.json";
 
 function latLngToVec3(lat: number, lng: number, r: number) {
   const phi   = (90 - lat)  * (Math.PI / 180);
@@ -54,59 +56,43 @@ export default function DotGlobeBackground({ style }: { style?: React.CSSPropert
 
     let rafId: number;
 
-    Promise.all([
-      fetch("/land-dots.json").then(r => r.json())  as Promise<[number, number][]>,
-      fetch("/ocean-dots.json").then(r => r.json()) as Promise<[number, number][]>,
-    ]).then(([landPts, oceanPts]) => {
-      // Land dots
-      const landPos = new Float32Array(landPts.length * 3);
-      landPts.forEach(([lng, lat], i) => {
-        const v = latLngToVec3(lat, lng, 2.0);
-        landPos[i*3]=v.x; landPos[i*3+1]=v.y; landPos[i*3+2]=v.z;
-      });
-      const landGeo = new THREE.BufferGeometry();
-      landGeo.setAttribute("position", new THREE.BufferAttribute(landPos, 3));
-      earthGroup.add(new THREE.Points(landGeo, new THREE.PointsMaterial({
-        color: 0xffffff, size: 0.022, transparent: false, opacity: 1.0, sizeAttenuation: true,
-      })));
+    const landPts = landDotsData as [number, number][];
+    const oceanPts = oceanDotsData as [number, number][];
 
-      // Ocean dots
-      const oceanPos = new Float32Array(oceanPts.length * 3);
-      oceanPts.forEach(([lng, lat], i) => {
-        const v = latLngToVec3(lat, lng, 2.0);
-        oceanPos[i*3]=v.x; oceanPos[i*3+1]=v.y; oceanPos[i*3+2]=v.z;
-      });
-      const oceanGeo = new THREE.BufferGeometry();
-      oceanGeo.setAttribute("position", new THREE.BufferAttribute(oceanPos, 3));
-      earthGroup.add(new THREE.Points(oceanGeo, new THREE.PointsMaterial({
-        color: 0x8899cc, size: 0.016, transparent: false, opacity: 1.0, sizeAttenuation: true,
-      })));
-
-      const ROT_PER_MS = 0.003 / 16.667; // target: same speed as 60fps
-      let lastTime = performance.now();
-      const animate = () => {
-        rafId = requestAnimationFrame(animate);
-        const now = performance.now();
-        earthGroup.rotation.y += ROT_PER_MS * (now - lastTime);
-        lastTime = now;
-        renderer.render(scene, camera);
-      };
-      animate();
-    }).catch(() => {
-      // fallback dots if fetch fails
-      const fallbackGeo = new THREE.SphereGeometry(2, 32, 32);
-      earthGroup.add(new THREE.Mesh(fallbackGeo, new THREE.MeshBasicMaterial({ color: 0x223355, wireframe: true })));
-      const ROT_PER_MS2 = 0.003 / 16.667;
-      let lastTime2 = performance.now();
-      const animate = () => {
-        rafId = requestAnimationFrame(animate);
-        const now = performance.now();
-        earthGroup.rotation.y += ROT_PER_MS2 * (now - lastTime2);
-        lastTime2 = now;
-        renderer.render(scene, camera);
-      };
-      animate();
+    // Land dots
+    const landPos = new Float32Array(landPts.length * 3);
+    landPts.forEach(([lng, lat], i) => {
+      const v = latLngToVec3(lat, lng, 2.0);
+      landPos[i*3]=v.x; landPos[i*3+1]=v.y; landPos[i*3+2]=v.z;
     });
+    const landGeo = new THREE.BufferGeometry();
+    landGeo.setAttribute("position", new THREE.BufferAttribute(landPos, 3));
+    earthGroup.add(new THREE.Points(landGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.022, transparent: false, opacity: 1.0, sizeAttenuation: true,
+    })));
+
+    // Ocean dots
+    const oceanPos = new Float32Array(oceanPts.length * 3);
+    oceanPts.forEach(([lng, lat], i) => {
+      const v = latLngToVec3(lat, lng, 2.0);
+      oceanPos[i*3]=v.x; oceanPos[i*3+1]=v.y; oceanPos[i*3+2]=v.z;
+    });
+    const oceanGeo = new THREE.BufferGeometry();
+    oceanGeo.setAttribute("position", new THREE.BufferAttribute(oceanPos, 3));
+    earthGroup.add(new THREE.Points(oceanGeo, new THREE.PointsMaterial({
+      color: 0x8899cc, size: 0.016, transparent: false, opacity: 1.0, sizeAttenuation: true,
+    })));
+
+    const ROT_PER_MS = 0.003 / 16.667;
+    let lastTime = performance.now();
+    const animate = () => {
+      rafId = requestAnimationFrame(animate);
+      const now = performance.now();
+      earthGroup.rotation.y += ROT_PER_MS * (now - lastTime);
+      lastTime = now;
+      renderer.render(scene, camera);
+    };
+    animate();
 
     const handleResize = () => {
       const nw = mount.clientWidth, nh = mount.clientHeight;

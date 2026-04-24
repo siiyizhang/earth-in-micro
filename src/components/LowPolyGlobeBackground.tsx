@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { geoContains } from "d3-geo";
 import { feature } from "topojson-client";
+import landTopoData from "../data/land-110m.json";
 
 const OCEAN_DEEP    = new THREE.Color("#4A90B8");
 const OCEAN_MID     = new THREE.Color("#5BA3C9");
@@ -86,70 +87,50 @@ export default function LowPolyGlobeBackground({ style }: { style?: React.CSSPro
 
     let rafId: number;
 
-    fetch("/land-110m.json")
-      .then(r => r.json())
-      .then(topo => {
-        const landGeoJSON = feature(topo as any, (topo as any).objects.land);
-        const geo = new THREE.IcosahedronGeometry(2.0, 6).toNonIndexed();
-        const posAttr = geo.attributes.position;
-        const faceCount = posAttr.count / 3;
-        const colors = new Float32Array(posAttr.count * 3);
+    const topo = landTopoData;
+    const landGeoJSON = feature(topo as any, (topo as any).objects.land);
+    const geo = new THREE.IcosahedronGeometry(2.0, 6).toNonIndexed();
+    const posAttr = geo.attributes.position;
+    const faceCount = posAttr.count / 3;
+    const colors = new Float32Array(posAttr.count * 3);
 
-        for (let i = 0; i < faceCount; i++) {
-          const vi = i * 3;
-          const ax = posAttr.getX(vi),   ay = posAttr.getY(vi),   az = posAttr.getZ(vi);
-          const bx = posAttr.getX(vi+1), by = posAttr.getY(vi+1), bz = posAttr.getZ(vi+1);
-          const cx = posAttr.getX(vi+2), cy = posAttr.getY(vi+2), cz = posAttr.getZ(vi+2);
-          const centX = (ax+bx+cx)/3, centY = (ay+by+cy)/3, centZ = (az+bz+cz)/3;
-          const len = Math.sqrt(centX*centX + centY*centY + centZ*centZ);
-          const lat = Math.asin(centY / len) * (180 / Math.PI);
-          const lngRaw = Math.atan2(centZ, -centX) * (180 / Math.PI) - 180;
-          const lngNorm = ((lngRaw % 360) + 540) % 360 - 180;
-          const isLand = geoContains(landGeoJSON as any, [lngNorm, lat]);
-          const color = isLand ? landColor(lat, lngNorm, i) : oceanColor(lat, i);
-          for (let v = 0; v < 3; v++) {
-            colors[(vi+v)*3+0] = color.r;
-            colors[(vi+v)*3+1] = color.g;
-            colors[(vi+v)*3+2] = color.b;
-          }
-        }
+    for (let i = 0; i < faceCount; i++) {
+      const vi = i * 3;
+      const ax = posAttr.getX(vi),   ay = posAttr.getY(vi),   az = posAttr.getZ(vi);
+      const bx = posAttr.getX(vi+1), by = posAttr.getY(vi+1), bz = posAttr.getZ(vi+1);
+      const cx = posAttr.getX(vi+2), cy = posAttr.getY(vi+2), cz = posAttr.getZ(vi+2);
+      const centX = (ax+bx+cx)/3, centY = (ay+by+cy)/3, centZ = (az+bz+cz)/3;
+      const len = Math.sqrt(centX*centX + centY*centY + centZ*centZ);
+      const lat = Math.asin(centY / len) * (180 / Math.PI);
+      const lngRaw = Math.atan2(centZ, -centX) * (180 / Math.PI) - 180;
+      const lngNorm = ((lngRaw % 360) + 540) % 360 - 180;
+      const isLand = geoContains(landGeoJSON as any, [lngNorm, lat]);
+      const color = isLand ? landColor(lat, lngNorm, i) : oceanColor(lat, i);
+      for (let v = 0; v < 3; v++) {
+        colors[(vi+v)*3+0] = color.r;
+        colors[(vi+v)*3+1] = color.g;
+        colors[(vi+v)*3+2] = color.b;
+      }
+    }
 
-        geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-        const mat = new THREE.MeshPhongMaterial({ vertexColors: true, flatShading: true, shininess: 20 });
-        const mesh = new THREE.Mesh(geo, mat);
-        earthGroup.add(mesh);
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    const mat = new THREE.MeshPhongMaterial({ vertexColors: true, flatShading: true, shininess: 20 });
+    const mesh = new THREE.Mesh(geo, mat);
+    earthGroup.add(mesh);
 
-        const edgesMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.18 });
-        mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 10), edgesMat));
+    const edgesMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.18 });
+    mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 10), edgesMat));
 
-        const ROT_PER_MS = 0.003 / 16.667;
-        let lastTime = performance.now();
-        const animate = () => {
-          rafId = requestAnimationFrame(animate);
-          const now = performance.now();
-          earthGroup.rotation.y += ROT_PER_MS * (now - lastTime);
-          lastTime = now;
-          renderer.render(scene, camera);
-        };
-        animate();
-      })
-      .catch(() => {
-        const mesh = new THREE.Mesh(
-          new THREE.SphereGeometry(2, 32, 32),
-          new THREE.MeshPhongMaterial({ color: 0x4A90B8 })
-        );
-        earthGroup.add(mesh);
-        const ROT_PER_MS = 0.003 / 16.667;
-        let lastTime = performance.now();
-        const animate = () => {
-          rafId = requestAnimationFrame(animate);
-          const now = performance.now();
-          earthGroup.rotation.y += ROT_PER_MS * (now - lastTime);
-          lastTime = now;
-          renderer.render(scene, camera);
-        };
-        animate();
-      });
+    const ROT_PER_MS = 0.003 / 16.667;
+    let lastTime = performance.now();
+    const animate = () => {
+      rafId = requestAnimationFrame(animate);
+      const now = performance.now();
+      earthGroup.rotation.y += ROT_PER_MS * (now - lastTime);
+      lastTime = now;
+      renderer.render(scene, camera);
+    };
+    animate();
 
     const handleResize = () => {
       const nw = mount.clientWidth, nh = mount.clientHeight;
