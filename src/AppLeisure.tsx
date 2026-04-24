@@ -931,7 +931,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   return (
     <>
     <Helmet>
-      <title>Eureka! Microscope | For Leisure & Curiosity</title>
+      <title>Eureka! Microscope | Portable Microscope for Nature Observation</title>
       <meta name="description" content="Discover the microscopic world around you with Eureka! — a portable microscope designed for curious minds. Explore nature, food, and everyday objects up close." />
       <link rel="canonical" href="https://eurekamicroscope.com/leisure" />
     </Helmet>
