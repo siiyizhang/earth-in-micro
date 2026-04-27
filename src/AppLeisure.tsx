@@ -1119,7 +1119,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             position: "absolute", top: "-5%", left: "-20%", right: "-20%", bottom: "-5%",
           }}>
             <EarthGlobe
-              spots={spots}
+              spots={spots.filter(s => s.location !== "ISS")}
               onSpotClick={(spot, pos) => {
                 setSelectedSpot(spot);
                 setSelectedPos(pos);
