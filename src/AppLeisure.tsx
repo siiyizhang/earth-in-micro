@@ -917,6 +917,12 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   }, []);
 
   useEffect(() => {
+    if (!hoveredSpot) return;
+    if (hoveredSpot.imageUrl) new Image().src = hoveredSpot.imageUrl;
+    if (hoveredSpot.imageUrl2) new Image().src = hoveredSpot.imageUrl2;
+  }, [hoveredSpot]);
+
+  useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const onScroll = () => {
