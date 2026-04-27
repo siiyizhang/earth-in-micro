@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
 
 // ── Mobile hook ────────────────────────────────────────────────────────────────
@@ -916,6 +916,8 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
     });
   }, []);
 
+  const globeSpots = useMemo(() => spots.filter(s => s.location !== "ISS"), [spots]);
+
   useEffect(() => {
     if (!hoveredSpot) return;
     if (hoveredSpot.imageUrl) new Image().src = hoveredSpot.imageUrl;
@@ -1125,7 +1127,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             position: "absolute", top: "-5%", left: "-20%", right: "-20%", bottom: "-5%",
           }}>
             <EarthGlobe
-              spots={spots.filter(s => s.location !== "ISS")}
+              spots={globeSpots}
               onSpotClick={(spot, pos) => {
                 setSelectedSpot(spot);
                 setSelectedPos(pos);
