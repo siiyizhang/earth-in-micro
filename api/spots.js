@@ -1,5 +1,6 @@
 // Map external image URLs to locally hosted copies in /images/spots/
 const LOCAL_IMAGE_MAP = {
+  // external URLs
   "https://justthesea.com/wp-content/uploads/2024/07/1.jpeg": "/images/spots/sapphirina-1.jpg",
   "https://pelorus-statamic.s3.eu-west-2.amazonaws.com/images/yachting/destinations/french-polynesia/french-polynesia-mountain-background-hero.jpg": "/images/spots/symbiodiniaceae-1.jpg",
   "https://ars.els-cdn.com/content/image/1-s2.0-S0011224015300134-gr1.jpg": "/images/spots/tardigrade-1.jpg",
@@ -14,9 +15,21 @@ const LOCAL_IMAGE_MAP = {
   "https://media.posterlounge.com/img/products/50000/46115/46115_poster.jpg": "/images/spots/rotifer-2.jpg",
 };
 
+// Notion attachment UUIDs (stable, embedded in the signed S3 URL path)
+const LOCAL_ATTACHMENT_MAP = {
+  "8a6295ae-0eb6-4de9-91ad-2fe2fc940dae": "/images/spots/euglenid-1.jpg",
+  "09c2cabb-e137-4f4c-b08a-ababe683d856": "/images/spots/euglenid-2.jpg",
+  "381401df-190a-4531-b5e3-5e7d7c12b513": "/images/spots/snow-algae-1.jpg",
+  "e55f3b5f-c3fb-4ac2-a769-f797fbfb1eef": "/images/spots/rotifer-1.jpg",
+  "482db133-58fc-4d80-8217-3499413aaff3": "/images/spots/bioluminescent-2.jpg",
+};
+
 function proxyUrl(url) {
   if (!url) return "";
   if (LOCAL_IMAGE_MAP[url]) return LOCAL_IMAGE_MAP[url];
+  // Match Notion S3 attachment by UUID in path
+  const uuidMatch = url.match(/prod-files-secure\.s3[^/]*\/[^/]+\/([0-9a-f-]{36})\//);
+  if (uuidMatch && LOCAL_ATTACHMENT_MAP[uuidMatch[1]]) return LOCAL_ATTACHMENT_MAP[uuidMatch[1]];
   const b64 = Buffer.from(url, "utf8")
     .toString("base64")
     .replace(/\+/g, "-")
