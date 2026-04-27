@@ -136,8 +136,33 @@ async function queryNotion() {
   return res.json();
 }
 
+const LOCAL_IMAGE_MAP: Record<string, string> = {
+  "https://justthesea.com/wp-content/uploads/2024/07/1.jpeg": "/images/spots/sapphirina-1.jpg",
+  "https://pelorus-statamic.s3.eu-west-2.amazonaws.com/images/yachting/destinations/french-polynesia/french-polynesia-mountain-background-hero.jpg": "/images/spots/symbiodiniaceae-1.jpg",
+  "https://ars.els-cdn.com/content/image/1-s2.0-S0011224015300134-gr1.jpg": "/images/spots/tardigrade-1.jpg",
+  "https://www.nipr.ac.jp/antarctic/jarestations/image/syowa-yagai-yukidorisawa.jpg": "/images/spots/tardigrade-2.jpg",
+  "https://www.natura-sciences.com/wp-content/uploads/2023/11/sang-glaciers-algue-neige-rouge.jpg": "/images/spots/snow-algae-2.jpg",
+  "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*etu67Q-gsJrVNSBWl_Bd5A.jpeg": "/images/spots/radiolarian-1.jpg",
+  "https://paleonerdish.wordpress.com/wp-content/uploads/2014/08/il_570xn-210850396.jpg": "/images/spots/radiolarian-2.jpg",
+  "https://micro.magnet.fsu.edu/primer/techniques/polarized/gallery/images/olivineproxeneandesitelarge.jpg": "/images/spots/olivine-1.jpg",
+  "https://apsa.anu.edu.au/_images/full/204-1-4_polar_1.jpg": "/images/spots/pollen-1.jpg",
+  "https://www.garden.eco/wp-content/uploads/2018/07/passion-fruit-flower.jpg": "/images/spots/pollen-2.jpg",
+  "https://media.posterlounge.com/img/products/50000/46115/46115_poster.jpg": "/images/spots/rotifer-2.jpg",
+};
+
+const LOCAL_ATTACHMENT_MAP: Record<string, string> = {
+  "8a6295ae-0eb6-4de9-91ad-2fe2fc940dae": "/images/spots/euglenid-1.jpg",
+  "09c2cabb-e137-4f4c-b08a-ababe683d856": "/images/spots/euglenid-2.jpg",
+  "381401df-190a-4531-b5e3-5e7d7c12b513": "/images/spots/snow-algae-1.jpg",
+  "e55f3b5f-c3fb-4ac2-a769-f797fbfb1eef": "/images/spots/rotifer-1.jpg",
+  "482db133-58fc-4d80-8217-3499413aaff3": "/images/spots/bioluminescent-2.jpg",
+};
+
 function proxyUrl(url: string): string {
   if (!url) return "";
+  if (LOCAL_IMAGE_MAP[url]) return LOCAL_IMAGE_MAP[url];
+  const uuidMatch = url.match(/prod-files-secure\.s3[^/]*\/[^/]+\/([0-9a-f-]{36})\//);
+  if (uuidMatch && LOCAL_ATTACHMENT_MAP[uuidMatch[1]]) return LOCAL_ATTACHMENT_MAP[uuidMatch[1]];
   const b64 = Buffer.from(url, "utf8")
     .toString("base64")
     .replace(/\+/g, "-")
