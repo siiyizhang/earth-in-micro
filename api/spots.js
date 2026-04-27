@@ -1,5 +1,22 @@
+// Map external image URLs to locally hosted copies in /images/spots/
+const LOCAL_IMAGE_MAP = {
+  "https://justthesea.com/wp-content/uploads/2024/07/1.jpeg": "/images/spots/sapphirina-1.jpg",
+  "https://pelorus-statamic.s3.eu-west-2.amazonaws.com/images/yachting/destinations/french-polynesia/french-polynesia-mountain-background-hero.jpg": "/images/spots/symbiodiniaceae-1.jpg",
+  "https://ars.els-cdn.com/content/image/1-s2.0-S0011224015300134-gr1.jpg": "/images/spots/tardigrade-1.jpg",
+  "https://www.nipr.ac.jp/antarctic/jarestations/image/syowa-yagai-yukidorisawa.jpg": "/images/spots/tardigrade-2.jpg",
+  "https://www.natura-sciences.com/wp-content/uploads/2023/11/sang-glaciers-algue-neige-rouge.jpg": "/images/spots/snow-algae-2.jpg",
+  "https://miro.medium.com/v2/resize:fit:4800/format:webp/1*etu67Q-gsJrVNSBWl_Bd5A.jpeg": "/images/spots/radiolarian-1.jpg",
+  "https://paleonerdish.wordpress.com/wp-content/uploads/2014/08/il_570xn-210850396.jpg": "/images/spots/radiolarian-2.jpg",
+  "https://www.outofoffice.com/wp-content/uploads/w3-webp/uploads/6-56.png.webp": "/images/spots/bioluminescent-1.webp",
+  "https://micro.magnet.fsu.edu/primer/techniques/polarized/gallery/images/olivineproxeneandesitelarge.jpg": "/images/spots/olivine-1.jpg",
+  "https://apsa.anu.edu.au/_images/full/204-1-4_polar_1.jpg": "/images/spots/pollen-1.jpg",
+  "https://www.garden.eco/wp-content/uploads/2018/07/passion-fruit-flower.jpg": "/images/spots/pollen-2.jpg",
+  "https://media.posterlounge.com/img/products/50000/46115/46115_poster.jpg": "/images/spots/rotifer-2.jpg",
+};
+
 function proxyUrl(url) {
   if (!url) return "";
+  if (LOCAL_IMAGE_MAP[url]) return LOCAL_IMAGE_MAP[url];
   const b64 = Buffer.from(url, "utf8")
     .toString("base64")
     .replace(/\+/g, "-")
