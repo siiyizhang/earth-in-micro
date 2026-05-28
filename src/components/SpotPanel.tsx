@@ -54,7 +54,7 @@ export default function SpotPanel({
     sizeBd:     dark ? "rgba(255,255,255,0.1)"          : "rgba(0,0,0,0.1)",
     sizeColor:  dark ? "rgba(255,255,255,0.3)"          : "rgba(20,30,50,0.4)",
     divider2:   dark ? "rgba(255,255,255,0.06)"         : "rgba(0,0,0,0.06)",
-    desc:       dark ? "rgba(255,255,255,0.55)"         : "rgba(20,30,50,0.55)",
+    desc:       dark ? "rgba(255,255,255,0.95)"         : "rgba(20,30,50,0.55)",
     credit:     dark ? "rgba(255,255,255,0.14)"         : "rgba(20,30,50,0.25)",
     creditBd:   dark ? "rgba(255,255,255,0.05)"         : "rgba(0,0,0,0.06)",
   };
@@ -181,7 +181,7 @@ export default function SpotPanel({
 
           <div style={{ height: 1, background: C.divider2, marginBottom: 16 }} />
 
-          <p style={{ fontFamily: fontSans, fontSize: 13, lineHeight: 1.85, color: C.desc, margin: 0, fontWeight: 300 }}>
+          <p style={{ fontFamily: fontSans, fontSize: 15, lineHeight: 1.85, color: C.desc, margin: 0, fontWeight: 300 }}>
             {spot.desc}
           </p>
 

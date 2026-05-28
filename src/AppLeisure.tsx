@@ -142,15 +142,6 @@ const SCENARIOS = [
   },
 ];
 
-const GALLERY = [
-  { src: "/images/hero gallery/UZH pond ciliate.mp4",                        label: "pond protist" },
-  { src: "/images/hero gallery/asplanchna rotifer.mp4",                       label: "lake plankton" },
-  { src: "/images/hero gallery/insect wing.webp",                              label: "insect wing" },
-  { src: "/images/hero gallery/onion cell.webp",                               label: "onion cell" },
-  { src: "/images/hero gallery/pollen.webp",                                   label: "pollen" },
-  { src: "/images/hero gallery/stentor-ezgif.com-video-to-gif-converter.mp4", label: "pond protist" },
-  { src: "/images/hero gallery/sugar crystal 2.webp",                          label: "sugar crystal" },
-];
 
 // Spec data for the SpecsBar above QualityScreen
 const SPECS = [
@@ -296,7 +287,7 @@ function QualityScreen() {
           {/* Right column */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ flex: "0 0 auto" }}>
-              <div style={{ ...TEXT.h3, marginBottom: 10 }}>Lab-grade Image Quality</div>
+              <div style={{ ...TEXT.h2, marginBottom: 10 }}>Lab-grade Image Quality</div>
               <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.8)" /* brighter than default 0.5 */ }}>
                 Most microscopes advertise magnification, but the image still looks blurry. With 1.4 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
               </div>
@@ -346,38 +337,10 @@ function QualityScreen() {
         </div>
       </div>
 
-      {/* Row 2: Durable & Portable */}
-      <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", justifyContent: "center", padding: isMobile ? `clamp(32px,5vh,56px) ${PAD}` : `0 ${PAD}`, gap: isMobile ? 20 : 48 }}>
-        {isMobile ? (
-          <div style={{ borderRadius: 16, overflow: "hidden", height: 320 }}>
-            <img src="/images/product/portable.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-          </div>
-        ) : (
-          <div style={{ flex: "0 0 52%", display: "flex", flexDirection: "column", gap: 8, alignSelf: "center", height: 440 }}>
-            <div style={{ flex: 1, display: "flex", gap: 10, minHeight: 0 }}>
-              <div style={{ flex: "0 0 auto", width: 180, borderRadius: 12, overflow: "hidden" }}>
-                <video src="/video/Testimonial Marta.mp4" autoPlay muted loop playsInline
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              </div>
-              <div style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
-                <img src="/images/product/portable.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              </div>
-            </div>
-            <div style={{ ...TEXT.caption, paddingLeft: 2, flexShrink: 0 }}>Marta Reyes · Freshwater Ecologist</div>
-          </div>
-        )}
-        <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400 }}>
-          <div style={{ ...TEXT.h3, marginBottom: 14 }}>Durable & Portable</div>
-          <div style={{ ...TEXT.body }}>
-            Drop-tested and water-resistant. Built to survive in the wild nature.
-          </div>
-        </div>
-      </div>
-
       {/* Row 3: Multi-mode Illumination */}
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "stretch", justifyContent: "center", padding: `clamp(32px,6vh,72px) ${PAD}`, gap: isMobile ? 20 : 48 }}>
         <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ ...TEXT.h3, marginBottom: 14 }}>Multi-mode Illumination</div>
+          <div style={{ ...TEXT.h2, marginBottom: 14 }}>Multi-mode Illumination</div>
           <div style={{ ...TEXT.body }}>
             With just a tap on the app, switch between bright, dark, and oblique lighting to reveal hidden details. Add a polarization filter set, and even a simple crystal transforms into a dazzling rainbow kaleidoscope.
           </div>
@@ -558,59 +521,176 @@ function AppGuideScreen() {
   );
 }
 
-// ── GalleryScreen ──────────────────────────────────────────────────────────────
+// ── StepsSection ───────────────────────────────────────────────────────────────
 
-function GalleryScreen() {
+const STEP1_MEDIA = [
+  { src: "/images/step1/IMG_2495.webp" },
+  { src: "/images/step1/IMG_2496.webp" },
+  { src: "/images/step1/IMG_2497.webp" },
+  { src: "/images/step1/IMG_2500.webp" },
+];
+
+const STEP2_MEDIA = [
+  { src: "/images/step2/IMG_2494.webp" },
+  { src: "/images/step2/IMG_2498.webp" },
+  { src: "/images/step2/IMG_2501.webp" },
+  { src: "/images/step2/screenshot1.webp" },
+  { src: "/images/step2/screenshot2.webp" },
+  { src: "/images/step2/screenshot3.webp" },
+];
+
+const STEP3_MEDIA = [
+  { src: "/images/step3/Amphileptus_web.mp4",   label: "Amphileptus" },
+  { src: "/images/step3/Lacrymaria_web.mp4",    label: "Lacrymaria" },
+  { src: "/images/step3/Litonotus_web.mp4",     label: "Litonotus" },
+  { src: "/images/step3/Stentors_web.mp4",      label: "Stentors" },
+  { src: "/images/step3/Vaginicolidae_web.mp4", label: "Vaginicolidae & Stentor" },
+  { src: "/images/step3/vorticella_web.mp4",    label: "Vorticella" },
+];
+
+function StepsSection() {
   const isMobile = useIsMobile();
+  const PAD = isMobile ? "20px" : "clamp(40px,6vw,80px)";
+
   return (
-    <div style={{ width: "100vw", background: "#0a0c12", padding: "0", display: "flex", flexDirection: "column" }}>
-      <div style={{ textAlign: "center", padding: "0 24px 12px" }}>
-        <div style={{ ...TEXT.label }}>
-          Captured with the prototype
+    <div style={{ width: "100vw", background: "#000008" }}>
+
+      {/* ── Section heading ── */}
+      <div style={{ textAlign: "center", padding: `clamp(48px,7vh,80px) ${PAD} clamp(12px,2vh,24px)` }}>
+        <div style={{ ...TEXT.h1 }}>Anywhere could be your <span style={{ color: C.teal }}>playground</span></div>
+      </div>
+
+      {/* ── Step 1 ── */}
+      <div style={{ padding: `clamp(32px,5vh,56px) ${PAD}` }}>
+        <div style={{ marginBottom: 20, textAlign: "center" }}>
+          <span style={{ ...TEXT.label, color: C.teal }}>Step 01</span>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Go into nature and scoop up some water</div>
+        </div>
+        {/* 4 portrait photos — 2-column on mobile, 4-column on desktop, 3/4 width */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gap: isMobile ? 10 : 16,
+          maxWidth: isMobile ? "75vw" : "75%",
+          margin: "0 auto",
+        }}>
+          {STEP1_MEDIA.map((item, i) => (
+            <div key={i} style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16" }}>
+              <img src={item.src} alt={`Step 1 photo ${i + 1}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Scrolling strip */}
-      <div style={{ position: "relative" }}>
-        {isMobile && <div style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, pointerEvents: "none", fontSize: 18, color: "rgba(255,255,255,0.5)" }}>‹</div>}
-        {isMobile && <div style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", zIndex: 3, pointerEvents: "none", fontSize: 18, color: "rgba(255,255,255,0.5)" }}>›</div>}
-      <div style={{ position: "relative", overflow: isMobile ? "auto" : "hidden",
-        ...(isMobile ? { WebkitOverflowScrolling: "touch" as "touch" } : {}),
-      }}>
-        {!isMobile && <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to right, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />}
-        {!isMobile && <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 80, background: "linear-gradient(to left, #0a0c12, transparent)", zIndex: 2, pointerEvents: "none" }} />}
-
-        <div style={{ display: "flex", gap: 16, padding: "0 24px",
-          ...(isMobile ? { width: "max-content" } : { animation: "leisureGallery 42s linear infinite", width: "max-content" }),
+      {/* ── Step 2 ── */}
+      <div style={{ padding: `0 ${PAD} clamp(32px,5vh,56px)` }}>
+        <div style={{ marginBottom: 20, textAlign: "center" }}>
+          <span style={{ ...TEXT.label, color: C.teal }}>Step 02</span>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Watch a new world appear</div>
+        </div>
+        {/* 6 items: 3 portrait photos + 3 tall screenshots — 2 col mobile, 3 col desktop, 3/4 width */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
+          gap: isMobile ? 10 : 16,
+          maxWidth: isMobile ? "56.25vw" : "56.25%",
+          margin: "0 auto",
         }}>
-          {(isMobile ? [0] : [0, 1]).map((setIdx) =>
-            GALLERY.map((item, i) => (
-              <div key={`${setIdx}-${i}`} style={{
-                width: "clamp(160px, 40vw, 340px)",
-                height: "clamp(120px, 30vw, 255px)",
-                borderRadius: 16, overflow: "hidden", flexShrink: 0, position: "relative",
+          {STEP2_MEDIA.map((item, i) => (
+            <div key={i} style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16" }}>
+              <img src={item.src} alt={`Step 2 photo ${i + 1}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Step 3 ── */}
+      <div style={{ padding: `0 ${PAD} clamp(48px,7vh,80px)` }}>
+        <div style={{ marginBottom: 20, textAlign: "center" }}>
+          <span style={{ ...TEXT.label, color: C.teal }}>Step 03</span>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Fall down the microscopic rabbit hole</div>
+        </div>
+        {/* Mixed grid: videos take 16:9, small static images flow naturally */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
+          gap: isMobile ? 10 : 16,
+          margin: "0 auto",
+        }}>
+          {STEP3_MEDIA.map((item, i) => {
+            const isVideo = item.src.endsWith(".mp4");
+            const isSmallImg = !isVideo;
+            return (
+              <div key={i} style={{
+                borderRadius: 12, overflow: "hidden",
+                aspectRatio: isSmallImg ? "4/3" : "16/9",
+                position: "relative",
                 border: "1px solid rgba(255,255,255,0.07)",
               }}>
-                {item.src.endsWith(".mp4") ? (
+                {isVideo ? (
                   <video src={item.src} autoPlay muted loop playsInline
                     style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 ) : (
                   <img src={item.src} alt={item.label}
                     style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 )}
-                <div style={{
-                  position: "absolute", bottom: 0, left: 0, right: 0,
-                  padding: "20px 14px 10px",
-                  background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)",
-                }}>
-                  <span style={{ ...TEXT.label, color: "rgba(255,255,255,0.7)" /* gallery caption, slightly brighter */ }}>{item.label}</span>
-                </div>
+                {item.label && (
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    padding: "16px 12px 10px",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
+                  }}>
+                    <span style={{ ...TEXT.label, fontSize: "clamp(10px,0.8vw,12px)", color: "rgba(255,255,255,0.75)" }}>
+                      {item.label}
+                    </span>
+                  </div>
+                )}
               </div>
-            ))
-          )}
+            );
+          })}
         </div>
       </div>
+
+      {/* ── More to find... ── */}
+      <div style={{ padding: `0 ${PAD} clamp(48px,7vh,80px)` }}>
+        <div style={{ marginBottom: 20, textAlign: "center" }}>
+          <div style={{ ...TEXT.h2 }}>More to find...</div>
+        </div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gap: isMobile ? 10 : 16,
+          margin: "0 auto",
+        }}>
+          {[
+            { src: "/images/more_image/insect wing.webp",     label: "Insect wing" },
+            { src: "/images/more_image/onion cell.webp",      label: "Onion cell" },
+            { src: "/images/more_image/pollen.webp",          label: "Pollen" },
+            { src: "/images/more_image/sugar crystal 2.webp", label: "Sugar crystal" },
+          ].map((item, i) => (
+            <div key={i} style={{
+              borderRadius: 12, overflow: "hidden",
+              aspectRatio: "4/3", position: "relative",
+              border: "1px solid rgba(255,255,255,0.07)",
+            }}>
+              <img src={item.src} alt={item.label}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                padding: "16px 12px 10px",
+                background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
+              }}>
+                <span style={{ ...TEXT.label, fontSize: "clamp(10px,0.8vw,12px)", color: "rgba(255,255,255,0.75)" }}>
+                  {item.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
     </div>
   );
 }
@@ -1265,45 +1345,8 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         </div>
       )}
 
-      {/* ── Screen 0.5: Sketches + Gallery ── */}
-      <div style={{ width: "100vw", background: "#000008", paddingTop: "clamp(28px,4vh,50px)", paddingBottom: "clamp(28px,4vh,50px)", boxSizing: "border-box", display: "flex", flexDirection: "column" }}>
-
-        {/* Sketches row — on mobile show only current + ver3 */}
-        <div style={{
-          display: "flex", justifyContent: "center", alignItems: "flex-end",
-          gap: isMobile ? 12 : "clamp(10px,2vw,32px)",
-          padding: `0 ${isMobile ? "16px" : "clamp(24px,5vw,80px)"} clamp(12px,5vh,45px)`,
-        }}>
-          {[
-            { src: "/images/product/sketch ver4.webp", label: "Current" },
-            { src: "/images/product/sketch ver3.webp", label: "Ver 3" },
-            { src: "/images/product/sketch ver2.webp", label: "Ver 2" },
-            { src: "/images/product/sketch ver1.webp", label: "Ver 1" },
-          ].map(({ src, label }) => (
-            <div key={src} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, maxWidth: 220 }}>
-              <img
-                src={src} alt={label}
-                style={{ width: "100%", height: "auto", objectFit: "contain", filter: "invert(1)", opacity: 0.8, display: "block" }}
-              />
-              <div style={{ ...TEXT.label, color: "rgba(255,255,255,0.75)" /* sketch labels: slightly brighter */ }}>
-                {label}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Sketch caption */}
-        <div style={{ textAlign: "center", padding: "0 clamp(24px,5vw,80px) clamp(30px,5vh,54px)" }}>
-          <div style={{ ...TEXT.h2, color: "#ffffff" /* sketch caption: full white */, fontSize: "clamp(25px,3vw,40px)" }}>
-            Multiple iterations for one thing:<br /><span style={{ color: C.teal }}>functionality without complexity.</span>
-          </div>
-        </div>
-
-        {/* Gallery strip */}
-        <div style={{ overflow: "hidden" }}>
-          <GalleryScreen />
-        </div>
-      </div>
+      {/* ── Steps: Anywhere is your playground ── */}
+      <StepsSection />
 
       {/* ── Quality / Powerful screen ── */}
       <QualityScreen />
