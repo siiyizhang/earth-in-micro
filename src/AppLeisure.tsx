@@ -563,7 +563,7 @@ function StepsSection() {
       <div style={{ padding: `clamp(32px,5vh,56px) ${PAD}` }}>
         <div style={{ marginBottom: 20, textAlign: "center" }}>
           <span style={{ ...TEXT.label, color: C.teal }}>Step 01</span>
-          <div style={{ ...TEXT.h2, marginTop: 8 }}>Go into nature and scoop up some water</div>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Go into nature and scoop up interesting things</div>
         </div>
         {/* 4 portrait photos — 2-column on mobile, 4-column on desktop, 3/4 width */}
         <div style={{
