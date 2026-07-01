@@ -1255,23 +1255,10 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             <div style={{
               fontFamily: "'YaroSt', serif", fontSize: isMobile ? "clamp(11px,3vw,14px)" : "clamp(11px,0.9vw,16px)",
               letterSpacing: "0.18em", textTransform: "uppercase",
-              color: "rgba(255,255,255,1)", marginBottom: 32,
+              color: "rgba(255,255,255,1)",
             }}>
               Capture nature on a new dimension.
             </div>
-            <button
-              onClick={() => scrollToScreen(1)}
-              style={{
-                ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
-                color: "#ffffff", background: C.teal,
-                border: "none", borderRadius: 999, padding: "13px 28px",
-                cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
-              }}
-              onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-              onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
-            >
-              Explore Eureka Microscope →
-            </button>
           </div>
 
           {/* Phone mockup: video behind, frame overlay on top */}
@@ -1304,6 +1291,20 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
               style={{ width: "100%", height: "auto", display: "block", position: "relative", zIndex: 2 }}
             />
           </div>
+
+          <button
+            onClick={() => scrollToScreen(1)}
+            style={{
+              ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
+              color: "#ffffff", background: C.teal,
+              border: "none", borderRadius: 999, padding: "13px 28px",
+              cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
+            }}
+            onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
+            onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
+          >
+            Explore Eureka Microscope →
+          </button>
         </div>
       </div>
 
