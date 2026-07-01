@@ -1208,7 +1208,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: "url(/images/pond_product.png)",
+            backgroundImage: "url(/images/pond_product.webp)",
             backgroundSize: "cover",
             backgroundPosition: isMobile ? "65% top" : "center top",
             backgroundRepeat: "no-repeat",
