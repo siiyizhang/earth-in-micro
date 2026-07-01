@@ -660,7 +660,7 @@ function StepsSection() {
         </div>
         <div style={{
           display: "grid",
-          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
           gap: isMobile ? 10 : 16,
           margin: "0 auto",
         }}>
@@ -669,6 +669,8 @@ function StepsSection() {
             { src: "/images/more_image/onion cell.webp",      label: "Onion cell" },
             { src: "/images/more_image/pollen.webp",          label: "Pollen" },
             { src: "/images/more_image/sugar crystal 2.webp", label: "Sugar crystal" },
+            { src: "/images/more_image/moth1.webp",           label: "Moth eye" },
+            { src: "/images/more_image/moth2.webp",           label: "Moth head" },
           ].map((item, i) => (
             <div key={i} style={{
               borderRadius: 12, overflow: "hidden",
@@ -1189,6 +1191,128 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         </div>
       )}
 
+      {/* ── Hero ── */}
+      <div
+        style={{
+          width: "100vw",
+          minHeight: isMobile ? "auto" : "100vh",
+          position: "relative",
+          overflow: "hidden",
+          background: "#06090f",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* Background photo */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "url(/images/pond_product.png)",
+            backgroundSize: "cover",
+            backgroundPosition: isMobile ? "65% top" : "center top",
+            backgroundRepeat: "no-repeat",
+            opacity: 1,
+          }}
+        />
+        {/* Gradient overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: isMobile
+              ? "linear-gradient(to bottom, rgba(6,9,15,0.15) 0%, rgba(6,9,15,0.45) 100%)"
+              : "linear-gradient(to right, rgba(6,9,15,0.35) 0%, rgba(6,9,15,0.25) 45%, rgba(6,9,15,0.05) 100%)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            padding: isMobile
+              ? "120px 24px 48px"
+              : "100px clamp(32px,5vw,72px) 60px",
+            gap: isMobile ? 32 : 40,
+            maxWidth: isMobile ? "100%" : "50%",
+          }}
+        >
+          {/* Copy + CTA */}
+          <div style={{ maxWidth: isMobile ? "75%" : 520 }}>
+            <h1 style={{
+              ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
+              fontSize: "clamp(30px,4.2vw,64px)",
+              color: "rgba(255,255,255,0.92)", margin: "0 0 14px",
+              textAlign: "left",
+            }}>
+              The first portable microscopic camera
+            </h1>
+            <div style={{
+              fontFamily: "'YaroSt', serif", fontSize: isMobile ? "clamp(11px,3vw,14px)" : "clamp(11px,0.9vw,16px)",
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(255,255,255,1)", marginBottom: 32,
+            }}>
+              Capture nature on a new dimension.
+            </div>
+            <button
+              onClick={() => scrollToScreen(1)}
+              style={{
+                ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
+                color: "#ffffff", background: C.teal,
+                border: "none", borderRadius: 999, padding: "13px 28px",
+                cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
+              }}
+              onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
+              onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
+            >
+              Explore Eureka Microscope →
+            </button>
+          </div>
+
+          {/* Phone mockup: video behind, frame overlay on top */}
+          <div style={{
+            position: "relative",
+            width: isMobile ? "70%" : 500,
+            flexShrink: 0,
+          }}>
+            {/* PNG frame sets the size; video is positioned inside the screen cutout */}
+            <video
+              src="/images/step3/vorticella_web.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{
+                position: "absolute",
+                top: "1%",
+                left: "1%",
+                width: "84%",
+                height: "auto",
+                borderRadius: "10%",
+                pointerEvents: "none",
+                zIndex: 1,
+              }}
+            />
+            <img
+              src="/video/phone video out.png"
+              alt=""
+              style={{ width: "100%", height: "auto", display: "block", position: "relative", zIndex: 2 }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Steps: Anywhere is your playground ── */}
+      <StepsSection />
+
+      {/* ── Quality / Powerful screen ── */}
+      <QualityScreen />
+
       {/* ── Drag hint — mobile only, above globe ── */}
       {!selectedSpot && !loading && isMobile && (
         <div style={{ width: "100vw", textAlign: "center", padding: "14px 0", background: "#000008", pointerEvents: "none" }}>
@@ -1196,7 +1320,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         </div>
       )}
 
-      {/* ── Screen 0: Hero ── */}
+      {/* ── Interactive Globe ── */}
       <div style={{ width: "100vw", height: isMobile ? "100vw" : "100vh", position: "relative", overflow: "hidden", background: "#000008" }} className="select-none">
 
         {!loading && (
@@ -1244,7 +1368,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           </div>
         )}
 
-        {/* Bottom text + CTA — desktop only (absolute overlay) */}
+        {/* Bottom text — desktop only (absolute overlay) */}
         {!isMobile && (
           <div style={{
             position: "absolute",
@@ -1253,39 +1377,15 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             padding: "0 clamp(16px,4vw,48px)",
             display: "flex", flexDirection: "row",
             alignItems: "center", justifyContent: "center",
-            gap: "clamp(24px,4vw,60px)",
             pointerEvents: "none", zIndex: 5,
             background: "linear-gradient(to bottom, transparent, rgba(0,0,8,0.72) 60%)",
           }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "clamp(6px,1vh,10px)" }}>
-              <h1 style={{
-                ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
-                color: "rgba(255,255,255,0.92)", margin: 0, textAlign: "right",
-              }}>
-                Capture nature on a new dimension.
-              </h1>
-              <div style={{
-                fontFamily: "'YaroSt', serif", fontSize: "clamp(11px,0.9vw,16px)",
-                letterSpacing: "0.18em", textTransform: "uppercase",
-                color: "rgba(255,255,255,1)", textAlign: "right",
-              }}>
-                The first prosumer portable microscope
-              </div>
-            </div>
-            <button
-              onClick={() => scrollToScreen(1)}
-              style={{
-                pointerEvents: "all", marginTop: "clamp(6px,1vh,12px)",
-                ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
-                color: "#ffffff", background: C.teal,
-                border: "none", borderRadius: 999, padding: "12px 28px",
-                cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
-              }}
-              onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-              onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
-            >
-              Explore Eureka Microscope →
-            </button>
+            <h1 style={{
+              ...TEXT.hero, fontStyle: "italic",
+              color: "rgba(255,255,255,0.92)", margin: 0, textAlign: "center",
+            }}>
+              Explore Interesting Micro Creatures Around the World
+            </h1>
           </div>
         )}
 
@@ -1308,48 +1408,22 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
 
       </div>
 
-      {/* ── Mobile slogan + CTA (below globe) ── */}
+      {/* ── Mobile slogan (below globe) ── */}
       {isMobile && (
         <div style={{
           width: "100vw", background: "#000008",
           padding: "20px 24px 32px",
           display: "flex", flexDirection: "column",
-          alignItems: "flex-start", gap: 14,
+          alignItems: "flex-start",
         }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <h1 style={{
-              ...TEXT.hero, fontStyle: "italic", textTransform: "uppercase",
-              color: "rgba(255,255,255,0.92)", margin: 0,
-            }}>
-              Capture nature on a new dimension.
-            </h1>
-            <div style={{
-              fontFamily: "'YaroSt', serif", fontSize: "clamp(11px,3vw,14px)",
-              letterSpacing: "0.18em", textTransform: "uppercase",
-              color: "rgba(255,255,255,1)",
-            }}>
-              The first prosumer portable microscope
-            </div>
-          </div>
-          <button
-            onClick={() => scrollToScreen(1)}
-            style={{
-              ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
-              color: "#ffffff", background: C.teal,
-              border: "none", borderRadius: 999, padding: "12px 28px",
-              cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
-            }}
-          >
-            Explore Eureka Microscope →
-          </button>
+          <h1 style={{
+            ...TEXT.hero, fontStyle: "italic",
+            color: "rgba(255,255,255,0.92)", margin: 0,
+          }}>
+            Explore Interesting Micro Creatures Around the World
+          </h1>
         </div>
       )}
-
-      {/* ── Steps: Anywhere is your playground ── */}
-      <StepsSection />
-
-      {/* ── Quality / Powerful screen ── */}
-      <QualityScreen />
 
       {/* ── Screen 1: Scenarios ── */}
       <ScenarioScreen />

@@ -29,3 +29,14 @@ dist-ssr
 *.zip
 yaro-complete-family/
 public/video/Screen Recording 2025-09-23 at 20.23.01.mov
+
+# Large video/binary files — keep local only
+*.mp4
+*.mov
+*.webm
+*.avi
+*.mkv
+public/images/more_image/moth1.png
+public/images/more_image/moth2.png
+public/images/product/ver4.png
+public/images/pond_product.png
