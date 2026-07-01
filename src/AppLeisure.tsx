@@ -524,10 +524,9 @@ function AppGuideScreen() {
 // ── StepsSection ───────────────────────────────────────────────────────────────
 
 const STEP1_MEDIA = [
-  { src: "/images/step1/IMG_2495.webp" },
   { src: "/images/step1/IMG_2496.webp" },
-  { src: "/images/step1/IMG_2497.webp" },
   { src: "/images/step1/IMG_2500.webp" },
+  { src: "/images/step1/glacier.webp" },
 ];
 
 const STEP2_MEDIA = [
