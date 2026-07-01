@@ -556,7 +556,7 @@ function StepsSection() {
 
       {/* ── Section heading ── */}
       <div style={{ textAlign: "center", padding: `clamp(48px,7vh,80px) ${PAD} clamp(12px,2vh,24px)` }}>
-        <div style={{ ...TEXT.h1 }}>Anywhere could be your <span style={{ color: C.teal }}>playground</span></div>
+        <div style={{ ...TEXT.h1 }}>Turn anywhere into your <span style={{ color: C.teal }}>playground</span></div>
       </div>
 
       {/* ── Step 1 ── */}
@@ -586,7 +586,7 @@ function StepsSection() {
       <div style={{ padding: `0 ${PAD} clamp(32px,5vh,56px)` }}>
         <div style={{ marginBottom: 20, textAlign: "center" }}>
           <span style={{ ...TEXT.label, color: C.teal }}>Step 02</span>
-          <div style={{ ...TEXT.h2, marginTop: 8 }}>Watch a new world appear</div>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Explore a new world</div>
         </div>
         {/* 6 items: 3 portrait photos + 3 tall screenshots — 2 col mobile, 3 col desktop, 3/4 width */}
         <div style={{
