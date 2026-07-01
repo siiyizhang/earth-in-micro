@@ -240,7 +240,7 @@ function QualityScreen() {
     { src: "/images/product/20.webp",     price: "~$20",    name: "Toy 1",     highlight: false },
     { src: "/images/product/80.webp",     price: "~$80",    name: "Toy 2",     highlight: false },
     { src: "/images/product/150.webp",    price: "~$150",   name: "Toy 3",     highlight: false },
-    { src: "/images/product/eureka.webp", price: "$299",    name: "Eureka",    highlight: true  },
+    { src: "/images/product/eureka.webp", price: "$329",    name: "Eureka",    highlight: true  },
     { src: "/images/product/5000.webp",   price: "~$5,000", name: "Lab grade", highlight: false },
   ];
   const PAD = isMobile ? "16px" : "clamp(40px,6vw,80px)";
@@ -568,9 +568,9 @@ function StepsSection() {
         {/* 4 portrait photos — 2-column on mobile, 4-column on desktop, 3/4 width */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
           gap: isMobile ? 10 : 16,
-          maxWidth: isMobile ? "75vw" : "75%",
+          maxWidth: isMobile ? "75vw" : "56.25%",
           margin: "0 auto",
         }}>
           {STEP1_MEDIA.map((item, i) => (
@@ -834,7 +834,7 @@ function CTAScreen() {
             fontSize: "clamp(48px,7vw,96px)", color: "rgba(255,255,255,0.9)",
             letterSpacing: "-0.02em", lineHeight: 1.05,
           }}>
-            $299
+            $329
           </div>
         </div>
 
