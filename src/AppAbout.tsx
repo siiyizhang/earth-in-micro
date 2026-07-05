@@ -33,6 +33,7 @@ export default function AppAbout() {
     </Helmet>
     <div style={{
       minHeight: "100dvh",
+      overflowY: "auto",
       background: "#06090f",
       fontFamily: FONTS.sans,
       color: "rgba(255,255,255,0.88)",
