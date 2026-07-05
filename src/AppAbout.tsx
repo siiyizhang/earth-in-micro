@@ -96,7 +96,7 @@ export default function AppAbout() {
           </div>
 
           {/* Two founder photos */}
-          <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 24 : 32, alignItems: "flex-start", flexShrink: 0 }}>
+          <div style={{ display: "flex", flexDirection: "row", gap: isMobile ? 24 : 32, alignItems: "flex-start", flexShrink: 0 }}>
             {[
               { img: "/images/team/siyi.avif", name: "Siyi Zhang", role: "CEO", credentials: ["MSc. Environmental Science", "ETH Zurich, Switzerland"] },
               { img: "/images/team/yu.avif",   name: "Yu Liu",     role: "CTO", credentials: ["MSc. Quantum Engineering",    "ETH Zurich, Switzerland"] },
