@@ -8,10 +8,6 @@ const FONTS = {
   sans: "'Inter', sans-serif",
 };
 
-const C = {
-  navy: "#1A3A5C",
-  teal: "#0ABFBC",
-};
 
 function useIsMobile(bp = 640) {
   return useSyncExternalStore(

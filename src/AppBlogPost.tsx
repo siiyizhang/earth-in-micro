@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
 import NavBar from "./components/NavBar";
@@ -9,10 +9,6 @@ const FONTS = {
   sans: "'Inter', sans-serif",
 };
 
-const C = {
-  navy: "#1A3A5C",
-  teal: "#0ABFBC",
-};
 
 const WIX = "https://static.wixstatic.com/media/";
 
@@ -273,7 +269,6 @@ const CONTENT: Record<string, React.ReactNode> = {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function AppBlogPost() {
-  const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
   const isMobile = useIsMobile();
 
