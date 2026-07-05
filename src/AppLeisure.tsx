@@ -524,9 +524,9 @@ function AppGuideScreen() {
 // ── StepsSection ───────────────────────────────────────────────────────────────
 
 const STEP1_MEDIA = [
-  { src: "/images/step1/IMG_2496.webp" },
-  { src: "/images/step1/IMG_2500.webp" },
-  { src: "/images/step1/glacier.webp" },
+  { src: "/images/step1/IMG_2496.webp",  label: "Pond water",  desc: "A single drop holds thousands of invisible lives." },
+  { src: "/images/step1/IMG_2500.webp",  label: "Soil sample", desc: "Scoop up some soil — it's teeming with microbes." },
+  { src: "/images/step1/glacier.webp",   label: "Glacier melt", desc: "Even glacial water harbors ancient microorganisms." },
 ];
 
 const STEP2_MEDIA = [
@@ -543,6 +543,36 @@ const STEP3_MEDIA = [
   { src: "/images/step3/Vaginicolidae_web.mp4", label: "Vaginicolidae & Stentor" },
   { src: "/images/step3/vorticella_web.mp4",    label: "Vorticella" },
 ];
+
+function Step1Card({ item }: { item: { src: string; label: string; desc: string } }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16", position: "relative", cursor: "default" }}
+    >
+      <img src={item.src} alt={item.label}
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block",
+          transform: hovered ? "scale(1.04)" : "scale(1)",
+          transition: "transform 0.4s ease",
+        }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "rgba(0,0,0,0.55)",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.3s ease",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "16px",
+        textAlign: "center",
+      }}>
+        <div style={{ ...TEXT.label, color: C.teal, marginBottom: 8 }}>{item.label}</div>
+        <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.85)" }}>{item.desc}</div>
+      </div>
+    </div>
+  );
+}
 
 function StepsSection() {
   const isMobile = useIsMobile();
@@ -571,10 +601,7 @@ function StepsSection() {
           margin: "0 auto",
         }}>
           {STEP1_MEDIA.map((item, i) => (
-            <div key={i} style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "9/16" }}>
-              <img src={item.src} alt={`Step 1 photo ${i + 1}`}
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            </div>
+            <Step1Card key={i} item={item} />
           ))}
         </div>
       </div>
