@@ -671,6 +671,7 @@ function StepsSection() {
             { src: "/images/more_image/moth2.webp",           label: "Moth head" },
             { src: "/images/more_image/Moth Scale.webp",      label: "Moth scale" },
             { src: "/images/more_image/Moth Scale2.webp",     label: "Moth scale 2" },
+            { src: "/images/more_image/Flower Stamen.webp",   label: "Flower stamen" },
             { src: "/images/more_image/Moss.webp",            label: "Moss" },
           ].map((item, i) => (
             <div key={i} style={{
