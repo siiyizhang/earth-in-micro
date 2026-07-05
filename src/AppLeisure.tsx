@@ -146,14 +146,14 @@ const SCENARIOS = [
 
 // Spec data for the SpecsBar above QualityScreen
 const SPECS = [
-  { value: "1.4 μm",  label: "Optical Resolution" },
-  { value: "4K",      label: "Image Resolution" },
-  { value: "1/2.8″",  label: "Sensor Size" },
-  { value: ">90", label: "Color Rendering Index of LED Light" },
-  { value: "150×",    label: "Magnification" },
-  { value: ">10",     label: "Lens Elements" },
-  { value: "<800 g",  label: "Weight" },
-  { value: ">4 h",    label: "Battery Life" },
+  { value: "1.4 μm",  label: "Optical Resolution",                  desc: "Resolves details finer than a single bacterium — on par with research lab microscopes." },
+  { value: "4K",      label: "Image Resolution",                     desc: "Every frame is a high-resolution photo ready to share or print." },
+  { value: "1/2.8″",  label: "Sensor Size",                          desc: "A large sensor captures more light, giving you brighter, cleaner images in low-light conditions." },
+  { value: ">90",     label: "Color Rendering Index of LED Light",   desc: "Colors appear true to life — important for identifying biological specimens accurately." },
+  { value: "150×",    label: "Magnification",                        desc: "Enough to clearly see cells, microorganisms, and fine surface structures." },
+  { value: ">10",     label: "Lens Elements",                        desc: "More glass elements correct distortion and aberration, so the image stays sharp edge to edge." },
+  { value: "<800 g",  label: "Weight",                               desc: "Light enough to carry in a day bag and use one-handed in the field." },
+  { value: ">4 h",    label: "Battery Life",                         desc: "A full afternoon of continuous observation on a single charge." },
 ];
 
 // ── TooltipIcon ────────────────────────────────────────────────────────────────
@@ -222,8 +222,15 @@ function SpecsBar() {
                 {s.value}
               </div>
               <div style={{ height: 1, width: "40%", margin: "0 auto 8px", background: "rgba(255,255,255,0.12)" }} />
-              <div style={{ ...TEXT.specLabel }}>
+              <div style={{ ...TEXT.specLabel, marginBottom: 8 }}>
                 {s.label}
+              </div>
+              <div style={{
+                fontFamily: FONTS.sans, fontWeight: 300,
+                fontSize: "clamp(10px,0.8vw,12px)", lineHeight: 1.55,
+                color: "rgba(255,255,255,0.35)",
+              }}>
+                {s.desc}
               </div>
             </div>
           ))}
@@ -729,19 +736,15 @@ function StepsSection() {
 const FAQ_ITEMS = [
   {
     q: "Is the Eureka! microscope working now?",
-    a: "Yes. We have a functioning optical prototype that produces the microscopy images you see on this site. Your pledge helps fund final chassis tooling and high-volume component sourcing for the production batch.",
+    a: "Yes. We have a functioning optical prototype that produces the microscopy images you see on this site. We are still working on improving the imaging quality and user experience.",
   },
   {
     q: "How does the pledge work?",
-    a: "Your 3 CHF (~$3.80) pledge is fully refundable at any time. It signals your genuine interest and puts you first in line for sample unit testing opportunities. When we launch on Kickstarter, you will receive the campaign link before anyone else, along with your guaranteed early bird pricing of $329.",
-  },
-  {
-    q: "What is included in the box?",
-    a: "Every unit ships with the portable inverted microscope body, two specimen slide clips, USB-C connectivity, and access to the Eureka! Discovery App for species identification and observation logging.",
+    a: "Your 3 CHF (~$3.80) pledge is fully refundable at any time. It signals your genuine interest and puts you first in line for prototype or sample unit testing opportunities. ",
   },
   {
     q: "When will it be available, and what if it is delayed?",
-    a: "We are targeting a Kickstarter launch in 2026. If circumstances change and we cannot deliver, we will automatically issue a 100% refund of your pledge. No action needed on your part.",
+    a: "We are targeting a Kickstarter launch in early 2027. If circumstances change and we cannot deliver, we will automatically issue a 100% refund of your pledge. No action needed on your part.",
   },
 ];
 
@@ -965,19 +968,15 @@ function CTAScreen() {
               <span style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)" }}>~$3.80</span>
             </div>
 
-            {/* Meta line */}
-            <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.45)", marginBottom: 24 }}>
-              Fully refundable · priority sample testing · Kickstarter early bird guaranteed
-            </div>
 
             {/* Pledge benefits */}
             <ul style={{ listStyle: "none", margin: "0 0 24px", padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
               {[
-                "Priority selection for sample unit testing",
-                "Guaranteed early bird pricing on Kickstarter ($329, save $70)",
-                "First to know when we launch",
+                "Priority selection for prototype and sample unit testing",
+                "Guaranteed early bird price",
+                "Help shape the product before we launch",
                 "Fully refundable at any time",
-                "Helps us build and ship faster",
+                "Be the first to use the microscope",
               ].map(item => (
                 <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                   <span style={{ color: C.teal, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
