@@ -178,25 +178,30 @@ export default function AppAbout() {
           paddingTop: isMobile ? 48 : 72,
           borderTop: "1px solid rgba(255,255,255,0.08)",
         }}>
-          <img
-            src="/images/team/Sabrina.png"
-            alt="Sabrina Williams"
-            style={{
-              width: isMobile ? 110 : 140,
-              height: isMobile ? 110 : 140,
-              borderRadius: "50%",
-              objectFit: "cover",
-              display: "block",
-              flexShrink: 0,
-            }}
-          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, flexShrink: 0, minWidth: 120 }}>
+            <img
+              src="/images/team/Sabrina.png"
+              alt="Sabrina Williams"
+              style={{
+                width: isMobile ? 110 : 130,
+                height: isMobile ? 110 : 130,
+                borderRadius: "50%",
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
+            <div>
+              <div style={{ fontFamily: FONTS.sans, fontWeight: 600, fontSize: isMobile ? 15 : 16, color: "rgba(255,255,255,0.92)", marginBottom: 2 }}>
+                Sabrina Williams
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 8 }}>
+                Product Design Engineer
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>BSc. Mechanical Engineering and Robotics</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>Massachusetts Institute of Technology</div>
+            </div>
+          </div>
           <div>
-            <div style={{ fontFamily: FONTS.sans, fontWeight: 600, fontSize: isMobile ? 15 : 16, color: "rgba(255,255,255,0.92)", marginBottom: 2 }}>
-              Sabrina Williams
-            </div>
-            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 16 }}>
-              Product Design Engineer
-            </div>
             <p style={{ margin: 0, fontSize: isMobile ? 15 : 16, lineHeight: 1.75, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
               Sabrina is bachelor's student studying mechanical engineering and robotics at the Massachusetts Institute of Technology. In spring 2026, she did an exchange semester at ETH Zürich and is currently a product design engineer for Eureka Microscope. She loves designing things to help others and tinkering in makerspaces. In her free time, Sabrina enjoys exploring new places and cultures as well as creating artwork inspired by nature.
             </p>
