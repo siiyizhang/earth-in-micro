@@ -530,12 +530,9 @@ const STEP1_MEDIA = [
 ];
 
 const STEP2_MEDIA = [
-  { src: "/images/step2/IMG_2494.webp" },
-  { src: "/images/step2/IMG_2498.webp" },
   { src: "/images/step2/IMG_2501.webp" },
   { src: "/images/step2/screenshot1.webp" },
   { src: "/images/step2/screenshot2.webp" },
-  { src: "/images/step2/screenshot3.webp" },
 ];
 
 const STEP3_MEDIA = [
