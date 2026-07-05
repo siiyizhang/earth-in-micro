@@ -33,9 +33,9 @@ export default function AppAbout() {
     </Helmet>
     <div style={{
       minHeight: "100dvh",
-      background: "#ffffff",
+      background: "#06090f",
       fontFamily: FONTS.sans,
-      color: C.navy,
+      color: "rgba(255,255,255,0.88)",
     }}>
 
       {/* ── Navbar ── */}
@@ -43,8 +43,8 @@ export default function AppAbout() {
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         padding: isMobile ? "12px 20px" : "14px clamp(24px,4vw,48px)",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: "rgba(255,255,255,0.88)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(26,42,60,0.06)",
+        background: "rgba(6,9,15,0.88)", backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
       }}>
         <button
           type="button"
@@ -52,7 +52,7 @@ export default function AppAbout() {
           style={{
             background: "none", border: "none", cursor: "pointer", padding: 4,
             display: "flex", alignItems: "center", gap: 6,
-            color: "rgba(26,42,60,0.55)", fontFamily: FONTS.sans,
+            color: "rgba(255,255,255,0.55)", fontFamily: FONTS.sans,
             fontSize: 14, letterSpacing: "0.01em",
           }}
         >
@@ -62,7 +62,7 @@ export default function AppAbout() {
           Back
         </button>
         <img
-          src="/Black text.png"
+          src="/White text.png"
           alt="Earth in Micro"
           style={{ height: isMobile ? 22 : 26, display: "block" }}
         />
@@ -80,7 +80,7 @@ export default function AppAbout() {
         <h1 style={{
           fontFamily: FONTS.serif, fontWeight: 100,
           fontSize: isMobile ? "clamp(32px,10vw,48px)" : "clamp(40px,5vw,64px)",
-          letterSpacing: "0.02em", color: C.navy,
+          letterSpacing: "0.02em", color: "rgba(255,255,255,0.92)",
           margin: "0 0 40px",
         }}>
           About Us
@@ -99,7 +99,7 @@ export default function AppAbout() {
             flex: "1 1 0",
             fontSize: isMobile ? 15 : 16,
             lineHeight: 1.75,
-            color: "rgba(26,42,60,0.75)",
+            color: "rgba(255,255,255,0.7)",
             letterSpacing: "0.01em",
           }}>
             <p style={{ margin: "0 0 20px" }}>
@@ -148,15 +148,15 @@ export default function AppAbout() {
                   <div style={{
                     fontFamily: FONTS.sans, fontWeight: 600,
                     fontSize: isMobile ? 15 : 16,
-                    color: C.navy, marginBottom: 2,
+                    color: "rgba(255,255,255,0.92)", marginBottom: 2,
                   }}>{name}</div>
                   <div style={{
-                    fontSize: 13, color: "rgba(26,42,60,0.5)",
+                    fontSize: 13, color: "rgba(255,255,255,0.45)",
                     marginBottom: 8,
                   }}>{role}</div>
                   {credentials.map(c => (
                     <div key={c} style={{
-                      fontSize: 13, color: "rgba(26,42,60,0.6)",
+                      fontSize: 13, color: "rgba(255,255,255,0.55)",
                       lineHeight: 1.5,
                     }}>{c}</div>
                   ))}

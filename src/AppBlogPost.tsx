@@ -281,7 +281,7 @@ export default function AppBlogPost() {
 
   if (!post || !content) {
     return (
-      <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONTS.sans, color: C.navy }}>
+      <div style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONTS.sans, color: "rgba(255,255,255,0.88)" }}>
         Post not found.
       </div>
     );
@@ -298,9 +298,9 @@ export default function AppBlogPost() {
       minHeight: "100dvh",
       height: "100dvh",
       overflowY: "auto",
-      background: "#ffffff",
+      background: "#06090f",
       fontFamily: FONTS.sans,
-      color: C.navy,
+      color: "rgba(255,255,255,0.88)",
     }}>
 
       {/* ── Navbar ── */}
@@ -308,8 +308,8 @@ export default function AppBlogPost() {
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         padding: isMobile ? "12px 20px" : "14px clamp(24px,4vw,48px)",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: "rgba(255,255,255,0.88)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(26,42,60,0.06)",
+        background: "rgba(6,9,15,0.88)", backdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
       }}>
         <button
           type="button"
@@ -317,7 +317,7 @@ export default function AppBlogPost() {
           style={{
             background: "none", border: "none", cursor: "pointer", padding: 4,
             display: "flex", alignItems: "center", gap: 6,
-            color: "rgba(26,42,60,0.55)", fontFamily: FONTS.sans,
+            color: "rgba(255,255,255,0.55)", fontFamily: FONTS.sans,
             fontSize: 14, letterSpacing: "0.01em",
           }}
         >
@@ -327,7 +327,7 @@ export default function AppBlogPost() {
           Blog
         </button>
         <img
-          src="/Black text.png"
+          src="/White text.png"
           alt="Eureka! Microscope"
           style={{ height: isMobile ? 22 : 26, display: "block" }}
         />
@@ -344,7 +344,7 @@ export default function AppBlogPost() {
         {/* Meta */}
         <div style={{
           fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase",
-          color: "rgba(26,42,60,0.4)", marginBottom: 16,
+          color: "rgba(255,255,255,0.4)", marginBottom: 16,
         }}>
           {post.date} · {post.readTime}
         </div>
@@ -353,7 +353,7 @@ export default function AppBlogPost() {
         <h1 style={{
           fontFamily: FONTS.serif, fontWeight: 100,
           fontSize: isMobile ? "clamp(26px,8vw,40px)" : "clamp(32px,4vw,48px)",
-          letterSpacing: "-0.01em", color: C.navy,
+          letterSpacing: "-0.01em", color: "rgba(255,255,255,0.88)",
           margin: "0 0 48px", lineHeight: 1.2,
         }}>
           {post.title}
@@ -364,7 +364,7 @@ export default function AppBlogPost() {
           style={{
             fontSize: isMobile ? 15 : 16.5,
             lineHeight: 1.8,
-            color: "rgba(26,42,60,0.78)",
+            color: "rgba(255,255,255,0.75)",
             letterSpacing: "0.01em",
           }}
           className="blog-body"
