@@ -933,27 +933,6 @@ function CTAScreen() {
           </div>
         </div>
 
-        {/* Transparency table */}
-        <div style={{ width: "100%", maxWidth: 860 }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <tbody>
-              {[
-                { label: "Retail value (at launch)", value: "$399" },
-                { label: "Early bird price", value: <span style={{ color: C.teal, fontWeight: 600 }}>$329 <span style={{ fontWeight: 400, fontSize: "0.85em", color: "rgba(255,255,255,0.45)" }}>Save $70</span></span> },
-                { label: "Secure today with", value: "3 CHF (~$3.80) refundable deposit" },
-                { label: "Remaining balance", value: "Charged only when your unit ships" },
-                { label: "Expected delivery", value: "December 2026" },
-                { label: "Refund guarantee", value: "100% deposit refund at any time, or automatically if not delivered by Dec 31, 2026" },
-              ].map(({ label, value }) => (
-                <tr key={label} style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                  <td style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.45)", padding: isMobile ? "12px 0" : "14px 0", width: "45%" }}>{label}</td>
-                  <td style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.82)", padding: isMobile ? "12px 0" : "14px 0", paddingLeft: 16 }}>{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
         {/* Subscribe + Pre-order */}
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 40 : "clamp(24px,5vw,80px)", width: "100%", maxWidth: 860, alignItems: "flex-start" }}>
 
@@ -976,11 +955,20 @@ function CTAScreen() {
 
           {/* Right: Stripe deposit */}
           <div style={{ flex: 1, width: isMobile ? "100%" : undefined }}>
-            <div style={{ ...TEXT.h2, color: C.teal, marginBottom: 12 }}>
+            <div style={{ ...TEXT.h2, color: C.teal, marginBottom: 16 }}>
               Lock in your price
             </div>
-            <div style={{ ...TEXT.body, marginBottom: 20 }}>
-              Put down 3 CHF (~$3.80) today to secure the early bird price. Your deposit is fully refundable at any time.
+
+            {/* Compact price block */}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(36px,4vw,52px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 18, color: "rgba(255,255,255,0.28)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
+              <span style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)" }}>Save $70</span>
+            </div>
+
+            {/* Meta line */}
+            <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.45)", marginBottom: 24 }}>
+              3 CHF (~$3.80) deposit · fully refundable · ships Dec 2026
             </div>
 
             {/* What's included */}
