@@ -670,10 +670,10 @@ function StepsSection() {
             { src: "/images/more_image/sugar crystal 2.webp", label: "Sugar crystal" },
             { src: "/images/more_image/moth1.webp",           label: "Moth eye" },
             { src: "/images/more_image/moth2.webp",           label: "Moth head" },
-            { src: "/images/more_image/aquatic_plant.webp",   label: "Aquatic plant" },
-            { src: "/images/more_image/green_algae.webp",     label: "Green algae" },
-            { src: "/images/more_image/water_grass.webp",     label: "Water grass" },
-            { src: "/images/more_image/fish_scale.webp",      label: "Fish scale" },
+            { src: "/images/more_image/Moth Scale.webp",      label: "Moth scale" },
+            { src: "/images/more_image/Moth Scale 2.webp",    label: "Moth scale 2" },
+            { src: "/images/more_image/Flower Stamen.webp",   label: "Flower stamen" },
+            { src: "/images/more_image/Moss.webp",            label: "Moss" },
           ].map((item, i) => (
             <div key={i} style={{
               borderRadius: 12, overflow: "hidden",
