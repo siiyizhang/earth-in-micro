@@ -729,19 +729,19 @@ function StepsSection() {
 const FAQ_ITEMS = [
   {
     q: "Is the Eureka! microscope working now?",
-    a: "Yes. We have a functioning optical prototype that produces the microscopy images you see on this site. Preorders fund final chassis tooling and high-volume component sourcing for the production batch.",
+    a: "Yes. We have a functioning optical prototype that produces the microscopy images you see on this site. Your pledge helps fund final chassis tooling and high-volume component sourcing for the production batch.",
   },
   {
-    q: "How does the deposit work?",
-    a: "Your 3 CHF (~$3.80) deposit is fully refundable at any time. It locks your early bird price of $329 and reserves your place in batch 1. The remaining balance is only collected when your unit is ready to ship.",
+    q: "How does the pledge work?",
+    a: "Your 3 CHF (~$3.80) pledge is fully refundable at any time. It signals your genuine interest and puts you first in line for sample unit testing opportunities. When we launch on Kickstarter, you will receive the campaign link before anyone else, along with your guaranteed early bird pricing of $329.",
   },
   {
     q: "What is included in the box?",
     a: "Every unit ships with the portable inverted microscope body, two specimen slide clips, USB-C connectivity, and access to the Eureka! Discovery App for species identification and observation logging.",
   },
   {
-    q: "When will it ship, and what if it is delayed?",
-    a: "We are targeting December 2026 for the first production batch. If we cannot deliver by December 31, 2026, we will automatically issue a 100% refund of your deposit. No action needed on your part.",
+    q: "When will it be available, and what if it is delayed?",
+    a: "We are targeting a Kickstarter launch in 2026. If circumstances change and we cannot deliver, we will automatically issue a 100% refund of your pledge. No action needed on your part.",
   },
 ];
 
@@ -919,10 +919,10 @@ function CTAScreen() {
         {/* Price heading */}
         <div style={{ textAlign: "center" }}>
           <div style={{ ...TEXT.label, marginBottom: 16 }}>
-            Limited offer
+            Early access
           </div>
           <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" }}>
-            Early Bird Price
+            Get Early Access
           </div>
           <div style={{
             fontFamily: FONTS.serif, fontWeight: 100,
@@ -930,6 +930,9 @@ function CTAScreen() {
             letterSpacing: "-0.02em", lineHeight: 1.05,
           }}>
             $329
+          </div>
+          <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)", marginTop: 10 }}>
+            Launching on Kickstarter — pledge now to lock in your early bird spot
           </div>
         </div>
 
@@ -956,29 +959,28 @@ function CTAScreen() {
           {/* Right: Stripe deposit */}
           <div style={{ flex: 1, width: isMobile ? "100%" : undefined }}>
             <div style={{ ...TEXT.h2, color: C.teal, marginBottom: 16 }}>
-              Lock in your price
+              Early Access Pledge
             </div>
 
             {/* Compact price block */}
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10, flexWrap: "wrap" }}>
-              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(36px,4vw,52px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
-              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 18, color: "rgba(255,255,255,0.28)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
-              <span style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)" }}>Save $70</span>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(36px,4vw,52px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>3 CHF</span>
+              <span style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)" }}>~$3.80</span>
             </div>
 
             {/* Meta line */}
             <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.45)", marginBottom: 24 }}>
-              3 CHF (~$3.80) deposit · fully refundable · ships Dec 2026
+              Fully refundable · priority sample testing · Kickstarter early bird guaranteed
             </div>
 
-            {/* What's included */}
+            {/* Pledge benefits */}
             <ul style={{ listStyle: "none", margin: "0 0 24px", padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
               {[
-                "Portable inverted microscope body",
-                "Two specimen slide clips",
-                "USB-C connectivity",
-                "Eureka! Discovery App access",
-                "Priority batch 1 delivery (Dec 2026)",
+                "Priority selection for sample unit testing",
+                "Guaranteed early bird pricing on Kickstarter ($329, save $70)",
+                "First to know when we launch",
+                "Fully refundable at any time",
+                "Helps us build and ship faster",
               ].map(item => (
                 <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                   <span style={{ color: C.teal, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
