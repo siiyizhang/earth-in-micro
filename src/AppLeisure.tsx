@@ -1017,6 +1017,13 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   };
 
   useEffect(() => {
+    if (window.location.hash === "#cta") {
+      const el = document.getElementById("cta");
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 300);
+    }
+  }, []);
+
+  useEffect(() => {
     fetchSpots().then(({ spots: s }) => {
       setSpots(s);
       setLoading(false);
