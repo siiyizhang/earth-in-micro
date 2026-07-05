@@ -90,8 +90,13 @@ export default function AppAbout() {
         {/* Founders narrative */}
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 40 : 64, alignItems: "flex-start" }}>
 
+          {/* Story */}
+          <div style={{ flex: "1 1 0", fontSize: isMobile ? 15 : 16, lineHeight: 1.85, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
+            Eureka Microscope was founded by Siyi Zhang, a marine biologist-turned-entrepreneur fascinated by the invisible world, and Yu Liu, a quantum engineer with a passion for making cutting-edge technology accessible to everyone. Siyi first encountered the micro world during her thesis on marine plankton at ETH Zürich. After testing every portable microscope on the market, she found that none could truly bring that sense of wonder to everyday explorers. Yu, her longtime friend, was instantly captivated by the idea. Together, they set out to build something the world had never seen: a portable microscopic camera that reveals nature in a completely new dimension.
+          </div>
+
           {/* Two founder photos */}
-          <div style={{ display: "flex", flexDirection: "row", gap: isMobile ? 24 : 32, alignItems: "flex-start", flexShrink: 0 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 24 : 32, alignItems: "flex-start", flexShrink: 0 }}>
             {[
               { img: "/images/team/siyi.avif", name: "Siyi Zhang", role: "CEO", credentials: ["MSc. Environmental Science", "ETH Zurich, Switzerland"] },
               { img: "/images/team/yu.avif",   name: "Yu Liu",     role: "CTO", credentials: ["MSc. Quantum Engineering",    "ETH Zurich, Switzerland"] },
@@ -107,11 +112,6 @@ export default function AppAbout() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Story */}
-          <div style={{ flex: "1 1 0", fontSize: isMobile ? 15 : 16, lineHeight: 1.85, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
-            Eureka Microscope was founded by Siyi Zhang, a marine biologist-turned-entrepreneur fascinated by the invisible world, and Yu Liu, a quantum engineer with a passion for making cutting-edge technology accessible to everyone. Siyi first encountered the micro world during her thesis on marine plankton at ETH Zürich. After testing every portable microscope on the market, she found that none could truly bring that sense of wonder to everyday explorers. Yu, her longtime friend, was instantly captivated by the idea. Together, they set out to build something the world had never seen: a portable microscopic camera that reveals nature in a completely new dimension.
           </div>
 
         </div>
