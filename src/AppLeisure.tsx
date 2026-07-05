@@ -227,7 +227,7 @@ function SpecsBar() {
               </div>
               <div style={{
                 fontFamily: FONTS.sans, fontWeight: 300,
-                fontSize: "clamp(10px,0.8vw,12px)", lineHeight: 1.55,
+                fontSize: "clamp(12px,1vw,14px)", lineHeight: 1.55,
                 color: "rgba(255,255,255,0.35)",
               }}>
                 {s.desc}
