@@ -87,83 +87,31 @@ export default function AppAbout() {
           About Us
         </h1>
 
-        {/* Layout: text left, team right */}
-        <div style={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          gap: isMobile ? 40 : 64,
-          alignItems: "flex-start",
-        }}>
+        {/* Founders narrative */}
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 40 : 64, alignItems: "flex-start" }}>
 
-          {/* Story text */}
-          <div style={{
-            flex: "1 1 0",
-            fontSize: isMobile ? 15 : 16,
-            lineHeight: 1.75,
-            color: "rgba(255,255,255,0.7)",
-            letterSpacing: "0.01em",
-          }}>
-            <p style={{ margin: "0 0 20px" }}>
-              Siyi was fascinated by the micro world when she was doing her thesis about marine plankton, the tiny drifting organisms in water. After trying the existing portable microscopes on the market, she realized there was nothing in the world that could deliver this special experience to everyday explorers with curious minds.
-            </p>
-            <p style={{ margin: 0 }}>
-              Inspired by a special microscope in biological oceanography, she invited her friend Yu, who is passionate about creating cool, new technology for more people, to join the venture. And with Yu's talent in hardware engineering, we're turning advanced microscope technology into something accessible to you.
-            </p>
-          </div>
-
-          {/* Team cards */}
-          <div style={{
-            flex: "0 0 auto",
-            display: "flex",
-            flexDirection: "row",
-            gap: isMobile ? 24 : 32,
-            alignItems: "flex-start",
-          }}>
+          {/* Two founder photos */}
+          <div style={{ display: "flex", flexDirection: "row", gap: isMobile ? 24 : 32, alignItems: "flex-start", flexShrink: 0 }}>
             {[
-              {
-                img: "/images/team/siyi.avif",
-                name: "Siyi Zhang",
-                role: "CEO",
-                credentials: ["MSc. Environmental Science", "ETH Zurich, Switzerland"],
-              },
-              {
-                img: "/images/team/yu.avif",
-                name: "Yu Liu",
-                role: "CTO",
-                credentials: ["MSc. Quantum Engineering", "ETH Zurich, Switzerland"],
-              },
+              { img: "/images/team/siyi.avif", name: "Siyi Zhang", role: "CEO", credentials: ["MSc. Environmental Science", "ETH Zurich, Switzerland"] },
+              { img: "/images/team/yu.avif",   name: "Yu Liu",     role: "CTO", credentials: ["MSc. Quantum Engineering",    "ETH Zurich, Switzerland"] },
             ].map(({ img, name, role, credentials }) => (
               <div key={name} style={{ display: "flex", flexDirection: "column", gap: 10, minWidth: 120 }}>
-                <img
-                  src={img}
-                  alt={name}
-                  style={{
-                    width: isMobile ? 110 : 130,
-                    height: isMobile ? 110 : 130,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
+                <img src={img} alt={name} style={{ width: isMobile ? 110 : 130, height: isMobile ? 110 : 130, borderRadius: "50%", objectFit: "cover", display: "block" }} />
                 <div>
-                  <div style={{
-                    fontFamily: FONTS.sans, fontWeight: 600,
-                    fontSize: isMobile ? 15 : 16,
-                    color: "rgba(255,255,255,0.92)", marginBottom: 2,
-                  }}>{name}</div>
-                  <div style={{
-                    fontSize: 13, color: "rgba(255,255,255,0.45)",
-                    marginBottom: 8,
-                  }}>{role}</div>
+                  <div style={{ fontFamily: FONTS.sans, fontWeight: 600, fontSize: isMobile ? 15 : 16, color: "rgba(255,255,255,0.92)", marginBottom: 2 }}>{name}</div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginBottom: 8 }}>{role}</div>
                   {credentials.map(c => (
-                    <div key={c} style={{
-                      fontSize: 13, color: "rgba(255,255,255,0.55)",
-                      lineHeight: 1.5,
-                    }}>{c}</div>
+                    <div key={c} style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>{c}</div>
                   ))}
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Story */}
+          <div style={{ flex: "1 1 0", fontSize: isMobile ? 15 : 16, lineHeight: 1.85, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
+            Eureka Microscope was founded by Siyi Zhang, a marine biologist-turned-entrepreneur fascinated by the invisible world, and Yu Liu, a quantum engineer with a passion for making cutting-edge technology accessible to everyone. Siyi first encountered the micro world during her thesis on marine plankton at ETH Zürich. After testing every portable microscope on the market, she found that none could truly bring that sense of wonder to everyday explorers. Yu, her longtime friend, was instantly captivated by the idea. Together, they set out to build something the world had never seen: a portable microscopic camera that reveals nature in a completely new dimension.
           </div>
 
         </div>
@@ -203,7 +151,7 @@ export default function AppAbout() {
           </div>
           <div>
             <p style={{ margin: 0, fontSize: isMobile ? 15 : 16, lineHeight: 1.75, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
-              Sabrina is bachelor's student studying mechanical engineering and robotics at the Massachusetts Institute of Technology. In spring 2026, she did an exchange semester at ETH Zürich and is currently a product design engineer for Eureka Microscope. She loves designing things to help others and tinkering in makerspaces. In her free time, Sabrina enjoys exploring new places and cultures as well as creating artwork inspired by nature.
+              In spring 2026, Sabrina did an exchange semester at ETH Zürich and is currently a product design engineer for Eureka Microscope. She loves designing things to help others and tinkering in makerspaces. In her free time, Sabrina enjoys exploring new places and cultures as well as creating artwork inspired by nature.
             </p>
           </div>
         </div>
