@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
+import NavBar from "./components/NavBar";
 
 const FONTS = {
   serif: "'Yaroop', serif",
@@ -21,7 +21,6 @@ function useIsMobile(bp = 640) {
 }
 
 export default function AppAbout() {
-  const navigate = useNavigate();
   const isMobile = useIsMobile();
 
   return (
@@ -39,36 +38,7 @@ export default function AppAbout() {
       color: "rgba(255,255,255,0.88)",
     }}>
 
-      {/* ── Navbar ── */}
-      <div style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: isMobile ? "12px 20px" : "14px clamp(24px,4vw,48px)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: "rgba(6,9,15,0.88)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-      }}>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{
-            background: "none", border: "none", cursor: "pointer", padding: 4,
-            display: "flex", alignItems: "center", gap: 6,
-            color: "rgba(255,255,255,0.55)", fontFamily: FONTS.sans,
-            fontSize: 14, letterSpacing: "0.01em",
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Back
-        </button>
-        <img
-          src="/White text.png"
-          alt="Earth in Micro"
-          style={{ height: isMobile ? 22 : 26, display: "block" }}
-        />
-        <div style={{ width: 56 }} /> {/* spacer to centre logo */}
-      </div>
+      <NavBar alwaysVisible />
 
       {/* ── Content ── */}
       <div style={{
@@ -92,7 +62,7 @@ export default function AppAbout() {
 
           {/* Story */}
           <div style={{ flex: "1 1 0", fontSize: isMobile ? 15 : 16, lineHeight: 1.85, color: "rgba(255,255,255,0.7)", letterSpacing: "0.01em" }}>
-            Eureka Microscope was founded by Siyi Zhang, an environmental scientist-turned-entrepreneur fascinated by the invisible world, and Yu Liu, a quantum engineer with a passion for making cutting-edge technology accessible to more people. Siyi became captivated by the micro world during her thesis on marine plankton at ETH Zürich. Inspired by the <a href="https://www.planktoscope.org" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textDecorationColor: "rgba(255,255,255,0.3)" }}>PlanktoScope project</a> — an open-source plankton imaging device — she saw the potential to bring this kind of optics into a portable, consumer-grade product. Yu, her longtime friend, was instantly captivated by the idea. Together, they set out to build something the world had never seen: a portable microscopic camera that reveals nature in a completely new dimension.
+            Eureka Microscope was founded by Siyi Zhang, an environmental scientist-turned-entrepreneur fascinated by the invisible world, and Yu Liu, a quantum engineer with a passion for making cutting-edge technology accessible to more people. Siyi became captivated by the micro world during her thesis on marine plankton at ETH Zürich. Inspired by the <a href="https://www.planktoscope.org" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textDecorationColor: "rgba(255,255,255,0.3)" }}>PlanktoScope project</a> — an open-source plankton imaging device — she saw the potential to bring this kind of optics into a portable, consumer-grade product. Yu, her friend, who enjoys nature too, was immediately drawn in. Together, they set out to build something the world had never seen: a portable microscopic camera that reveals nature in a completely new dimension at an affordable price.
           </div>
 
           {/* Two founder photos */}

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
+import NavBar from "./components/NavBar";
 
 const FONTS = {
   serif: "'Yaroop', serif",
@@ -61,36 +62,7 @@ export default function AppBlog() {
       color: "rgba(255,255,255,0.88)",
     }}>
 
-      {/* ── Navbar ── */}
-      <div style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: isMobile ? "12px 20px" : "14px clamp(24px,4vw,48px)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: "rgba(6,9,15,0.88)", backdropFilter: "blur(12px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-      }}>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{
-            background: "none", border: "none", cursor: "pointer", padding: 4,
-            display: "flex", alignItems: "center", gap: 6,
-            color: "rgba(255,255,255,0.55)", fontFamily: FONTS.sans,
-            fontSize: 14, letterSpacing: "0.01em",
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Back
-        </button>
-        <img
-          src="/White text.png"
-          alt="Eureka! Microscope"
-          style={{ height: isMobile ? 22 : 26, display: "block" }}
-        />
-        <div style={{ width: 56 }} />
-      </div>
+      <NavBar alwaysVisible />
 
       {/* ── Content ── */}
       <div style={{

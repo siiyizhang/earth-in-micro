@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
+import NavBar from "./components/NavBar";
 
 // ── Mobile hook ────────────────────────────────────────────────────────────────
 function useIsMobile(bp = 640) {
@@ -524,9 +525,9 @@ function AppGuideScreen() {
 // ── StepsSection ───────────────────────────────────────────────────────────────
 
 const STEP1_MEDIA = [
-  { src: "/images/step1/IMG_2496.webp",  label: "Pond water",  desc: "A single drop holds thousands of invisible lives." },
-  { src: "/images/step1/IMG_2500.webp",  label: "Soil sample", desc: "Scoop up some soil — it's teeming with microbes." },
-  { src: "/images/step1/glacier.webp",   label: "Glacier melt", desc: "Even glacial water harbors ancient microorganisms." },
+  { src: "/images/step1/IMG_2496.webp",  label: "campus",  desc: "As a PhD student at ETH Zurich, Adrian enjoys documenting different lives around the campus." },
+  { src: "/images/step1/IMG_2500.webp",  label: "Pond", desc: "Living in the valleys of Glarus in Switzerland, Attila wants to capture more biodiversity around him." },
+  { src: "/images/step1/glacier.webp",   label: "Glacier", desc: "Adrià, a scientist from University of Basel, is studying the snow algae in the glacier in Valais, Switzerland." },
 ];
 
 const STEP2_MEDIA = [
@@ -1006,8 +1007,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   const [selectedPos, setSelectedPos] = useState<{ x: number; y: number } | null>(null);
   const [hoveredSpot, setHoveredSpot] = useState<Spot | null>(null);
 
-  const [navVisible, setNavVisible] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -1036,7 +1035,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
     const el = containerRef.current;
     if (!el) return;
     const onScroll = () => {
-      setNavVisible(el.scrollTop > window.innerHeight * 0.02);
       setSelectedSpot(null);
       setSelectedPos(null);
     };
@@ -1069,153 +1067,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
         }
       `}</style>
 
-      {/* ── Floating navbar ── */}
-      <div style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: isMobile ? "10px 16px" : "8px clamp(24px,4vw,48px)",
-        display: "flex", alignItems: "center",
-        background: navVisible ? "rgba(10,12,18,0.68)" : "transparent",
-        backdropFilter: navVisible ? "blur(16px)" : "none",
-        borderBottom: navVisible ? "1px solid rgba(255,255,255,0.05)" : "none",
-        transition: "background 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease",
-      }}>
-        {isMobile ? (
-          /* ── Mobile nav layout: hamburger | logo (center) | waitlist ── */
-          <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-            {/* Hamburger */}
-            <button
-              type="button"
-              onClick={() => setMenuOpen(o => !o)}
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5, opacity: navVisible ? 1 : 0, pointerEvents: navVisible ? "auto" : "none", transition: "opacity 0.3s" }}
-              aria-label="Menu"
-            >
-              {menuOpen ? (
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <line x1="3" y1="3" x2="17" y2="17" stroke="rgba(255,255,255,0.75)" strokeWidth="1.8" strokeLinecap="round"/>
-                  <line x1="17" y1="3" x2="3" y2="17" stroke="rgba(255,255,255,0.75)" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-              ) : (
-                [0,1,2].map(i => (
-                  <span key={i} style={{ display: "block", width: 20, height: 1.5, borderRadius: 2, background: "rgba(255,255,255,0.75)" }} />
-                ))
-              )}
-            </button>
-            {/* Logo centered */}
-            <img
-              src="/White text.webp"
-              alt="Earth in Micro"
-              style={{ height: 26, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", position: "absolute", left: "50%", transform: "translateX(-50%)" }}
-            />
-            {/* Join Waitlist right */}
-            <div style={{ marginLeft: "auto" }}>
-              <button
-                type="button"
-                onClick={() => document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })}
-                style={{
-                  ...TEXT.nav, fontWeight: 600,
-                  color: "#ffffff", background: C.teal,
-                  border: "none", borderRadius: 999,
-                  padding: "7px 14px",
-                  cursor: "pointer", whiteSpace: "nowrap",
-                  boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
-                  opacity: navVisible ? 1 : 0,
-                  pointerEvents: navVisible ? "auto" : "none",
-                  transition: "opacity 0.3s, background 0.2s",
-                }}
-              >
-                Join Waitlist
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* ── Desktop nav layout ── */
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
-            <img
-              src="/White text.webp"
-              alt="Earth in Micro"
-              style={{ height: 32, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
-            />
-            <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
-              {[
-                { label: "About Us", href: "/about", external: false },
-                { label: "Blog",     href: "/blog", external: false },
-              ].map(({ label, href, external }) => (
-                <a
-                  key={label}
-                  href={href}
-                  {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  style={{
-                    ...TEXT.nav,
-                    color: "rgba(255,255,255,0.75)",
-                    textDecoration: "none",
-                    transition: "color 0.2s, opacity 0.3s",
-                    whiteSpace: "nowrap",
-                    opacity: navVisible ? 1 : 0,
-                    pointerEvents: navVisible ? "auto" : "none",
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#ffffff"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)"; }}
-                >
-                  {label}
-                </a>
-              ))}
-              <button
-                type="button"
-                onClick={() => document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })}
-                style={{
-                  ...TEXT.nav, fontWeight: 600,
-                  color: "#ffffff", background: C.teal,
-                  border: "none", borderRadius: 999,
-                  padding: "8px 18px",
-                  cursor: "pointer", whiteSpace: "nowrap",
-                  boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
-                  opacity: navVisible ? 1 : 0,
-                  pointerEvents: navVisible ? "auto" : "none",
-                  transition: "opacity 0.3s, background 0.2s",
-                }}
-                onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-                onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
-              >
-                Join the Waitlist
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* ── Mobile hamburger dropdown menu ── */}
-      {isMobile && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, right: 0, zIndex: 99,
-          background: "rgba(10,12,18,0.95)", backdropFilter: "blur(16px)",
-          padding: "72px 32px 28px",
-          display: "flex", flexDirection: "column", gap: 0,
-          transform: menuOpen ? "translateY(0)" : "translateY(-100%)",
-          transition: "transform 0.3s ease",
-          boxShadow: menuOpen ? "0 8px 32px rgba(0,0,0,0.4)" : "none",
-        }}>
-          {[
-            { label: "About Us", href: "/about", external: false },
-            { label: "Blog",     href: "/blog", external: false },
-          ].map(({ label, href, external }) => (
-            <a
-              key={label}
-              href={href}
-              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              onClick={() => setMenuOpen(false)}
-              style={{
-                fontFamily: FONTS.serif, fontWeight: 300,
-                fontSize: 22, letterSpacing: "0.02em",
-                color: "rgba(255,255,255,0.85)", textDecoration: "none",
-                padding: "14px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.07)",
-              }}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
+      <NavBar scrollRef={containerRef} />
 
       {/* ── Hero ── */}
       <div
