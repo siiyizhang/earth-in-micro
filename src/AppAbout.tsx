@@ -32,7 +32,7 @@ export default function AppAbout() {
       <link rel="canonical" href="https://eurekamicroscope.com/about" />
     </Helmet>
     <div style={{
-      minHeight: "100dvh",
+      height: "100dvh",
       overflowY: "auto",
       background: "#06090f",
       fontFamily: FONTS.sans,
