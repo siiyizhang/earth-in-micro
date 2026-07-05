@@ -664,15 +664,13 @@ function StepsSection() {
           margin: "0 auto",
         }}>
           {[
-            { src: "/images/more_image/insect wing.webp",     label: "Insect wing" },
             { src: "/images/more_image/onion cell.webp",      label: "Onion cell" },
             { src: "/images/more_image/pollen.webp",          label: "Pollen" },
             { src: "/images/more_image/sugar crystal 2.webp", label: "Sugar crystal" },
             { src: "/images/more_image/moth1.webp",           label: "Moth eye" },
             { src: "/images/more_image/moth2.webp",           label: "Moth head" },
             { src: "/images/more_image/Moth Scale.webp",      label: "Moth scale" },
-            { src: "/images/more_image/Moth Scale 2.webp",    label: "Moth scale 2" },
-            { src: "/images/more_image/Flower Stamen.webp",   label: "Flower stamen" },
+            { src: "/images/more_image/Moth Scale2.webp",     label: "Moth scale 2" },
             { src: "/images/more_image/Moss.webp",            label: "Moss" },
           ].map((item, i) => (
             <div key={i} style={{
