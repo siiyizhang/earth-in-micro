@@ -918,11 +918,8 @@ function CTAScreen() {
       }}>
         {/* Price heading */}
         <div style={{ textAlign: "center" }}>
-          <div style={{ ...TEXT.label, marginBottom: 16 }}>
-            Early access
-          </div>
           <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" }}>
-            Get Early Access
+            Early Bird Price
           </div>
           <div style={{
             fontFamily: FONTS.serif, fontWeight: 100,
@@ -932,7 +929,7 @@ function CTAScreen() {
             $329
           </div>
           <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)", marginTop: 10 }}>
-            Launching on Kickstarter — pledge now to lock in your early bird spot
+            Launching on Kickstarter
           </div>
         </div>
 
@@ -945,7 +942,7 @@ function CTAScreen() {
               Join the waitlist
             </div>
             <div style={{ ...TEXT.body, marginBottom: 24 }}>
-              Leave your email to get product updates and share your feedback as we build. One email every few weeks, no spam.
+              Leave your email to get product updates and share your feedback as we build. You'll be the first to know when we launch on Kickstarter. One email every few weeks, no spam.
             </div>
             <MailchimpForm
               dark={true}
