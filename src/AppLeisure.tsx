@@ -724,6 +724,73 @@ function StepsSection() {
   );
 }
 
+// ── FAQ ────────────────────────────────────────────────────────────────────────
+
+const FAQ_ITEMS = [
+  {
+    q: "Is the Eureka! microscope working now?",
+    a: "Yes. We have a functioning optical prototype that produces the microscopy images you see on this site. Preorders fund final chassis tooling and high-volume component sourcing for the production batch.",
+  },
+  {
+    q: "How does the deposit work?",
+    a: "Your 3 CHF (~$3.80) deposit is fully refundable at any time. It locks your early bird price of $329 and reserves your place in batch 1. The remaining balance is only collected when your unit is ready to ship.",
+  },
+  {
+    q: "What is included in the box?",
+    a: "Every unit ships with the portable inverted microscope body, two specimen slide clips, USB-C connectivity, and access to the Eureka! Discovery App for species identification and observation logging.",
+  },
+  {
+    q: "When will it ship, and what if it is delayed?",
+    a: "We are targeting December 2026 for the first production batch. If we cannot deliver by December 31, 2026, we will automatically issue a 100% refund of your deposit. No action needed on your part.",
+  },
+];
+
+function FAQ({ isMobile }: { isMobile: boolean }) {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <div style={{
+      width: "100%",
+      maxWidth: 860,
+      margin: "0 auto",
+      padding: isMobile ? "0 8px clamp(40px,7vh,64px)" : "0 clamp(0px,4vw,60px) clamp(48px,8vh,80px)",
+    }}>
+      <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.82)", marginBottom: 32, textAlign: "center" }}>
+        Frequently asked questions
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+        {FAQ_ITEMS.map((item, i) => (
+          <div key={i} style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+            <button
+              type="button"
+              onClick={() => setOpen(open === i ? null : i)}
+              style={{
+                width: "100%", background: "none", border: "none", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "20px 0", textAlign: "left", gap: 16,
+              }}
+            >
+              <span style={{ ...TEXT.body, color: "rgba(255,255,255,0.82)", fontWeight: 400 }}>{item.q}</span>
+              <span style={{
+                color: C.teal, fontSize: 20, lineHeight: 1, flexShrink: 0,
+                transform: open === i ? "rotate(45deg)" : "rotate(0deg)",
+                transition: "transform 0.2s ease",
+                display: "inline-block",
+              }}>+</span>
+            </button>
+            {open === i && (
+              <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.55)", paddingBottom: 20, paddingRight: 40 }}>
+                {item.a}
+              </div>
+            )}
+          </div>
+        ))}
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }} />
+      </div>
+    </div>
+  );
+}
+
 // ── CTAScreen ──────────────────────────────────────────────────────────────────
 
 const VOTE_OPTIONS = [
@@ -849,12 +916,12 @@ function CTAScreen() {
         padding: isMobile ? "clamp(40px,7vh,64px) 20px" : "clamp(48px,8vh,80px) clamp(24px,8vw,120px)",
         gap: "clamp(32px,6vh,64px)",
       }}>
-        {/* Price */}
+        {/* Price heading */}
         <div style={{ textAlign: "center" }}>
           <div style={{ ...TEXT.label, marginBottom: 16 }}>
             Limited offer
           </div>
-          <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" /* slightly dimmer than default 0.88 */ }}>
+          <div style={{ ...TEXT.h1, color: "rgba(255,255,255,0.85)" }}>
             Early Bird Price
           </div>
           <div style={{
@@ -866,16 +933,37 @@ function CTAScreen() {
           </div>
         </div>
 
+        {/* Transparency table */}
+        <div style={{ width: "100%", maxWidth: 860 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <tbody>
+              {[
+                { label: "Retail value (at launch)", value: "$399" },
+                { label: "Early bird price", value: <span style={{ color: C.teal, fontWeight: 600 }}>$329 <span style={{ fontWeight: 400, fontSize: "0.85em", color: "rgba(255,255,255,0.45)" }}>Save $70</span></span> },
+                { label: "Secure today with", value: "3 CHF (~$3.80) refundable deposit" },
+                { label: "Remaining balance", value: "Charged only when your unit ships" },
+                { label: "Expected delivery", value: "December 2026" },
+                { label: "Refund guarantee", value: "100% deposit refund at any time, or automatically if not delivered by Dec 31, 2026" },
+              ].map(({ label, value }) => (
+                <tr key={label} style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <td style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.45)", padding: isMobile ? "12px 0" : "14px 0", width: "45%" }}>{label}</td>
+                  <td style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.82)", padding: isMobile ? "12px 0" : "14px 0", paddingLeft: 16 }}>{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         {/* Subscribe + Pre-order */}
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 40 : "clamp(24px,5vw,80px)", width: "100%", maxWidth: 860, alignItems: "flex-start" }}>
 
           {/* Left: Mailchimp subscribe */}
           <div style={{ flex: 1, width: isMobile ? "100%" : undefined }}>
-            <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.82)" /* waitlist heading */, marginBottom: 12 }}>
+            <div style={{ ...TEXT.h2, color: "rgba(255,255,255,0.82)", marginBottom: 12 }}>
               Join the waitlist
             </div>
             <div style={{ ...TEXT.body, marginBottom: 24 }}>
-              We need your opinions! Leave your email so we can send you updates and ask for feedback as we build the product. We promise not to spam you, just one email every few weeks.
+              Leave your email to get product updates and share your feedback as we build. One email every few weeks, no spam.
             </div>
             <MailchimpForm
               dark={true}
@@ -891,13 +979,33 @@ function CTAScreen() {
             <div style={{ ...TEXT.h2, color: C.teal, marginBottom: 12 }}>
               Lock in your price
             </div>
-            <div style={{ ...TEXT.body, marginBottom: 24 }}>
-              Put down 3 CHF (~$3.8) now to secure the early bird price when we launch. Your deposit also helps us build and deliver the product for you sooner and in a better way.
+            <div style={{ ...TEXT.body, marginBottom: 20 }}>
+              Put down 3 CHF (~$3.80) today to secure the early bird price. Your deposit is fully refundable at any time.
             </div>
+
+            {/* What's included */}
+            <ul style={{ listStyle: "none", margin: "0 0 24px", padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+              {[
+                "Portable inverted microscope body",
+                "Two specimen slide clips",
+                "USB-C connectivity",
+                "Eureka! Discovery App access",
+                "Priority batch 1 delivery (Dec 2026)",
+              ].map(item => (
+                <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ color: C.teal, fontSize: 16, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
+                  <span style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.65)", lineHeight: 1.5 }}>{item}</span>
+                </li>
+              ))}
+            </ul>
+
             <StripeButton href={(import.meta.env.VITE_STRIPE_LEISURE_URL as string) || ""} />
           </div>
         </div>
       </div>
+
+      {/* ── FAQ ── */}
+      <FAQ isMobile={isMobile} />
 
       {/* Sponsors */}
       <div style={{
