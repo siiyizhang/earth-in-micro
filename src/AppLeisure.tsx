@@ -1104,11 +1104,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const scrollToScreen = (screenIndex: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    el.scrollTo({ top: window.innerHeight * screenIndex, behavior: "smooth" });
-  };
 
   useEffect(() => {
     if (window.location.hash === "#cta") {
@@ -1254,6 +1249,9 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
               actionUrl={(import.meta.env.VITE_MAILCHIMP_LEISURE_URL as string) || ""}
               tags="12752743"
             />
+            <div style={{ ...TEXT.caption, color: "rgba(255,255,255,0.38)", lineHeight: 1.6 }}>
+              Get product updates and be the first to know when we launch. One email every few months, no spam.
+            </div>
           </div>
 
           {/* Phone mockup: video behind, frame overlay on top */}
@@ -1287,19 +1285,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             />
           </div>
 
-          <button
-            onClick={() => scrollToScreen(1)}
-            style={{
-              ...TEXT.bodySmall, fontWeight: 500, letterSpacing: "0.1em",
-              color: "#ffffff", background: C.teal,
-              border: "none", borderRadius: 999, padding: "13px 28px",
-              cursor: "pointer", transition: "background 0.2s, color 0.2s", whiteSpace: "nowrap",
-            }}
-            onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
-            onMouseLeave={e => { (e.currentTarget).style.background = C.teal; }}
-          >
-            Explore Eureka Microscope →
-          </button>
         </div>
       </div>
 

@@ -85,21 +85,15 @@ export default function MailchimpForm({ dark = true, actionUrl, tags }: Props) {
           disabled={status === "loading"}
           style={{
             fontFamily: FONTS.sans, fontSize: 13, fontWeight: 500,
-            letterSpacing: "0.04em", color: textColor,
-            background: "transparent",
-            border: `1.5px solid ${borderColor}`,
+            letterSpacing: "0.04em", color: "#ffffff",
+            background: "#0ABFBC",
+            border: "none",
             borderRadius: 40, padding: "11px 22px",
             cursor: "pointer", whiteSpace: "nowrap",
-            transition: "border-color 0.2s, color 0.2s",
+            transition: "background 0.2s",
           }}
-          onMouseEnter={e => {
-            (e.currentTarget).style.borderColor = dark ? "rgba(255,255,255,0.6)" : "rgba(26,42,60,0.7)";
-            (e.currentTarget).style.color = dark ? "#ffffff" : "rgba(26,42,60,1)";
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget).style.borderColor = borderColor;
-            (e.currentTarget).style.color = textColor;
-          }}
+          onMouseEnter={e => { (e.currentTarget).style.background = "#0dd4d1"; }}
+          onMouseLeave={e => { (e.currentTarget).style.background = "#0ABFBC"; }}
         >
           {status === "loading" ? "..." : "Subscribe →"}
         </button>
