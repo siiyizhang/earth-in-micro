@@ -104,7 +104,7 @@ const TEXT = {
     fontFamily: FONTS.sans, fontWeight: 400,
     fontSize: "clamp(10px,0.75vw,12px)", letterSpacing: "0.12em",
     textTransform: "uppercase" as const, lineHeight: 1.4,
-    color: "rgba(255,255,255,0.5)",
+    color: "rgba(255,255,255,0.75)",
   },
 };
 
@@ -146,14 +146,14 @@ const SCENARIOS = [
 
 // Spec data for the SpecsBar above QualityScreen
 const SPECS = [
-  { value: "1.4 μm",  label: "Optical Resolution",                  desc: "Resolves details finer than a single bacterium — on par with research lab microscopes." },
-  { value: "4K",      label: "Image Resolution",                     desc: "Every frame is a high-resolution photo ready to share or print." },
-  { value: "1/2.8″",  label: "Sensor Size",                          desc: "A large sensor captures more light, giving you brighter, cleaner images in low-light conditions." },
-  { value: ">90",     label: "Color Rendering Index of LED Light",   desc: "Colors appear true to life — important for identifying biological specimens accurately." },
-  { value: "150×",    label: "Magnification",                        desc: "Enough to clearly see cells, microorganisms, and fine surface structures." },
-  { value: ">10",     label: "Lens Elements",                        desc: "More glass elements correct distortion and aberration, so the image stays sharp edge to edge." },
-  { value: "<800 g",  label: "Weight",                               desc: "Light enough to carry in a day bag and use one-handed in the field." },
-  { value: ">4 h",    label: "Battery Life",                         desc: "A full afternoon of continuous observation on a single charge." },
+  { value: "1.4 μm",  label: "Optical Resolution",                  desc: "Resolves the cilia clearly." },
+  { value: "3K",      label: "Image Resolution",                     desc: "Ready to share or print." },
+ // { value: "1/2.8″",  label: "Sensor Size",                          desc: "A large sensor captures more light, giving you brighter, cleaner images in low-light conditions." },
+ // { value: ">90",     label: "Color Rendering Index of LED Light",   desc: "Colors appear true to life — important for identifying biological specimens accurately." },
+  { value: "150×",    label: "Magnification",                        desc: "Suitable for small-to-middle size plankton and protists, as well as the details of plants and insects." },
+  { value: ">10",     label: "Lens Elements",                        desc: "With correction for distortion and aberration." },
+  { value: "<800 g",  label: "Weight",                               desc: "Light and small enough to carry in a camera bag." },
+  { value: ">3 h",    label: "Battery Life",                         desc: "Continuous observation on a single charge." },
 ];
 
 // ── TooltipIcon ────────────────────────────────────────────────────────────────
@@ -228,7 +228,7 @@ function SpecsBar() {
               <div style={{
                 fontFamily: FONTS.sans, fontWeight: 300,
                 fontSize: "clamp(12px,1vw,14px)", lineHeight: 1.55,
-                color: "rgba(255,255,255,0.35)",
+                color: "rgba(255,255,255,0.5)",
               }}>
                 {s.desc}
               </div>
@@ -1284,6 +1284,22 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           >
             Explore Eureka Microscope →
           </button>
+
+          {/* Price + subscribe */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%", maxWidth: isMobile ? "100%" : 420 }}>
+            {/* Price line */}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(26px,3vw,38px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 16, color: "rgba(255,255,255,0.3)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
+              <span style={{ ...TEXT.caption, color: "rgba(255,255,255,0.38)" }}>Early bird · Kickstarter</span>
+            </div>
+            {/* Inline email form */}
+            <MailchimpForm
+              dark={true}
+              actionUrl={(import.meta.env.VITE_MAILCHIMP_LEISURE_URL as string) || ""}
+              tags="12752743"
+            />
+          </div>
         </div>
       </div>
 
