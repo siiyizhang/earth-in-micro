@@ -1240,6 +1240,22 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             </div>
           </div>
 
+          {/* Price + subscribe */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%", maxWidth: isMobile ? "100%" : 420 }}>
+            {/* Price line */}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(26px,3vw,38px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 16, color: "rgba(255,255,255,0.3)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
+              <span style={{ ...TEXT.caption, color: "rgba(255,255,255,0.38)" }}>Early bird · Kickstarter</span>
+            </div>
+            {/* Inline email form */}
+            <MailchimpForm
+              dark={true}
+              actionUrl={(import.meta.env.VITE_MAILCHIMP_LEISURE_URL as string) || ""}
+              tags="12752743"
+            />
+          </div>
+
           {/* Phone mockup: video behind, frame overlay on top */}
           <div style={{
             position: "relative",
@@ -1284,22 +1300,6 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           >
             Explore Eureka Microscope →
           </button>
-
-          {/* Price + subscribe */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%", maxWidth: isMobile ? "100%" : 420 }}>
-            {/* Price line */}
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(26px,3vw,38px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
-              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 16, color: "rgba(255,255,255,0.3)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
-              <span style={{ ...TEXT.caption, color: "rgba(255,255,255,0.38)" }}>Early bird · Kickstarter</span>
-            </div>
-            {/* Inline email form */}
-            <MailchimpForm
-              dark={true}
-              actionUrl={(import.meta.env.VITE_MAILCHIMP_LEISURE_URL as string) || ""}
-              tags="12752743"
-            />
-          </div>
         </div>
       </div>
 
