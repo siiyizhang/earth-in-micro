@@ -193,6 +193,96 @@ function TooltipIcon() {
   );
 }
 
+// ── CompareSlider ──────────────────────────────────────────────────────────────
+// Drag-to-reveal before/after image comparison (bright vs. dark-field illumination).
+
+function CompareSlider({ beforeSrc, afterSrc, beforeLabel, afterLabel }: {
+  beforeSrc: string; afterSrc: string; beforeLabel: string; afterLabel: string;
+}) {
+  const [pos, setPos] = useState(50);
+  const [dragging, setDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const updateFromClientX = (clientX: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.min(100, Math.max(0, pct)));
+  };
+
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: PointerEvent) => updateFromClientX(e.clientX);
+    const onUp = () => setDragging(false);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, [dragging]);
+
+  return (
+    <div
+      ref={containerRef}
+      onPointerDown={(e) => { setDragging(true); updateFromClientX(e.clientX); }}
+      style={{
+        position: "relative", width: "100%", aspectRatio: "1/1",
+        borderRadius: 16, overflow: "hidden", userSelect: "none",
+        cursor: "ew-resize", background: "#0a0c12",
+      }}
+    >
+      <img
+        src={afterSrc} alt={afterLabel} draggable={false}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      />
+      <div style={{
+        position: "absolute", inset: 0, overflow: "hidden",
+        clipPath: `inset(0 ${100 - pos}% 0 0)`,
+      }}>
+        <img
+          src={beforeSrc} alt={beforeLabel} draggable={false}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+      </div>
+
+      {/* Handle */}
+      <div style={{
+        position: "absolute", top: 0, bottom: 0, left: `${pos}%`,
+        width: 2, background: "rgba(255,255,255,0.9)", transform: "translateX(-1px)",
+        boxShadow: "0 0 10px rgba(0,0,0,0.5)", pointerEvents: "none",
+      }}>
+        <div style={{
+          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+          width: 36, height: 36, borderRadius: "50%", background: "#fff",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
+        }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1A2B3C" strokeWidth="2" strokeLinecap="round">
+            <path d="M8 7L3 12L8 17" />
+            <path d="M16 7L21 12L16 17" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Labels */}
+      <div style={{
+        position: "absolute", left: 14, bottom: 14, ...TEXT.caption,
+        padding: "5px 10px", borderRadius: 8, background: "rgba(10,12,20,0.7)",
+        backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.1)",
+        color: "#fff", pointerEvents: "none",
+      }}>{beforeLabel}</div>
+      <div style={{
+        position: "absolute", right: 14, bottom: 14, ...TEXT.caption,
+        padding: "5px 10px", borderRadius: 8, background: "rgba(10,12,20,0.7)",
+        backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.1)",
+        color: "#fff", pointerEvents: "none",
+      }}>{afterLabel}</div>
+    </div>
+  );
+}
+
 // ── SpecsBar ───────────────────────────────────────────────────────────────────
 
 function SpecsBar() {
@@ -355,6 +445,33 @@ function QualityScreen() {
         </div>
         <div style={{ flex: isMobile ? "none" : "0 0 52%", borderRadius: 16, overflow: "hidden", height: isMobile ? 220 : "auto" }}>
           <img src="/images/product/4.webp" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      </div>
+
+      {/* Row 3b: Drag-to-compare illumination examples */}
+      <div style={{ padding: `0 ${PAD} clamp(32px,6vh,72px)` }}>
+        <div style={{ ...TEXT.bodySmall, textAlign: "center", marginBottom: 20, color: "rgba(255,255,255,0.5)" }}>
+          Drag the handle to compare bright-field and dark-field illumination.
+        </div>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 32 }}>
+          <div style={{ flex: "1 1 0" }}>
+            <CompareSlider
+              beforeSrc="/images/illumination/moss%20bright.jpg"
+              afterSrc="/images/illumination/moss%20dark.jpg"
+              beforeLabel="Bright-field"
+              afterLabel="Dark-field"
+            />
+            <div style={{ ...TEXT.caption, textAlign: "center", marginTop: 10, color: "rgba(255,255,255,0.5)" }}>Moss leaf</div>
+          </div>
+          <div style={{ flex: "1 1 0" }}>
+            <CompareSlider
+              beforeSrc="/images/illumination/moth%20bright.jpg"
+              afterSrc="/images/illumination/moth%20dark.jpg"
+              beforeLabel="Bright-field"
+              afterLabel="Dark-field"
+            />
+            <div style={{ ...TEXT.caption, textAlign: "center", marginTop: 10, color: "rgba(255,255,255,0.5)" }}>Moth scale</div>
+          </div>
         </div>
       </div>
 
