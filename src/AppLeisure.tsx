@@ -385,7 +385,7 @@ function QualityScreen() {
           {/* Right column */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ flex: "0 0 auto" }}>
-              <div style={{ ...TEXT.h2, marginBottom: 10 }}>Lab-grade Image Quality</div>
+              <div style={{ ...TEXT.h2, marginBottom: 10 }}>Research-grade Image Quality</div>
               <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.8)" /* brighter than default 0.5 */ }}>
                 Most microscopes advertise magnification, but the image still looks blurry. With 1.4 μm resolution, Eureka shows real structure. Not just bigger, but clearer.
               </div>
@@ -435,6 +435,52 @@ function QualityScreen() {
         </div>
       </div>
 
+      {/* Row 2: Research testimonials */}
+      <div style={{ display: "flex", justifyContent: "center", padding: `0 ${PAD} clamp(40px,6vh,72px)` }}>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 20 : 24, width: "100%", maxWidth: 1100 }}>
+          {[
+            {
+              img: "/images/testimonials/csm_Manon_Demulder_GL_v2_468fc0b100.jpg",
+              quote: "Thanks to the microscope we were able to identify and collect the algae we were looking for in the field! We would sample blindly without it.",
+              name: "Dr. Manon Demulder",
+              role: "Postdoctoral Researcher, Biozentrum, University of Basel",
+              context: "Snow Algae sampling on glaciers",
+            },
+            {
+              img: "/images/testimonials/odermatt.jpg",
+              quote: "I recognize the potential of the microscopes to enable a successful expansion of our citizen science activities, namely the collection of phytoplankton taxa reference measurements for the development of hyperspectral Earth observation satellite products.",
+              name: "Dr.Daniel Odermatt",
+              role: "Group Leader, Swiss Federal Institute of Aquatic Science and Technology",
+              context: "Citizen science phytoplankton monitoring",
+            },
+          ].map((t) => (
+            <div key={t.name} style={{
+              flex: 1, display: "flex", flexDirection: "column", gap: 14,
+              padding: isMobile ? "20px" : "24px 28px",
+              borderRadius: 12, background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}>
+              <div style={{ ...TEXT.body, color: "rgba(255,255,255,0.85)", fontStyle: "italic" }}>
+                {t.quote}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
+                <img src={t.img} alt={t.name} style={{
+                  width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0,
+                }} />
+                <div>
+                  <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.92)", fontWeight: 600, lineHeight: 1.4 }}>
+                    {t.name}
+                  </div>
+                  <div style={{ ...TEXT.caption, lineHeight: 1.4 }}>
+                    {t.role} &middot; {t.context}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Row 3: Multi-mode Illumination */}
       <div style={{ minHeight: 280, display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "stretch", justifyContent: "center", padding: `clamp(32px,6vh,72px) ${PAD}`, gap: isMobile ? 20 : 48 }}>
         <div style={{ flex: "0 0 auto", maxWidth: isMobile ? "100%" : 400, display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -453,7 +499,7 @@ function QualityScreen() {
         <div style={{ ...TEXT.bodySmall, textAlign: "center", marginBottom: 20, color: "rgba(255,255,255,0.5)" }}>
           Drag the handle to compare bright-field and dark-field illumination.
         </div>
-        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 32 }}>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 24 : 32, maxWidth: isMobile ? "100%" : "70%", margin: "0 auto" }}>
           <div style={{ flex: "1 1 0" }}>
             <CompareSlider
               beforeSrc="/images/illumination/moss%20bright.jpg"
@@ -669,6 +715,11 @@ const STEP3_MEDIA = [
   { src: "/images/step3/vorticella_web.mp4",    label: "Vorticella" },
 ];
 
+const STEP3_PLANKTON = Array.from({ length: 10 }, (_, i) => ({
+  src: `/images/plankton/plankton-${String(i + 1).padStart(2, "0")}.png`,
+  label: `Plankton ${i + 1}`,
+}));
+
 function Step1Card({ item }: { item: { src: string; label: string; desc: string } }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -706,16 +757,12 @@ function StepsSection() {
   return (
     <div style={{ width: "100vw", background: "#000008" }}>
 
-      {/* ── Section heading ── */}
-      <div style={{ textAlign: "center", padding: `clamp(48px,7vh,80px) ${PAD} clamp(12px,2vh,24px)` }}>
-        <div style={{ ...TEXT.h1 }}>Turn anywhere into your <span style={{ color: C.teal }}>playground</span></div>
-      </div>
 
       {/* ── Step 1 ── */}
       <div style={{ padding: `clamp(32px,5vh,56px) ${PAD}` }}>
         <div style={{ marginBottom: 20, textAlign: "center" }}>
           <span style={{ ...TEXT.label, color: C.teal }}>Step 01</span>
-          <div style={{ ...TEXT.h2, marginTop: 8 }}>Go into nature and scoop up interesting things</div>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Go out and collect interesting things</div>
         </div>
         {/* 4 portrait photos — 2-column on mobile, 4-column on desktop, 3/4 width */}
         <div style={{
@@ -735,7 +782,7 @@ function StepsSection() {
       <div style={{ padding: `0 ${PAD} clamp(32px,5vh,56px)` }}>
         <div style={{ marginBottom: 20, textAlign: "center" }}>
           <span style={{ ...TEXT.label, color: C.teal }}>Step 02</span>
-          <div style={{ ...TEXT.h2, marginTop: 8 }}>Explore a new world</div>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Connect the microscope to your phone / tablet through WiFi</div>
         </div>
         {/* 6 items: 3 portrait photos + 3 tall screenshots — 2 col mobile, 3 col desktop, 3/4 width */}
         <div style={{
@@ -758,7 +805,7 @@ function StepsSection() {
       <div style={{ padding: `0 ${PAD} clamp(48px,7vh,80px)` }}>
         <div style={{ marginBottom: 20, textAlign: "center" }}>
           <span style={{ ...TEXT.label, color: C.teal }}>Step 03</span>
-          <div style={{ ...TEXT.h2, marginTop: 8 }}>Fall down the microscopic rabbit hole</div>
+          <div style={{ ...TEXT.h2, marginTop: 8 }}>Unlock the <span style={{ color: C.teal }}>next layer</span> of nature </div>
         </div>
         {/* Mixed grid: videos take 16:9, small static images flow naturally */}
         <div style={{
@@ -799,6 +846,26 @@ function StepsSection() {
             );
           })}
         </div>
+
+        {/* Plankton catch — smaller square thumbnails, 5 per row */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "repeat(5, 1fr)",
+          gap: isMobile ? 8 : 12,
+          maxWidth: isMobile ? "100%" : "70%",
+          margin: "16px auto 0",
+        }}>
+          {STEP3_PLANKTON.map((item, i) => (
+            <div key={i} style={{
+              borderRadius: 8, overflow: "hidden",
+              aspectRatio: "1/1",
+              border: "1px solid rgba(255,255,255,0.07)",
+            }}>
+              <img src={item.src} alt={item.label}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ── More to find... ── */}
@@ -810,18 +877,19 @@ function StepsSection() {
           display: "grid",
           gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
           gap: isMobile ? 10 : 16,
+          maxWidth: isMobile ? "100%" : "70%",
           margin: "0 auto",
         }}>
           {[
             { src: "/images/more_image/onion cell.webp",      label: "Onion cell" },
             { src: "/images/more_image/pollen.webp",          label: "Pollen" },
             { src: "/images/more_image/sugar crystal 2.webp", label: "Sugar crystal" },
-            { src: "/images/more_image/moth1.webp",           label: "Moth eye" },
             { src: "/images/more_image/moth2.webp",           label: "Moth head" },
             { src: "/images/more_image/Moth Scale.webp",      label: "Moth scale" },
             { src: "/images/more_image/Moth Scale2.webp",     label: "Moth scale 2" },
-            { src: "/images/more_image/Flower Stamen.webp",   label: "Flower stamen" },
-            { src: "/images/more_image/Moss.webp",            label: "Moss" },
+            { src: "/images/more_image/strawberry stem.jpg",  label: "Strawberry stem" },
+            { src: "/images/more_image/Raspberry mold.jpg",   label: "Raspberry mold" },
+            { src: "/images/more_image/pixels.jpg",           label: "Screen pixels" },
           ].map((item, i) => (
             <div key={i} style={{
               borderRadius: 12, overflow: "hidden",
