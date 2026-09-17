@@ -1,0 +1,169 @@
+[
+  {
+    "id": "rgb-pixels",
+    "title": "RGB Pixels on a Screen",
+    "detail": "Discover how red, green, and blue light create every color.",
+    "germanTitle": "RGB-Pixel auf einem Bildschirm",
+    "germanDetail": "Entdecke, wie rotes, grünes und blaues Licht alle Farben erzeugt.",
+    "introduction": "A white screen looks white—but how does it look under a microscope?",
+    "materials": "Another phone",
+    "steps": [
+      {
+        "title": "Make the screen appear white",
+        "text": "For example, open a blank document or a white image.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Keep the screen bright",
+        "text": "Turn up brightness and keep the display awake.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Place it face-down",
+        "text": "Rest the screen gently on the microscope stage.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Focus very slowly",
+        "text": "Stop when tiny colored shapes begin to appear.",
+        "noteTitle": "Still blurry?",
+        "noteText": "Change focus slowly, check that the screen is bright, then move the phone a little sideways."
+      }
+    ]
+  },
+  {
+    "id": "water-life",
+    "title": "One Drop of Water",
+    "detail": "Meet the tiny organisms living in an everyday water sample.",
+    "germanTitle": "Ein Wassertropfen",
+    "germanDetail": "Begegne winzigen Organismen in einer alltäglichen Wasserprobe.",
+    "introduction": "A water sample can hold a world too small to see. Choose a sample, collect one careful drop, and enter its world.",
+    "materials": "Water sample + pipette",
+    "steps": [
+      {
+        "title": "Choose a tiny world",
+        "text": "Hold one bottle to the light. Look for dots, threads, or clouds, then turn it gently once—do not shake.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Collect one sample",
+        "text": "Use the pipette marked for this bottle. Squeeze first, place it in the water, then release slowly.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Make one careful drop",
+        "text": "Place one small drop on the petridish and put a cover slip on top.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Turn the stage knobs",
+        "text": "Rotate either gray knob to move the stage left or right. Rotate the green knob to move it forward or back until the drop is above the camera.",
+        "noteTitle": "",
+        "noteText": ""
+      },
+      {
+        "title": "Adjust focus",
+        "text": "Adjust focus until particle edges are sharp.",
+        "noteTitle": "The view looks empty?",
+        "noteText": "Move toward the edge of the drop, refocus slowly, or prepare another drop from the same bottle."
+      }
+    ]
+  },
+  {
+    "id": "onion-cells",
+    "title": "Onion Cells",
+    "detail": "Prepare a thin onion-skin slide and explore how plant cells fit together.",
+    "germanTitle": "Zwiebelzellen",
+    "germanDetail": "Bereite ein dünnes Präparat aus Zwiebelhaut vor und erkunde den Aufbau von Pflanzenzellen."
+  },
+  {
+    "id": "kitchen-exploration",
+    "title": "Kitchen Exploration",
+    "detail": "Compare the hidden structures of safe, everyday kitchen ingredients.",
+    "germanTitle": "Erkundung in der Küche",
+    "germanDetail": "Vergleiche die verborgenen Strukturen sicherer Küchenzutaten."
+  },
+  {
+    "id": "mold",
+    "title": "Mold",
+    "detail": "Observe a safely contained mold sample and investigate its branching hyphae and spores.",
+    "germanTitle": "Schimmel",
+    "germanDetail": "Beobachte eine sicher verschlossene Schimmelprobe mit ihren verzweigten Hyphen und Sporen."
+  },
+  {
+    "id": "saliva",
+    "title": "Saliva",
+    "detail": "Prepare a hygienic sample of your own saliva and explore cheek cells, bubbles, and tiny debris.",
+    "germanTitle": "Speichel",
+    "germanDetail": "Bereite hygienisch eine eigene Speichelprobe vor und erkunde Wangenzellen, Bläschen und kleine Partikel."
+  },
+  {
+    "id": "moth-butterfly-scales",
+    "title": "Moth & Butterfly Scales",
+    "detail": "Investigate overlapping wing scales using a found or prepared specimen.",
+    "germanTitle": "Nachtfalter- und Schmetterlingsschuppen",
+    "germanDetail": "Untersuche überlappende Flügelschuppen an einem gefundenen oder vorbereiteten Präparat."
+  },
+  {
+    "id": "pollen",
+    "title": "Pollen",
+    "detail": "Compare pollen grains and discover how their shapes connect to plant reproduction.",
+    "germanTitle": "Pollen",
+    "germanDetail": "Vergleiche Pollenkörner und entdecke, wie ihre Formen mit der Pflanzenvermehrung zusammenhängen."
+  },
+  {
+    "id": "algal-blooms-climate",
+    "title": "Algal Blooms & Climate Change",
+    "detail": "Explore algae while investigating how warming and nutrients can influence blooms.",
+    "germanTitle": "Algenblüten und Klimawandel",
+    "germanDetail": "Erkunde Algen und untersuche, wie Erwärmung und Nährstoffe Algenblüten beeinflussen."
+  },
+  {
+    "id": "microplastics",
+    "title": "Microplastics",
+    "detail": "Examine suspected particles and learn why identifying microplastics requires care.",
+    "germanTitle": "Mikroplastik",
+    "germanDetail": "Untersuche verdächtige Partikel und erfahre, warum Mikroplastik vorsichtig bestimmt werden muss."
+  },
+  {
+    "id": "finding-tardigrade",
+    "title": "Finding a Tardigrade",
+    "detail": "Sample moss or lichen, prepare a wet mount, and search patiently for a water bear.",
+    "germanTitle": "Ein Bärtierchen finden",
+    "germanDetail": "Sammle Moos oder Flechten, bereite ein Nasspräparat vor und suche geduldig nach einem Bärtierchen."
+  },
+  {
+    "id": "cmyk-dots",
+    "title": "CMYK Dots in Print",
+    "detail": "See how layered ink dots become a full-color image.",
+    "germanTitle": "CMYK-Punkte im Druck",
+    "germanDetail": "Sieh, wie übereinanderliegende Farbpunkte ein vollfarbiges Bild ergeben."
+  },
+  {
+    "id": "textile-detective",
+    "title": "Textile Detective",
+    "detail": "Use magnification to investigate fibers, weaves, and clues.",
+    "germanTitle": "Textildetektiv",
+    "germanDetail": "Untersuche mit Vergrößerung Fasern, Gewebe und ihre Hinweise."
+  },
+  {
+    "id": "microscopic-artworks",
+    "title": "Microscopic Artworks",
+    "detail": "Create art from patterns invisible to the naked eye.",
+    "germanTitle": "Mikroskopische Kunstwerke",
+    "germanDetail": "Erschaffe Kunst aus Mustern, die mit bloßem Auge unsichtbar sind."
+  },
+  {
+    "id": "moss-revives",
+    "title": "Moss Revives with Water",
+    "detail": "Watch dried moss spring back to life when water returns.",
+    "germanTitle": "Moos erwacht mit Wasser",
+    "germanDetail": "Beobachte, wie getrocknetes Moos durch Wasser wieder lebendig wird."
+  }
+]

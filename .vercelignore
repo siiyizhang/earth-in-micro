@@ -47,3 +47,14 @@ public/images/step2/Screenshot*.png
 # Browser test artifacts
 /test-results/
 /playwright-report/
+
+# Local authoring artifacts are not part of the website deployment.
+.agents/
+.ppt-build/
+Eureka_Website_Deck/
+*.pptx
+*.ndjson
+tmp/
+tests/
+playwright.config.ts
+api/*.bak

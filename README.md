@@ -71,3 +71,7 @@ export default defineConfig([
   },
 ])
 ```
+
+## Eureka Web App
+
+Micro Explorer is available at `/app`. See [community-web-app.md](docs/community-web-app.md) for shared-account configuration, feature coverage, privacy behavior and browser tests.

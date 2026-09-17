@@ -19,6 +19,7 @@ const NAV_STYLE = {
 const NAV_LINKS = [
   { label: "About Us", href: "/about" },
   { label: "Blog",     href: "/blog" },
+  { label: "App",      href: "/app" },
 ];
 
 // alwaysVisible: skip scroll-triggered fade (for pages that scroll inside a div)
