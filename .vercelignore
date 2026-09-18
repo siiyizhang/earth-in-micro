@@ -30,7 +30,7 @@ dist-ssr
 yaro-complete-family/
 public/video/Screen Recording 2025-09-23 at 20.23.01.mov
 
-# Large video/binary files — keep local only
+# Exclude local source media, then explicitly include versioned website videos.
 public/images/step3/*.mp4
 public/images/step3/*.mov
 public/video/*.mp4
@@ -43,6 +43,22 @@ public/images/more_image/moth2.png
 public/images/product/ver4.png
 public/images/pond_product.png
 public/images/step2/Screenshot*.png
+
+
+# These website videos are tracked in Git and required by the pages.
+!public/images/step3/Amphileptus_web.mp4
+!public/images/step3/Lacrymaria_web.mp4
+!public/images/step3/Litonotus_web.mp4
+!public/images/step3/Stentors_web.mp4
+!public/images/step3/Vaginicolidae_web.mp4
+!public/images/step3/vorticella_web.mp4
+!public/video/Testimonial Francesco.mp4
+!public/video/Testimonial Marta.mp4
+!public/video/education 1.mp4
+!public/video/education 2 compressed.mp4
+!public/video/education 2.mp4
+!public/video/phone video in.mp4
+!public/video/phone video.mp4
 
 # Browser test artifacts
 /test-results/
