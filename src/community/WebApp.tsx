@@ -1,3 +1,4 @@
+import EurekaLogo from "../components/EurekaLogo";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
@@ -54,7 +55,7 @@ export default function WebApp() {
     <div className={`micro-app ${route.pathname.endsWith("/explore") ? "micro-exploring" : ""}`}>
       <header className="micro-header">
         <Link to="/" className="micro-brand">
-          <img src="/White text.webp" alt="Eureka" />
+          <EurekaLogo />
           <span>MICRO EXPLORER</span>
         </Link>
         <nav aria-label="Web app navigation">

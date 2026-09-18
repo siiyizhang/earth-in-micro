@@ -70,8 +70,9 @@
   gap: 18px;
   text-decoration: none;
 }
-.micro-brand img {
-  width: 108px;
+.micro-brand .eureka-logo {
+  width: 108px !important;
+  height: auto;
 }
 .micro-brand span {
   font-size: 9px;

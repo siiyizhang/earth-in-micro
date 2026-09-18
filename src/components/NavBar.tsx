@@ -1,3 +1,4 @@
+import EurekaLogo from "./EurekaLogo";
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -83,11 +84,9 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
               )}
             </button>
             {/* Logo centered */}
-            <img
-              src="/White text.webp"
-              alt="Earth in Micro"
+            <EurekaLogo
               onClick={() => navigate("/")}
-              style={{ height: 26, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", position: "absolute", left: "50%", transform: "translateX(-50%)", cursor: "pointer" }}
+              style={{ height: 26, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", margin: "0 auto", cursor: "pointer" }}
             />
             {/* Join Waitlist right */}
             <div style={{ marginLeft: "auto" }}>
@@ -112,9 +111,7 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
-            <img
-              src="/White text.webp"
-              alt="Earth in Micro"
+            <EurekaLogo
               onClick={() => navigate("/")}
               style={{ height: 32, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", cursor: "pointer" }}
             />

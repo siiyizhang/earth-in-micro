@@ -1,3 +1,4 @@
+import EurekaLogo from "./components/EurekaLogo";
 import { useState, useEffect, useRef, useMemo, useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
 import NavBar from "./components/NavBar";
@@ -1205,7 +1206,7 @@ function CTAScreen() {
         }}>
           {/* Brand */}
           <div style={{ width: isMobile ? "100%" : 200, textAlign: isMobile ? "center" : "left" }}>
-            <img src="/White text.webp" alt="Earth in Micro" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
+            <EurekaLogo style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
             <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.4)" /* footer tagline */, lineHeight: 1.6 }}>
               Making microscopy more accessible — anyone, anywhere, anytime.
             </div>

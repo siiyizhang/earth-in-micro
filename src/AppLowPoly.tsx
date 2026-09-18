@@ -1,3 +1,4 @@
+import EurekaLogo from "./components/EurekaLogo";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { Helmet } from "react-helmet-async";
 
@@ -697,10 +698,8 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
               )}
             </button>
             {/* Logo centered */}
-            <img
-              src={navVisible ? "/Black text.png" : "/White text.png"}
-              alt="Earth in Micro"
-              style={{ height: 24, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", position: "absolute", left: "50%", transform: "translateX(-50%)" }}
+            <EurekaLogo tone={navVisible ? "black" : "white"}
+              style={{ height: 24, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", margin: "0 auto" }}
             />
             {/* Join Waitlist right */}
             <div style={{ marginLeft: "auto" }}>
@@ -726,9 +725,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
         ) : (
           /* ── Desktop nav layout ── */
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
-            <img
-              src={navVisible ? "/Black text.png" : "/White text.png"}
-              alt="Earth in Micro"
+            <EurekaLogo tone={navVisible ? "black" : "white"}
               style={{ height: 29, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease" }}
             />
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
@@ -1206,7 +1203,7 @@ export default function AppLowPoly({ issStyle }: AppProps = {}) {
             }}>
               {/* Brand */}
               <div style={{ width: isMobile ? "100%" : 200, textAlign: isMobile ? "center" : "left" }}>
-                <img src="/Black text.png" alt="Earth in Micro" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
+                <EurekaLogo tone="black" style={{ height: 32, display: "block", marginBottom: 10, margin: isMobile ? "0 auto 10px" : "0 0 10px" }} />
                 <div style={{ fontFamily: FONTS.sans, fontWeight: 300, fontSize: "clamp(13px,1vw,15px)", color: "rgba(26,42,60,0.4)", lineHeight: 1.6 }}>
                   Making microscopy more accessible — anyone, anywhere, anytime.
                 </div>
