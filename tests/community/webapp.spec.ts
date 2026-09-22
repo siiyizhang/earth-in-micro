@@ -156,7 +156,7 @@ test("create public place requires explicit exact location agreement", async ({
 }) => {
   const calls = await setup(page);
   await page.goto("/app/explore");
-  await page.getByRole("button", { name: "＋ Create place" }).click();
+  await page.getByRole("button", { name: "＋ Create" }).click();
   await page.getByLabel("Place name").fill("Test Pond");
   await page.getByRole("button", { name: "Create public place" }).click();
   expect(

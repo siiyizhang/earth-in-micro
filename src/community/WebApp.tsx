@@ -114,7 +114,6 @@ export default function WebApp() {
                   signedIn={!!session}
                   revision={revision}
                   onPlace={setPlace}
-                  onUpload={() => { setUpload({ place: null }); if (!session) setAuth(true); }}
                   onPick={(lat, lng) => {
                     setPoint({ lat, lng });
                     if (!session) setAuth(true);

@@ -12,13 +12,11 @@ export default function ExploreMap({
   revision,
   onPlace,
   onPick,
-  onUpload,
 }: {
   signedIn: boolean;
   revision: number;
   onPlace: (place: Place) => void;
   onPick: (lat: number, lng: number) => void;
-  onUpload: () => void;
 }) {
   const [picking, setPicking] = useState(false);
   const pickingRef = useRef(false);
@@ -191,8 +189,7 @@ export default function ExploreMap({
             map.flyTo([lat, lng], 14, { duration: .9 });
           }} />
         <div className="micro-floating-actions">
-          <div><button className="micro-round" onClick={onUpload} aria-label="Upload a discovery" title="Upload a discovery"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h4l2-2h4l2 2h4v14H4z"/><circle cx="12" cy="12" r="4"/></svg></button>
-          <button onClick={() => changePicking(true)}>＋ Create place</button></div>
+          <div><button onClick={() => changePicking(true)}>＋ Create</button></div>
           <button className="micro-round" onClick={locate} disabled={locating} aria-busy={locating} aria-label={locating ? "Finding your location" : "My location"} title="My location">
             {locating ? <svg className="micro-location-spinner" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" /><path d="M12 1v3m0 16v3M1 12h3m16 0h3" /></svg>}
           </button>
