@@ -339,7 +339,7 @@ function QualityScreen() {
     { src: "/images/product/20.webp",     price: "~$20",    name: "Toy 1",     highlight: false },
     { src: "/images/product/80.webp",     price: "~$80",    name: "Toy 2",     highlight: false },
     { src: "/images/product/150.webp",    price: "~$150",   name: "Toy 3",     highlight: false },
-    { src: "/images/product/eureka.webp", price: "$329",    name: "Eureka",    highlight: true  },
+    { src: "/images/product/eureka.webp", price: "$359",    name: "Eureka",    highlight: true  },
     { src: "/images/product/5000.webp",   price: "~$5,000", name: "Lab grade", highlight: false },
   ];
   const PAD = isMobile ? "16px" : "clamp(40px,6vw,80px)";
@@ -1115,7 +1115,7 @@ function CTAScreen() {
             fontSize: "clamp(48px,7vw,96px)", color: "rgba(255,255,255,0.9)",
             letterSpacing: "-0.02em", lineHeight: 1.05,
           }}>
-            $329
+            $359
           </div>
           <div style={{ ...TEXT.bodySmall, color: "rgba(255,255,255,0.38)", marginTop: 10 }}>
             Launching on Kickstarter
@@ -1425,7 +1425,7 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
           <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%", maxWidth: isMobile ? "100%" : 420 }}>
             {/* Price line */}
             <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(26px,3vw,38px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$329</span>
+              <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: "clamp(26px,3vw,38px)", color: "rgba(255,255,255,0.92)", lineHeight: 1 }}>$359</span>
               <span style={{ fontFamily: FONTS.serif, fontWeight: 100, fontSize: 16, color: "rgba(255,255,255,0.3)", textDecoration: "line-through", lineHeight: 1 }}>$399</span>
               <span style={{ ...TEXT.caption, color: "rgba(255,255,255,0.38)" }}>Early bird · Kickstarter</span>
             </div>
