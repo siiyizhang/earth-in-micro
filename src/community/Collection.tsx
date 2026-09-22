@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { checked, client, currentUser, loadPlaceLog, rpc } from "./client";
 import type { Find, Observation, Place, Taxon, TreeNode, Visit } from "./client";
 import { FindViewer } from "./FindViewer";
+import GalleryLifeTree from "./GalleryLifeTree";
 import PlaceTree from "./PlaceTree";
 import { MediaView, Modal, TaxonPicker } from "./Shared";
 
@@ -21,6 +22,7 @@ export function PlaceLog({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [viewer, setViewer] = useState<{ finds: Find[]; index: number } | null>(null);
+  const [family, setFamily] = useState<{ name: string; finds: Find[] } | null>(null);
   useEffect(() => {
     let alive = true;
     loadPlaceLog(place.id).then(rows => { if (alive) setVisits(rows); })
@@ -37,7 +39,7 @@ export function PlaceLog({
     <p className="micro-place-count">{place.visit_count ?? visits.length} visits · {place.find_count ?? all.length} finds</p>
     {loading && <p role="status">Loading discoveries…</p>}
     {error && <p className="micro-error" role="alert">{error}</p>}
-    {all.some(f => f.family_name) && <PlaceTree finds={all} onFamily={family => setViewer({ finds: all.filter(f => f.family_name === family), index: 0 })} />}
+    <PlaceTree placeName={place.name} finds={all} onFamily={(node, finds) => setFamily({ name: node.name, finds })} />
     {[true, false].map(mine => {
       const finds = visits.filter(v => !!v.is_mine === mine).flatMap(v => v.finds).filter(f => f.storage_path);
       if (!finds.length) return null;
@@ -46,6 +48,10 @@ export function PlaceLog({
       </details>;
     })}
     {!loading && !all.length && <p>No discoveries yet.</p>}
+    {family && <Modal title={family.name} onClose={() => setFamily(null)} className="micro-family-finds">
+      <p className="micro-muted">{family.finds.length} {family.finds.length === 1 ? "find" : "finds"} here</p>
+      <div className="micro-find-grid">{family.finds.map((find, index) => <FindTile key={find.observation_id} find={find} onClick={() => setViewer({ finds: family.finds, index })} />)}</div>
+    </Modal>}
     {viewer && <FindViewer finds={viewer.finds} initialIndex={viewer.index} onClose={() => setViewer(null)} />}
   </Modal>;
 }
@@ -163,6 +169,7 @@ export function Gallery({
     [loading, setLoading] = useState(true),
     [filter, setFilter] = useState(userId === "guest" ? "public" : "mine"),
     [localRevision, setLocalRevision] = useState(0),
+    [view, setView] = useState<"timeline" | "tree">("timeline"),
     [selected, setSelected] = useState<Observation | null>(null);
   useEffect(() => {
     let alive = true;
@@ -217,10 +224,17 @@ export function Gallery({
           <span className="micro-eyebrow">DISCOVERIES FROM THE COMMUNITY</span>
           <h1>Gallery</h1>
         </div>
-        <button className="micro-primary" onClick={onUpload}>
-          ＋ Add discovery
-        </button>
+        <div className="micro-row">
+          <div className="micro-segmented" role="group" aria-label="Gallery view">
+            <button aria-pressed={view === "timeline"} onClick={() => setView("timeline")}>Timeline</button>
+            <button aria-pressed={view === "tree"} onClick={() => setView("tree")}>Life Tree</button>
+          </div>
+          <button className="micro-primary" onClick={onUpload}>
+            ＋ Add discovery
+          </button>
+        </div>
       </div>
+      {view === "tree" ? <GalleryLifeTree userId={userId} revision={revision + localRevision} /> : <>
       <div className="micro-row">
         <button aria-pressed={filter === "public"} onClick={() => setFilter("public")}>Community</button>
         {userId !== "guest" && <>
@@ -277,6 +291,7 @@ export function Gallery({
           </article>
         ))}
       </div>
+      </>}
       {selected && (
         <DiscoveryDetail
           observation={selected}

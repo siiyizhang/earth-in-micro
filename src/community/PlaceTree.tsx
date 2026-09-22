@@ -1,47 +1,32 @@
 import { useMemo, useState } from "react";
-import taxonomy from "./place-taxonomy.json";
 import type { Find } from "./client";
+import { lifeTreeGraph, litFamilies } from "./lifeTree";
+import type { LifeTreeNode } from "./lifeTree";
 import { Modal } from "./Shared";
+import WholeLifeTree from "./WholeLifeTree";
 
-type Node = typeof taxonomy[number] & { x: number; y: number; depth: number; lit: boolean };
-export default function PlaceTree({ finds, onFamily }: { finds: Find[]; onFamily: (name: string) => void }) {
+/** What this place has contributed to the tree of life, as on iOS: the
+ * compact radial tree, only the lit families selectable, and a lit family
+ * opens every find of it made here. */
+export default function PlaceTree({ placeName, finds, onFamily }: { placeName: string; finds: Find[]; onFamily: (family: LifeTreeNode, finds: Find[]) => void }) {
   const [expanded, setExpanded] = useState(false);
-  const families = useMemo(() => new Set(finds.map(f => f.family_name).filter(Boolean)), [finds]);
-  const nodes = useMemo(() => {
-    const byId = new Map(taxonomy.map(n => [n.id, { ...n, x: 0, y: 0, depth: 0, lit: families.has(n.name) }]));
-    const children = new Map<string | null, Node[]>();
-    for (const node of byId.values()) { const key = byId.has(node.parent ?? "") ? node.parent : null; children.set(key, [...(children.get(key) ?? []), node]); }
-    for (const list of children.values()) list.sort((a,b) => a.name.localeCompare(b.name));
-    let leaf = 0;
-    const angles = new Map<string, number>();
-    function visit(node: Node, depth: number): number {
-      node.depth = depth;
-      const kids = children.get(node.id) ?? [];
-      const angle = kids.length ? kids.map(k => visit(k, depth + 1)).reduce((a,b) => a+b, 0) / kids.length : leaf++;
-      node.lit ||= kids.some(k => k.lit);
-      angles.set(node.id, angle);
-      return angle;
-    }
-    for (const root of children.get(null) ?? []) visit(root, 0);
-    const depth = Math.max(...[...byId.values()].map(n => n.depth), 1);
-    for (const n of byId.values()) {
-      const angle = (angles.get(n.id) ?? 0) / Math.max(1, leaf) * Math.PI * 2;
-      const r = n.depth / depth * 260;
-      n.x = 300 + Math.cos(angle) * r; n.y = 300 + Math.sin(angle) * r;
-    }
-    return [...byId.values()];
-  }, [families]);
-  return <section className="micro-place-tree"><div className="micro-row micro-between"><h3>LIT HERE · {families.size} FAMILIES</h3><button onClick={() => setExpanded(true)} aria-label="Expand Life Tree">⤢</button></div>
-    <TreeGraph nodes={nodes} onFamily={onFamily} />
-    <div className="micro-family-links">{[...families].map(name => <button key={name} onClick={() => onFamily(name!)}>{name}</button>)}</div>
-    {expanded && <Modal title="Life Tree · lit here" onClose={() => setExpanded(false)} className="micro-tree-expanded"><TreeGraph nodes={nodes} onFamily={onFamily} /><div className="micro-family-links">{[...families].map(name => <button key={name} onClick={() => { setExpanded(false); onFamily(name!); }}>{name}</button>)}</div></Modal>}
+  const lit = useMemo(() => litFamilies(finds), [finds]);
+  const key = [...lit].sort().join("|");
+  // Keep the graph stable across rebuilds so the tree does not refit itself.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const nodes = useMemo(() => lifeTreeGraph(lit), [key]);
+  if (!lit.size) return null;
+  const litHere = lit.size;
+  const open = (node: LifeTreeNode) => {
+    onFamily(node, finds.filter((f) => f.family_source_id === node.id || f.family_name?.toLowerCase() === node.name.toLowerCase()));
+  };
+  return <section className="micro-place-tree">
+    <h3>LIT HERE · {litHere} {litHere === 1 ? "FAMILY" : "FAMILIES"}</h3>
+    <div className="micro-place-tree-card">
+      <WholeLifeTree nodes={nodes} initialStyle="radial" compact onOpen={open} onExpand={() => setExpanded(true)} />
+    </div>
+    {expanded && <Modal title={placeName} onClose={() => setExpanded(false)} className="micro-tree-expanded">
+      <div className="micro-tree-fullscreen"><WholeLifeTree nodes={nodes} initialStyle="radial" compact onOpen={open} /></div>
+    </Modal>}
   </section>;
-}
-function TreeGraph({ nodes, onFamily }: {nodes: Node[]; onFamily: (name: string) => void}) {
-  const [zoom, setZoom] = useState(1);
-  const byId = new Map(nodes.map(n => [n.id, n]));
-  return <div className="micro-tree-graph"><div className="micro-tree-scroll"><svg width={`${100 * zoom}%`} height={`${100 * zoom}%`} viewBox="0 0 600 600" role="img" aria-label="Life Tree using the iOS taxonomy; green branches mark families discovered here">
-    {nodes.map(n => { const p = byId.get(n.parent ?? ""); return p && <path key={n.id} d={`M${p.x},${p.y}L${n.x},${n.y}`} stroke={n.lit ? "#09bfa1" : "#3a4b43"} strokeWidth={n.lit ? 2 : .7} />; })}
-    {nodes.filter(n => n.lit && n.rank === "family").map(n => <g key={n.id} onClick={() => onFamily(n.name)} style={{cursor:"pointer"}}><circle cx={n.x} cy={n.y} r="7" fill="#72f4c7"/><title>{n.name}</title></g>)}
-  </svg></div><div className="micro-tree-zoom"><button aria-label="Zoom out tree" disabled={zoom <= 1} onClick={() => setZoom(z => Math.max(1,z-1))}>−</button><button aria-label="Zoom in tree" disabled={zoom >= 5} onClick={() => setZoom(z => Math.min(5,z+1))}>＋</button></div></div>;
 }

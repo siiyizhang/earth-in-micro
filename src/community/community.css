@@ -702,16 +702,41 @@
 .micro-find-viewer .micro-media { max-height:65dvh; object-fit:contain; background:#030704; }
 .micro-viewer-controls { display:flex; justify-content:space-between; align-items:center; margin-top:14px; }
 .micro-place-tree { margin:20px 0; }
-.micro-place-tree h3 { font-size:11px; letter-spacing:1.5px; color:#93a59a; }
-.micro-tree-graph { position:relative; height:230px; background:#0a1510; border-radius:16px; overflow:hidden; }
-.micro-tree-scroll { overflow:auto; height:100%; }
-.micro-tree-scroll svg { display:block; min-width:100%; min-height:100%; }
-.micro-tree-zoom { position:absolute; right:8px; bottom:8px; display:flex; gap:4px; }
-.micro-tree-zoom button { padding:4px 10px; }
-.micro-family-links { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
-.micro-family-links button { font-size:11px; padding:5px 9px; color:#77d9bd; border-radius:20px; }
-.micro-tree-expanded { width:min(900px,calc(100vw - 28px)); }
-.micro-tree-expanded .micro-tree-graph { height:65dvh; }
+.micro-place-tree h3 { font-size:11px; letter-spacing:1.5px; }
+.micro-place-tree h3 { margin:0 0 8px; color:#09bfa1; font-weight:700; }
+.micro-place-tree-card { height:230px; border-radius:18px; overflow:hidden; background:#06110e; }
+.micro-tree-expanded { width:min(1100px,calc(100vw - 28px)); }
+.micro-tree-fullscreen { height:min(78dvh,820px); border-radius:14px; overflow:hidden; }
+.micro-life-tree { position:relative; width:100%; height:100%; background:#020907; overflow:hidden; }
+.micro-life-tree canvas { display:block; width:100%; height:100%; touch-action:none; cursor:grab; }
+.micro-life-tree canvas:active { cursor:grabbing; }
+.micro-tree-icon { width:18px; height:18px; display:block; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.micro-tree-controls { position:absolute; top:10px; right:10px; display:flex; flex-direction:column; background:#07110fe6; border:1px solid #ffffff1f; border-radius:16px; overflow:hidden; }
+.micro-app .micro-tree-controls button, .micro-dialog .micro-tree-controls button { width:40px; height:38px; padding:0; display:grid; place-items:center; border:0; border-radius:0; background:transparent; color:#ffffffb3; }
+.micro-app .micro-tree-controls button:hover, .micro-dialog .micro-tree-controls button:hover { background:#ffffff14; }
+.micro-tree-status { position:absolute; top:10px; left:12px; right:58px; width:fit-content; max-width:calc(100% - 70px); display:flex; align-items:center; gap:8px; padding:9px 12px; background:#06110edd; border:1px solid #09bfa144; border-radius:16px; font-size:11px; font-weight:700; pointer-events:none; }
+.micro-tree-status span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.micro-tree-status .micro-tree-icon { color:#09bfa1; width:17px; height:17px; flex-shrink:0; }
+.micro-tree-hint { position:absolute; left:14px; bottom:14px; padding:7px 10px; background:#06110ecc; border:1px solid #ffffff1f; border-radius:14px; font-size:10px; color:#ffffff99; pointer-events:none; }
+.micro-tree-selected { position:absolute; left:12px; right:12px; bottom:12px; display:flex; align-items:center; gap:10px; padding:10px 8px 10px 14px; background:#0a1714f0; border:1px solid; border-radius:19px; box-shadow:0 0 18px #0000008a; }
+.micro-tree-selected > div { flex:1; min-width:0; display:flex; flex-direction:column; }
+.micro-tree-selected strong { font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.micro-tree-selected small { font-size:10px; color:#ffffff99; }
+.micro-app .micro-tree-selected button { width:38px; height:38px; padding:0; display:grid; place-items:center; background:transparent; border:0; }
+.micro-tree-badge { width:35px; height:35px; flex-shrink:0; border-radius:50%; border:1px solid; display:grid; place-items:center; }
+.micro-tree-badge .micro-tree-icon { width:17px; height:17px; }
+.micro-tree-search { width:min(520px,calc(100vw - 28px)); }
+.micro-tree-search input { width:100%; }
+.micro-tree-search ul { list-style:none; margin:10px 0 0; padding:0; max-height:55dvh; overflow:auto; }
+.micro-dialog .micro-tree-search button, .micro-tree-search li button { width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; text-align:left; background:transparent; border:0; border-bottom:1px solid #ffffff14; border-radius:0; }
+.micro-tree-search li span { display:flex; flex-direction:column; }
+.micro-tree-search li small { color:#ffffff80; }
+.micro-taxon-state { display:flex; align-items:center; gap:8px; font-weight:700; }
+.micro-segmented { display:inline-flex; border:1px solid #ffffff25; border-radius:12px; overflow:hidden; }
+.micro-app .micro-segmented button { border:0; border-radius:0; padding:9px 14px; }
+.micro-gallery-tree { height:clamp(420px, calc(100dvh - 230px), 900px); margin-top:14px; border-radius:18px; overflow:hidden; border:1px solid #ffffff14; }
+.micro-tree-message { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:28px; background:#020907; color:#ffffff99; }
+.micro-tree-message strong { color:#e8efeb; font-size:18px; }
 @media(max-width:700px) {
   .micro-exploring .micro-header { height:0; padding:0; border:0; }
   .micro-exploring .micro-brand,.micro-exploring .micro-account { display:none; }
