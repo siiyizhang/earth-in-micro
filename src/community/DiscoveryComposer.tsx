@@ -5,12 +5,18 @@ import type { Session } from "@supabase/supabase-js";
 import L from "leaflet";
 import { checked, client, preparePhoto, publishObservation, rpc, validateMedia, viewportQueries } from "./client";
 import type { Observation, Place, Taxon } from "./client";
-import { MediaView, Modal, TaxonPicker } from "./Shared";
+import RankEntry from "./RankEntry";
+import { MediaView, Modal } from "./Shared";
+import { deepest, lineageFor, resolveTaxon } from "./taxonomyEntry";
+import type { Lineage } from "./taxonomyEntry";
 import Identification from "./Identification";
 import VideoFramePicker from "./VideoFramePicker";
 
 type Point = { lat: number; lng: number };
-type Draft = { id: string; file: File; taxon: Taxon | null; name?: string; identifiedName?: string; note: string; frame?: File; saved?: boolean };
+function draftName(draft: Draft) {
+  return draft.name ?? draft.identifiedName ?? deepest(draft.lineage)?.name ?? draft.taxon?.scientific_name ?? "";
+}
+type Draft = { id: string; file: File; taxon: Taxon | null; lineage: Lineage; name?: string; identifiedName?: string; note: string; frame?: File; saved?: boolean };
 
 export default function DiscoveryComposer({ session, point, place, onClose, onSaved }: {
   session: Session; point?: Point; place: Place | null; onClose: () => void; onSaved: () => void;
@@ -63,7 +69,7 @@ export default function DiscoveryComposer({ session, point, place, onClose, onSa
     files = files.map(normalizeMediaFile);
     try {
       validateMedia([...drafts.map((d) => d.file), ...files]);
-      setDrafts((items) => [...items, ...files.map((file) => ({ id: crypto.randomUUID(), file, taxon: null, note: "" }))]);
+      setDrafts((items) => [...items, ...files.map((file) => ({ id: crypto.randomUUID(), file, taxon: null, lineage: {}, note: "" }))]);
       setError("");
     } catch (err) { setError((err as Error).message); }
   }
@@ -107,10 +113,11 @@ export default function DiscoveryComposer({ session, point, place, onClose, onSa
       for (const [index, draft] of drafts.entries()) {
         if (completed.current.has(draft.id)) continue;
         setStarted(true);
-        await publishObservation({ userId: session.user.id, title: draft.name?.trim() || draft.identifiedName || draft.taxon?.scientific_name || "Unidentified discovery",
+        const taxon = (await resolveTaxon(draft.lineage)) ?? draft.taxon;
+        await publishObservation({ userId: session.user.id, title: draftName(draft) || "Unidentified discovery",
           note: draft.note, capturedAt: new Date().toISOString(), visibility: share ? "public" : "private",
           geoprivacy: share ? (obscure ? "obscured" : "open") : "private", latitude: location.lat, longitude: location.lng,
-          taxonId: draft.taxon?.id ?? null, place: share && !obscure ? savedPlace.current : null,
+          taxonId: taxon?.id ?? null, place: share && !obscure ? savedPlace.current : null,
           visitId: sharedVisit.current, files: [draft.file], thumbnail: draft.frame,
           onProgress: (text) => setProgress(`${index + 1}/${drafts.length} · ${text}`) });
         completed.current.add(draft.id); update(draft.id, { saved: true });
@@ -149,12 +156,12 @@ export default function DiscoveryComposer({ session, point, place, onClose, onSa
       </fieldset>
       {!drafts.length && <div className="micro-draft-empty">Add a photo or video of what you found.</div>}
       {drafts.map((draft) => <fieldset key={draft.id} disabled={busy || started} className="micro-draft-row">
-        <div className="micro-row micro-between"><strong>{draft.name?.trim() || draft.identifiedName || draft.taxon?.scientific_name || "Unidentified discovery"}{draft.saved ? " · Saved" : ""}</strong><button type="button" aria-label={`Remove ${draft.file.name}`} onClick={() => setDrafts((items) => items.filter((d) => d.id !== draft.id))}>Remove</button></div>
+        <div className="micro-row micro-between"><strong>{draftName(draft) || "Unidentified discovery"}{draft.saved ? " · Saved" : ""}</strong><button type="button" aria-label={`Remove ${draft.file.name}`} onClick={() => setDrafts((items) => items.filter((d) => d.id !== draft.id))}>Remove</button></div>
         {draft.file.type.startsWith("video/") ? <VideoFramePicker file={draft.file} onSelect={(frame) => update(draft.id, { frame })} /> : <LocalPreview file={draft.file} />}
-        <Identification automatic key={`${draft.id}-${draft.frame?.lastModified ?? "photo"}`} file={draft.frame ?? draft.file} onSelect={(taxon, selectedName) => update(draft.id, { taxon, identifiedName: selectedName })} />
-        <label>Discovery name<input maxLength={140} value={draft.name ?? draft.identifiedName ?? draft.taxon?.scientific_name ?? ""} onChange={(e) => update(draft.id, { name: e.target.value })} placeholder="Enter a species, family or your own name" /></label>
-        <p className="micro-muted">Your name is saved as the discovery title. Choose a taxonomy match below to also classify it in your Life Tree.</p>
-        <TaxonPicker value={draft.taxon} onChange={(taxon) => update(draft.id, { taxon, identifiedName: undefined })} />
+        <Identification automatic key={`${draft.id}-${draft.frame?.lastModified ?? "photo"}`} file={draft.frame ?? draft.file} onSelect={(taxon, selectedName, lineageId) => update(draft.id, { taxon, identifiedName: selectedName, lineage: lineageFor(lineageId, selectedName) })} />
+        <RankEntry value={draft.lineage} onChange={(lineage) => update(draft.id, { lineage, taxon: null, identifiedName: undefined })} />
+        <label>Discovery name<input maxLength={140} value={draftName(draft)} onChange={(e) => update(draft.id, { name: e.target.value })} placeholder="Enter a species, family or your own name" /></label>
+        <p className="micro-muted">Your name is saved as the discovery title; it follows the deepest rank above unless you change it. Ranks matched to the Life Tree (✓) light it.</p>
         <label>Discovery note (optional)<textarea maxLength={5000} value={draft.note} onChange={(e) => update(draft.id, { note: e.target.value })} /></label>
       </fieldset>)}
       <fieldset disabled={busy || started}>

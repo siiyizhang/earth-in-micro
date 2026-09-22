@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { Find } from "./client";
+import { LineageView } from "./RankEntry";
 import { MediaView, Modal } from "./Shared";
+import { lineageFor } from "./taxonomyEntry";
 
-export function FindViewer({ finds, initialIndex = 0, onClose }: { finds: Find[]; initialIndex?: number; onClose: () => void }) {
+export function FindViewer({ finds, initialIndex = 0, onClose, canEdit, onEdit }: { finds: Find[]; initialIndex?: number; onClose: () => void; canEdit?: (find: Find) => boolean; onEdit?: (find: Find) => void }) {
   const touch = useRef<{x:number; y:number} | null>(null);
   const [index, setIndex] = useState(initialIndex);
   useEffect(() => {
@@ -23,7 +25,9 @@ export function FindViewer({ finds, initialIndex = 0, onClose }: { finds: Find[]
     }}>
     {find.storage_path && <MediaView key={find.observation_id} media={{ storage_path: find.storage_path, kind: find.kind ?? "photo" }} />}
     </div>
-    {find.family_name && <p><i>{find.family_name}</i></p>}
+    <LineageView lineage={lineageFor(find.family_source_id, find.title)} />
+    {!find.family_source_id && find.family_name && <p><i>{find.family_name}</i></p>}
+    {onEdit && canEdit?.(find) && <button type="button" onClick={() => onEdit(find)}>Edit discovery</button>}
     {find.note && <p>{find.note}</p>}
     <div className="micro-viewer-controls"><button disabled={index === 0} onClick={() => setIndex(index - 1)} aria-label="Previous discovery">←</button><span>{index + 1} / {finds.length}</span><button disabled={index === finds.length - 1} onClick={() => setIndex(index + 1)} aria-label="Next discovery">→</button></div>
   </Modal>;

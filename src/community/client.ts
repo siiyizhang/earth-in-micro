@@ -51,6 +51,7 @@ export type Observation = {
   visibility: string;
   status: string;
   initial_taxon_id?: string;
+  community_taxon_id?: string;
   observation_media: Media[];
 };
 export type Find = {
@@ -307,20 +308,4 @@ export async function currentUser() {
   if (error?.name === "AuthSessionMissingError") return null;
   if (error) throw new Error(error.message);
   return data.user;
-}
-
-// The mobile label RPC also returns catalog-only species with no UUID and
-// excludes families. Assignments require an actual taxa UUID, including families.
-export async function searchTaxa(query: string): Promise<Taxon[]> {
-  const term = query.trim().replace(/[%_]/g, "");
-  if (term.length < 2) return [];
-  return checked(
-    await client()
-      .from("taxa")
-      .select("id, scientific_name, rank")
-      .eq("active", true)
-      .ilike("scientific_name", `%${term}%`)
-      .order("scientific_name")
-      .limit(30),
-  ) as Taxon[];
 }

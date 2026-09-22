@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { checked, client, searchTaxa } from "./client";
-import type { Media, Taxon } from "./client";
+import { checked, client } from "./client";
+import type { Media } from "./client";
 
 export function Modal({
   title,
@@ -80,75 +80,5 @@ export function MediaView({ media }: { media: Media }) {
         loading="lazy"
       />
     </a>
-  );
-}
-export function TaxonPicker({
-  value,
-  onChange,
-}: {
-  value: Taxon | null;
-  onChange: (value: Taxon | null) => void;
-}) {
-  const [query, setQuery] = useState(""),
-    [results, setResults] = useState<Taxon[]>([]),
-    [error, setError] = useState("");
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      if (query.trim().length < 2) {
-        setResults([]);
-        return;
-      }
-      searchTaxa(query)
-        .then((rows) => {
-          if (!cancelled) {
-            setResults(rows);
-            setError("");
-          }
-        })
-        .catch((err) => {
-          if (!cancelled) setError(err.message);
-        });
-    }, 300);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [query]);
-  return (
-    <div>
-      <label>
-        Identification (optional)
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search a family, genus or species"
-        />
-      </label>
-      {value && (
-        <p className="micro-success">
-          {value.scientific_name} · {value.rank}{" "}
-          <button type="button" onClick={() => onChange(null)}>
-            Clear
-          </button>
-        </p>
-      )}
-      {error && <p role="alert">{error}</p>}
-      <div className="micro-taxon-results">
-        {results.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => {
-              onChange(t);
-              setQuery("");
-              setResults([]);
-            }}
-          >
-            {t.scientific_name} <small>{t.rank}</small>
-          </button>
-        ))}
-      </div>
-    </div>
   );
 }

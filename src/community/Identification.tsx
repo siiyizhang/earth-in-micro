@@ -22,7 +22,8 @@ import type { ModelTaxon } from "./taxonChains";
 export default function Identification({ file, onSelect, automatic = false }: {
   file: File | undefined;
   automatic?: boolean;
-  onSelect: (taxon: Taxon | null, name: string) => void;
+  /** `lineageId` is the NCBI id of the confirmed rank, for filling the rank fields. */
+  onSelect: (taxon: Taxon | null, name: string, lineageId?: string) => void;
 }) {
   const [busy, setBusy] = useState(false), [error, setError] = useState("");
   const [predictions, setPredictions] = useState<Prediction[]>([]);
@@ -66,7 +67,7 @@ export default function Identification({ file, onSelect, automatic = false }: {
       const exact = rows.find(t => t.source_taxon_id === committed.id);
       const fallback = rows.find(t => t.rank === "family");
       if (id !== generation.current) return;
-      onSelect(exact ?? fallback ?? null, committed.name);
+      onSelect(exact ?? fallback ?? null, committed.name, committed.id);
       setConfirmation(exact ? `${committed.name} · ${committed.rank} confirmed` : fallback ? `${committed.name} confirmed. The shared taxonomy currently records its family, ${fallback.scientific_name}; the selected name is kept as the discovery name.` : `${committed.name} confirmed as a name. This taxon is not yet in the shared taxonomy.`);
     } catch (err) { if (id === generation.current) setError((err as Error).message); }
     finally { if (id === generation.current) setBusy(false); }

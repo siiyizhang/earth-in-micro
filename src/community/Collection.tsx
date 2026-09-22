@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { checked, client, currentUser, loadPlaceLog, rpc } from "./client";
-import type { Find, Observation, Place, Taxon, TreeNode, Visit } from "./client";
+import type { Find, Observation, Place, TreeNode, Visit } from "./client";
 import { FindViewer } from "./FindViewer";
 import GalleryLifeTree from "./GalleryLifeTree";
 import PlaceTree from "./PlaceTree";
-import { MediaView, Modal, TaxonPicker } from "./Shared";
+import Identification from "./Identification";
+import RankEntry, { LineageView } from "./RankEntry";
+import { MediaView, Modal } from "./Shared";
+import { deepest, lineageFor, resolveTaxon, sourceIdOf } from "./taxonomyEntry";
+import type { Lineage } from "./taxonomyEntry";
 
 export function PlaceLog({
   place,
   onClose,
   onUpload,
+  onChanged,
 }: {
   place: Place;
   signedIn: boolean;
@@ -23,14 +28,26 @@ export function PlaceLog({
   const [loading, setLoading] = useState(true);
   const [viewer, setViewer] = useState<{ finds: Find[]; index: number } | null>(null);
   const [family, setFamily] = useState<{ name: string; finds: Find[] } | null>(null);
+  const [editing, setEditing] = useState<{ observation: Observation; userId: string } | null>(null);
+  const [reload, setReload] = useState(0);
   useEffect(() => {
     let alive = true;
     loadPlaceLog(place.id).then(rows => { if (alive) setVisits(rows); })
       .catch(e => { if (alive) setError(e.message); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [place.id]);
+  }, [place.id, reload]);
   const all = visits.flatMap(v => v.finds).filter(f => f.storage_path);
+  const mineIds = new Set(visits.filter(v => v.is_mine).flatMap(v => v.finds.map(f => f.observation_id)));
+  async function edit(find: Find) {
+    try {
+      const [row, user] = await Promise.all([
+        client().from("observations").select("*, observation_media(*)").eq("id", find.observation_id).single(),
+        currentUser(),
+      ]);
+      setEditing({ observation: checked(row) as Observation, userId: user?.id ?? "" });
+    } catch (e) { setError((e as Error).message); }
+  }
   const note = visits.find(v => v.message?.trim());
   return <Modal title={place.name} onClose={onClose} className="micro-place-detail">
     <button className="micro-add-here" onClick={onUpload}>＋ Add discovery to this place</button>
@@ -52,7 +69,8 @@ export function PlaceLog({
       <p className="micro-muted">{family.finds.length} {family.finds.length === 1 ? "find" : "finds"} here</p>
       <div className="micro-find-grid">{family.finds.map((find, index) => <FindTile key={find.observation_id} find={find} onClick={() => setViewer({ finds: family.finds, index })} />)}</div>
     </Modal>}
-    {viewer && <FindViewer finds={viewer.finds} initialIndex={viewer.index} onClose={() => setViewer(null)} />}
+    {viewer && <FindViewer finds={viewer.finds} initialIndex={viewer.index} onClose={() => setViewer(null)} canEdit={f => mineIds.has(f.observation_id)} onEdit={f => void edit(f)} />}
+    {editing && <DiscoveryDetail observation={editing.observation} userId={editing.userId} onClose={() => { setEditing(null); setViewer(null); setFamily(null); setReload(n => n + 1); onChanged(); }} />}
   </Modal>;
 }
 function FindTile({ find, onClick }: { find: Find; onClick: () => void }) {
@@ -288,6 +306,7 @@ export function Gallery({
               {item.visibility}
               {item.status !== "published" ? ` · ${item.status}` : ""}
             </small>
+            {item.author_id === userId && <button className="micro-card-edit" onClick={() => setSelected(item)}>Edit</button>}
           </article>
         ))}
       </div>
@@ -305,7 +324,7 @@ export function Gallery({
     </section>
   );
 }
-function DiscoveryDetail({
+export function DiscoveryDetail({
   observation,
   userId,
   onClose,
@@ -314,34 +333,64 @@ function DiscoveryDetail({
   userId: string;
   onClose: () => void;
 }) {
-  const [taxon, setTaxon] = useState<Taxon | null>(null),
+  const [lineage, setLineage] = useState<Lineage | null>(null),
     [title, setTitle] = useState(observation.title),
+    [titleEdited, setTitleEdited] = useState(false),
     [note, setNote] = useState(observation.note),
+    [photo, setPhoto] = useState<File>(),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false);
   const mine = observation.author_id === userId;
+  useEffect(() => {
+    let alive = true;
+    sourceIdOf(observation.community_taxon_id ?? observation.initial_taxon_id)
+      .then((id) => { if (alive) setLineage(lineageFor(id, observation.title)); })
+      .catch(() => { if (alive) setLineage(lineageFor(null, observation.title)); });
+    return () => { alive = false; };
+  }, [observation]);
+  // Re-identification runs on the saved photo, or a video's saved cover frame.
+  useEffect(() => {
+    if (!mine) return;
+    const media = observation.observation_media[0];
+    const path = media && (media.kind === "video" ? media.thumbnail_path : media.storage_path);
+    if (!path) return;
+    let alive = true;
+    void client().storage.from("observation-media").download(path).then(({ data }) => {
+      if (alive && data) setPhoto(new File([data], path.split("/").pop() || "photo.jpg", { type: data.type || "image/jpeg" }));
+    });
+    return () => { alive = false; };
+  }, [mine, observation]);
+  function changeLineage(next: Lineage) {
+    setLineage(next);
+    const name = deepest(next)?.name.trim();
+    if (!titleEdited && name) setTitle(name);
+  }
   return (
     <Modal title={observation.title} onClose={onClose} busy={busy}>
       {observation.observation_media.map((m) => (
         <MediaView key={m.storage_path} media={m} />
       ))}
+      {!mine && lineage && <LineageView lineage={lineage} />}
       <p>{observation.note}</p>
       <Interactions observationId={observation.id} />
       {mine && (
         <form
+          className="micro-discovery-edit"
           onSubmit={async (e) => {
             e.preventDefault();
             setBusy(true);
             setError("");
             try {
+              const taxon = lineage ? await resolveTaxon(lineage) : undefined;
               checked(
                 await client()
                   .from("observations")
                   .update({
                     title: title.trim(),
                     note,
-                    ...(taxon ? { initial_taxon_id: taxon.id } : {}),
+                    // Untouched until the stored identification has loaded.
+                    ...(lineage ? { initial_taxon_id: taxon?.id ?? null } : {}),
                   })
                   .eq("id", observation.id)
                   .select("id")
@@ -355,13 +404,20 @@ function DiscoveryDetail({
             }
           }}
         >
+          <Identification
+            file={photo}
+            onSelect={(_taxon, name, lineageId) => {
+              changeLineage(lineageId ? lineageFor(lineageId, name) : { ...lineage, genus: undefined, species: undefined, ...lineageFor(null, name) });
+            }}
+          />
+          {lineage ? <RankEntry value={lineage} onChange={changeLineage} /> : <p role="status">Loading identification…</p>}
           <label>
-            Title
+            Discovery name
             <input
               required
               maxLength={140}
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => { setTitle(e.target.value); setTitleEdited(true); }}
             />
           </label>
           <label>
@@ -372,7 +428,6 @@ function DiscoveryDetail({
               onChange={(e) => setNote(e.target.value)}
             />
           </label>
-          <TaxonPicker value={taxon} onChange={setTaxon} />
           <div className="micro-row">
             <button disabled={busy}>Save changes</button>
             <button

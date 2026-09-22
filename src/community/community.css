@@ -760,3 +760,21 @@
 .micro-other-lineages button[aria-pressed="true"] { border-color:#09bfa1; }
 .micro-lineage > small { color:#9db7aa; line-height:1.5; }
 .micro-lineage > button.micro-primary { background:#09bfa1; color:#06231a; border-color:#09bfa1; }
+.micro-rank-entry { border:1px solid #ffffff1f; border-radius:14px; padding:12px 14px 14px; margin:12px 0; display:grid; gap:8px; }
+.micro-rank-entry legend { padding:0 6px; font-weight:650; }
+.micro-rank-entry > p { margin:0 0 2px; }
+.micro-rank-field { display:grid; grid-template-columns:78px minmax(0,1fr); gap:10px; align-items:center; }
+.micro-rank-field > label { font-size:10px; letter-spacing:1px; color:#9db7aa; font-weight:700; }
+.micro-combobox { position:relative; }
+.micro-combobox input { width:100%; margin:0; padding-right:30px; }
+.micro-rank-linked { position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#09bfa1; font-weight:800; pointer-events:none; }
+.micro-suggestions { position:absolute; z-index:5; top:calc(100% + 4px); left:0; right:0; margin:0; padding:4px; list-style:none; background:#12211d; border:1px solid #ffffff25; border-radius:12px; box-shadow:0 10px 28px #0008; max-height:280px; overflow:auto; }
+.micro-suggestions li { display:flex; flex-direction:column; padding:7px 10px; border-radius:8px; cursor:pointer; }
+.micro-suggestions li[aria-selected="true"] { background:#09bfa12e; }
+.micro-suggestions small { color:#9db7aa; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.micro-lineage-view { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+.micro-lineage-view > div { display:flex; flex-direction:column; padding:6px 10px; background:#12211d; border:1px solid #ffffff1a; border-radius:10px; }
+.micro-lineage-view dt { font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#9db7aa; }
+.micro-lineage-view dd { margin:0; font-size:13px; }
+.micro-discovery-edit { display:grid; gap:10px; margin-top:14px; }
+.micro-card-edit { margin-top:6px; padding:6px 12px !important; font-size:12px; justify-self:start; }
