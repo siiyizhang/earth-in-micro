@@ -1,6 +1,7 @@
 // Local dev API server — run with: npx tsx server.ts
 import { createServer } from "http";
 import { readFileSync } from "fs";
+import { submitFeedback } from "./api/feedback.js";
 
 // Load .env
 try {
@@ -185,6 +186,16 @@ const server = createServer(async (req, res) => {
   if (reqUrl === "/api/health" && req.method === "GET") {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  if (reqUrl === "/api/feedback" && req.method === "POST") {
+    let raw = "";
+    for await (const chunk of req) raw += chunk;
+    let status = 400, body: unknown = { error: "Invalid request." };
+    try { [status, body] = await submitFeedback(JSON.parse(raw || "{}")); } catch (error) { console.error(error); }
+    res.writeHead(status, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(body));
     return;
   }
 

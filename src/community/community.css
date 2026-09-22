@@ -778,3 +778,27 @@
 .micro-lineage-view dd { margin:0; font-size:13px; }
 .micro-discovery-edit { display:grid; gap:10px; margin-top:14px; }
 .micro-card-edit { margin-top:6px; padding:6px 12px !important; font-size:12px; justify-self:start; }
+.micro-feedback { position:fixed; right:20px; bottom:calc(24px + env(safe-area-inset-bottom)); z-index:600; display:flex; flex-direction:column; align-items:flex-end; gap:10px; pointer-events:none; }
+.micro-feedback > * { pointer-events:auto; }
+.micro-app .micro-feedback-button { display:flex; align-items:center; gap:7px; padding:10px 16px; border-radius:999px; background:#172c24; border:1px solid #09bfa166; color:#e8efeb; font-size:13px; font-weight:600; box-shadow:0 6px 20px #0006; }
+.micro-app .micro-feedback-button:hover { background:#1f3a31; }
+.micro-feedback-button svg { width:17px; height:17px; fill:none; stroke:#09bfa1; stroke-width:1.8; stroke-linejoin:round; stroke-linecap:round; }
+.micro-feedback-intro { display:flex; align-items:center; gap:8px; max-width:250px; padding:10px 8px 10px 14px; background:#0f1f1a; border:1px solid #09bfa155; border-radius:14px; font-size:13px; line-height:1.4; box-shadow:0 8px 24px #0007; animation:micro-feedback-in .3s ease-out; }
+.micro-app .micro-feedback-intro button, .micro-app .micro-feedback-close { padding:4px 8px; background:transparent; border:0; color:#ffffff99; }
+.micro-feedback-panel { width:min(340px, calc(100vw - 32px)); padding:16px; background:#0f1f1a; border:1px solid #ffffff25; border-radius:18px; box-shadow:0 16px 40px #000a; animation:micro-feedback-in .2s ease-out; }
+.micro-feedback-panel form { display:grid; gap:10px; margin-top:6px; }
+.micro-feedback-panel p { margin:0; }
+.micro-feedback-panel textarea, .micro-feedback-panel input { width:100%; margin:0; }
+.micro-feedback-types { display:flex; gap:6px; flex-wrap:wrap; }
+.micro-app .micro-feedback-types button { padding:6px 11px; font-size:12px; border-radius:999px; }
+.micro-feedback-trap { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+.micro-feedback-thanks { display:grid; gap:10px; margin-top:8px; }
+@keyframes micro-feedback-in { from { opacity:0; transform:translateY(8px); } }
+@media(prefers-reduced-motion:reduce) { .micro-feedback-intro, .micro-feedback-panel { animation:none; } }
+/* On Explore, sit above the place cards and map arrows. */
+.micro-exploring .micro-feedback { bottom:calc(250px + env(safe-area-inset-bottom)); }
+@media(max-width:700px) {
+  .micro-feedback { right:16px; }
+  .micro-app .micro-feedback-button { padding:11px; }
+  .micro-feedback-button span { display:none; }
+}

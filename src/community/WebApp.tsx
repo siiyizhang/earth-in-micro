@@ -7,6 +7,7 @@ import type { Place } from "./client";
 import ExploreMap from "./ExploreMap";
 import { AuthForm } from "./Forms";
 import DiscoveryComposer from "./DiscoveryComposer";
+import FeedbackWidget from "./FeedbackWidget";
 import { Gallery, PlaceLog } from "./Collection";
 import "./community.css";
 
@@ -159,6 +160,7 @@ export default function WebApp() {
           onChanged={() => setRevision((n) => n + 1)}
         />
       )}
+      <FeedbackWidget accountEmail={session?.user.email} />
       {upload && session && !auth && (
         <DiscoveryComposer
           session={session}
