@@ -2,9 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 export default function VideoFramePicker({
   file,
+  src,
   onSelect,
 }: {
-  file: File;
+  file?: File;
+  /** A remote video (e.g. a signed URL); frames need CORS, hence crossOrigin. */
+  src?: string;
   onSelect: (frame: File) => void;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -13,10 +16,11 @@ export default function VideoFramePicker({
     [error, setError] = useState(""),
     [selected, setSelected] = useState(false);
   useEffect(() => {
+    if (!file) { if (ref.current && src) ref.current.src = src; return; }
     const url = URL.createObjectURL(file);
     if (ref.current) ref.current.src = url;
     return () => URL.revokeObjectURL(url);
-  }, [file]);
+  }, [file, src]);
   return (
     <div className="micro-identify">
       <p>Choose a video frame for identification and the discovery cover.</p>
@@ -25,6 +29,7 @@ export default function VideoFramePicker({
         className="micro-media"
         controls
         playsInline
+        crossOrigin={src && !file ? "anonymous" : undefined}
         preload="metadata"
         onTimeUpdate={() => { if (ref.current && !ref.current.seeking) setPosition(ref.current.currentTime); }}
         onLoadedMetadata={() =>
@@ -72,6 +77,7 @@ export default function VideoFramePicker({
           const context = canvas.getContext("2d");
           if (!context) return;
           context.drawImage(video, 0, 0);
+          try {
           canvas.toBlob(
             (blob) => {
               if (blob) {
@@ -85,6 +91,9 @@ export default function VideoFramePicker({
             "image/jpeg",
             0.92,
           );
+          } catch {
+            setError("This browser could not capture a frame from this video.");
+          }
         }}
       >
         {selected ? "✓ Frame selected · Replace frame" : "Use this frame"}

@@ -6,6 +6,7 @@ import GalleryLifeTree from "./GalleryLifeTree";
 import PlaceTree from "./PlaceTree";
 import Identification from "./Identification";
 import ImageCropper from "./ImageCropper";
+import VideoFramePicker from "./VideoFramePicker";
 import { cropPath, fullRect, isFull, originalOf, parseCrop, renderCrop } from "./mediaCrop";
 import type { CropRect } from "./mediaCrop";
 import RankEntry, { LineageView } from "./RankEntry";
@@ -327,6 +328,19 @@ export function Gallery({
     </section>
   );
 }
+type MediaTarget = "photo" | "cover";
+type PendingImage = { kind: MediaTarget; rect: CropRect; blob: Blob; url: string; width: number; height: number; frame?: Blob; originalPath?: string };
+type MediaRow = { storage_path: string; thumbnail_path?: string | null; kind: string; width?: number | null; height?: number | null; captured_at?: string | null };
+function CoverPreview({ path, pending }: { path?: string | null; pending?: string }) {
+  const [url, setUrl] = useState("");
+  useEffect(() => {
+    let alive = true;
+    if (path && !pending) void client().storage.from("observation-media").createSignedUrl(path, 3600).then(({ data }) => { if (alive) setUrl(data?.signedUrl ?? ""); });
+    return () => { alive = false; };
+  }, [path, pending]);
+  const src = pending ?? url;
+  return src ? <figure className="micro-cover-preview"><img src={src} alt="Video cover" /><figcaption>{pending ? "New cover" : "Cover"}</figcaption></figure> : null;
+}
 export function DiscoveryDetail({
   observation,
   userId,
@@ -342,8 +356,9 @@ export function DiscoveryDetail({
     [note, setNote] = useState(observation.note),
     [photo, setPhoto] = useState<File>(),
     [photoReload, setPhotoReload] = useState(0),
-    [cropping, setCropping] = useState<{ url: string; rect: CropRect } | null>(null),
-    [crop, setCrop] = useState<{ rect: CropRect; blob: Blob; url: string; width: number; height: number } | null>(null),
+    [cropping, setCropping] = useState<{ kind: MediaTarget; url: string; rect: CropRect; frame?: Blob } | null>(null),
+    [edit, setEdit] = useState<PendingImage | null>(null),
+    [picking, setPicking] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false);
@@ -367,48 +382,94 @@ export function DiscoveryDetail({
     });
     return () => { alive = false; };
   }, [mine, observation, photoReload]);
-  const firstMedia = observation.observation_media[0];
-  const canCrop = mine && firstMedia?.kind === "photo";
-  useEffect(() => () => { if (crop) URL.revokeObjectURL(crop.url); }, [crop]);
+  const firstMedia = observation.observation_media[0] as MediaRow | undefined;
+  const isVideo = firstMedia?.kind === "video";
+  const canEditMedia = mine && !!firstMedia;
+  useEffect(() => () => { if (edit) URL.revokeObjectURL(edit.url); }, [edit]);
   useEffect(() => () => { if (cropping) URL.revokeObjectURL(cropping.url); }, [cropping]);
-  // Cropping always starts from the uploaded original, with the last crop box restored.
+  const bucket = () => client().storage.from("observation-media");
+  // Cropping always starts from the uploaded original (a photo, or a video's
+  // chosen cover frame), with the last crop box restored.
   async function startCrop() {
+    if (!firstMedia) return;
     setError("");
     try {
-      const current = firstMedia.storage_path;
-      const bucket = client().storage.from("observation-media");
-      let { data } = await bucket.download(originalOf(current));
+      if (edit) { setCropping({ kind: edit.kind, url: URL.createObjectURL(edit.frame ?? await originalBlob(edit.originalPath!)), rect: edit.rect, frame: edit.frame }); return; }
+      const current = isVideo ? firstMedia.thumbnail_path : firstMedia.storage_path;
+      if (!current) throw new Error("Choose a cover frame from the video first.");
+      let { data } = await bucket().download(originalOf(current));
       let rect = parseCrop(current)?.rect ?? fullRect;
-      if (!data) { data = (await bucket.download(current)).data; rect = fullRect; }
-      if (!data) throw new Error("The photo could not be loaded for cropping.");
-      setCropping({ url: URL.createObjectURL(data), rect: crop?.rect ?? rect });
+      if (!data) { data = (await bucket().download(current)).data; rect = fullRect; }
+      if (!data) throw new Error("The image could not be loaded for cropping.");
+      setCropping({ kind: isVideo ? "cover" : "photo", url: URL.createObjectURL(data), rect });
     } catch (err) { setError((err as Error).message); }
   }
+  async function originalBlob(path: string) {
+    const { data } = await bucket().download(path);
+    if (!data) throw new Error("The image could not be loaded for cropping.");
+    return data;
+  }
+  async function startFramePicker() {
+    if (!firstMedia) return;
+    setError("");
+    const { data, error: signError } = await bucket().createSignedUrl(firstMedia.storage_path, 3600);
+    if (signError || !data) { setError(signError?.message ?? "The video could not be loaded."); return; }
+    setPicking(data.signedUrl);
+  }
   async function applyCrop(rect: CropRect) {
-    if (!cropping) return;
+    if (!cropping || !firstMedia) return;
     setBusy(true);
     try {
-      const source = await (await fetch(cropping.url)).blob();
+      const source = cropping.frame ?? await (await fetch(cropping.url)).blob();
       const result = await renderCrop(source, rect);
-      setCrop({ rect, ...result, url: URL.createObjectURL(result.blob) });
+      const current = cropping.kind === "cover" ? firstMedia.thumbnail_path : firstMedia.storage_path;
+      setEdit({ kind: cropping.kind, rect, ...result, url: URL.createObjectURL(result.blob), frame: cropping.frame,
+        originalPath: cropping.frame ? undefined : edit?.originalPath ?? (current ? originalOf(current) : undefined) });
       setPhoto(new File([result.blob], "cropped.jpg", { type: "image/jpeg" }));
       setCropping(null);
     } catch (err) { setError((err as Error).message); }
     finally { setBusy(false); }
   }
-  /** Swaps the listed photo for the cropped copy; the original is never deleted. */
-  async function saveCrop() {
-    if (!crop) return;
-    const db = client(), old = firstMedia.storage_path, original = originalOf(old);
-    const path = isFull(crop.rect) ? original : cropPath(original, crop.rect);
-    if (path === old) return;
-    if (path !== original) checked(await db.storage.from("observation-media").upload(path, crop.blob, { contentType: "image/jpeg", upsert: false }));
-    checked(await db.from("observation_media").insert({
-      observation_id: observation.id, owner_id: userId, storage_path: path, thumbnail_path: path, kind: "photo",
-      width: crop.width, height: crop.height, captured_at: (firstMedia as { captured_at?: string }).captured_at ?? null,
-    }));
-    checked(await db.from("observation_media").delete().eq("storage_path", old).eq("observation_id", observation.id).select("storage_path"));
-    if (old !== original) await db.storage.from("observation-media").remove([old]);
+  /** Stores the cropped image beside its untouched original and lists it. */
+  async function saveMedia() {
+    if (!edit || !firstMedia) return;
+    const db = client(), uploaded: string[] = [];
+    const put = async (path: string, blob: Blob) => { checked(await bucket().upload(path, blob, { contentType: "image/jpeg", upsert: false })); uploaded.push(path); };
+    if (edit.kind === "photo") {
+      const old = firstMedia.storage_path, original = originalOf(old);
+      const path = isFull(edit.rect) ? original : cropPath(original, edit.rect);
+      if (path === old) return;
+      if (path !== original) await put(path, edit.blob);
+      checked(await db.from("observation_media").insert({
+        observation_id: observation.id, owner_id: userId, storage_path: path, thumbnail_path: path, kind: "photo",
+        width: edit.width, height: edit.height, captured_at: firstMedia.captured_at ?? null,
+      }));
+      checked(await db.from("observation_media").delete().eq("storage_path", old).eq("observation_id", observation.id).select("storage_path"));
+      if (old !== original) await bucket().remove([old]);
+      return;
+    }
+    // Video cover: a new frame becomes the cover's original; the crop sits beside it.
+    const oldThumb = firstMedia.thumbnail_path ?? null;
+    let original = edit.originalPath;
+    if (edit.frame || !original) {
+      original = `${userId}/${observation.id}/${crypto.randomUUID()}_thumb.jpg`;
+      await put(original, edit.frame ?? edit.blob);
+    }
+    const thumb = isFull(edit.rect) || !edit.frame && !edit.originalPath ? original : cropPath(original, edit.rect);
+    if (thumb === oldThumb) return;
+    if (thumb !== original) await put(thumb, edit.blob);
+    // Media rows cannot be updated, so the row is replaced; restore it if that fails.
+    const row = { observation_id: observation.id, owner_id: userId, storage_path: firstMedia.storage_path, kind: "video",
+      width: firstMedia.width ?? null, height: firstMedia.height ?? null, captured_at: firstMedia.captured_at ?? null };
+    checked(await db.from("observation_media").delete().eq("storage_path", firstMedia.storage_path).eq("observation_id", observation.id).select("storage_path"));
+    const inserted = await db.from("observation_media").insert({ ...row, thumbnail_path: thumb });
+    if (inserted.error) {
+      await db.from("observation_media").insert({ ...row, thumbnail_path: oldThumb });
+      if (uploaded.length) await bucket().remove(uploaded);
+      throw new Error(inserted.error.message);
+    }
+    const stale = oldThumb ? [oldThumb, ...(edit.frame ? [originalOf(oldThumb)] : [])].filter((p) => p !== thumb && p !== original) : [];
+    if (stale.length) await bucket().remove([...new Set(stale)]);
   }
   function changeLineage(next: Lineage) {
     setLineage(next);
@@ -418,16 +479,29 @@ export function DiscoveryDetail({
   return (
     <Modal title={observation.title} onClose={onClose} busy={busy}>
       {observation.observation_media.map((m, index) => (
-        index === 0 && crop
-          ? <img key="cropped" className="micro-media" src={crop.url} alt="Cropped preview" />
+        index === 0 && edit?.kind === "photo"
+          ? <img key="cropped" className="micro-media" src={edit.url} alt="Cropped preview" />
           : <MediaView key={m.storage_path} media={m} />
       ))}
-      {canCrop && <div className="micro-row">
-        <button type="button" disabled={busy} onClick={() => void startCrop()}>✂ {crop || parseCrop(firstMedia.storage_path) ? "Re-crop photo" : "Crop photo"}</button>
-        {crop && <><span className="micro-muted">Cropped · saved when you press Save changes</span>
-          <button type="button" disabled={busy} onClick={() => { setCrop(null); setPhoto(undefined); setPhotoReload((n) => n + 1); }}>Undo crop</button></>}
+      {canEditMedia && <div className="micro-media-edit">
+        {isVideo && <CoverPreview path={firstMedia.thumbnail_path} pending={edit?.url} />}
+        <div className="micro-row">
+          {isVideo && <button type="button" disabled={busy} onClick={() => void startFramePicker()}>🎞 Choose cover frame</button>}
+          {(!isVideo || firstMedia.thumbnail_path || edit) && <button type="button" disabled={busy} onClick={() => void startCrop()}>
+            ✂ {isVideo ? "Crop cover" : edit || parseCrop(firstMedia.storage_path) ? "Re-crop photo" : "Crop photo"}
+          </button>}
+          {edit && <button type="button" disabled={busy} onClick={() => { setEdit(null); setPhoto(undefined); setPhotoReload((n) => n + 1); }}>Undo</button>}
+        </div>
+        {edit && <p className="micro-muted">{isVideo ? "New cover" : "Cropped"} · saved when you press Save changes. Identify below uses it.</p>}
+        {isVideo && !firstMedia.thumbnail_path && !edit && <p className="micro-muted">Choose a frame to use as the cover and to identify.</p>}
       </div>}
-      {cropping && <Modal title="Crop photo" onClose={() => setCropping(null)} busy={busy} className="micro-crop-dialog">
+      {picking && <Modal title="Choose cover frame" onClose={() => setPicking(null)} className="micro-crop-dialog">
+        <VideoFramePicker src={picking} onSelect={(frame) => {
+          setPicking(null);
+          setCropping({ kind: "cover", url: URL.createObjectURL(frame), rect: fullRect, frame });
+        }} />
+      </Modal>}
+      {cropping && <Modal title={cropping.kind === "cover" ? "Crop cover frame" : "Crop photo"} onClose={() => setCropping(null)} busy={busy} className="micro-crop-dialog">
         <ImageCropper src={cropping.url} initial={cropping.rect} busy={busy} onCancel={() => setCropping(null)} onApply={(rect) => void applyCrop(rect)} />
       </Modal>}
       {!mine && lineage && <LineageView lineage={lineage} />}
@@ -441,7 +515,7 @@ export function DiscoveryDetail({
             setBusy(true);
             setError("");
             try {
-              await saveCrop();
+              await saveMedia();
               const taxon = lineage ? await resolveTaxon(lineage) : undefined;
               checked(
                 await client()
@@ -520,7 +594,7 @@ export function DiscoveryDetail({
                       const paths = [
                         ...new Set(
                           observation.observation_media.flatMap((m) =>
-                            [m.storage_path, m.thumbnail_path, originalOf(m.storage_path)].filter(
+                            [m.storage_path, m.thumbnail_path, originalOf(m.storage_path), m.thumbnail_path && originalOf(m.thumbnail_path)].filter(
                               (p): p is string => !!p,
                             ),
                           ),

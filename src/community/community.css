@@ -820,3 +820,11 @@
 .micro-crop-aspects { display:flex; gap:6px; flex-wrap:wrap; }
 .micro-app .micro-crop-aspects button, .micro-dialog .micro-crop-aspects button { padding:6px 11px; font-size:12px; border-radius:999px; }
 .micro-crop-aspects button[aria-pressed="true"] { background:#09bfa1; color:#062b25; border-color:#09bfa1; }
+.micro-media-edit { display:grid; gap:8px; margin:10px 0; }
+.micro-cover-preview { margin:0; display:flex; align-items:center; gap:10px; }
+.micro-cover-preview img { width:96px; height:72px; object-fit:cover; border-radius:10px; border:1px solid #ffffff25; }
+.micro-cover-preview figcaption { font-size:12px; color:#9db7aa; }
+/* Every block stacked directly in a dialog keeps a gap from the one before it,
+   so rows of buttons never touch or overlap. :where() keeps this at zero
+   specificity: any component that sets its own margin still wins. */
+:where(.micro-dialog > * + *) { margin-top: 12px; }
