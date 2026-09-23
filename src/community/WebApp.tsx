@@ -1,18 +1,22 @@
 import EurekaLogo from "../components/EurekaLogo";
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import { Link, NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { client, community } from "./client";
 import type { Place } from "./client";
 import ExploreMap from "./ExploreMap";
 import { AuthForm } from "./Forms";
 import DiscoveryComposer from "./DiscoveryComposer";
 import FeedbackWidget from "./FeedbackWidget";
+import LifeTreeReveal from "./LifeTreeReveal";
+import { closeLifeTreeReveal, useLifeTreeReveal } from "./revealStore";
 import { Gallery, PlaceLog } from "./Collection";
 import "./community.css";
 
 export default function WebApp() {
   const route = useLocation();
+  const navigate = useNavigate();
+  const reveal = useLifeTreeReveal();
   const [session, setSession] = useState<Session | null>(null),
     [ready, setReady] = useState(!community),
     [auth, setAuth] = useState(false),
@@ -161,6 +165,8 @@ export default function WebApp() {
         />
       )}
       <FeedbackWidget accountEmail={session?.user.email} />
+      {reveal && <LifeTreeReveal key={reveal.familyIds.join("|")} request={reveal} onClose={closeLifeTreeReveal}
+        onOpenTree={() => { closeLifeTreeReveal(); navigate("/app/gallery?view=tree"); }} />}
       {upload && session && !auth && (
         <DiscoveryComposer
           session={session}

@@ -5,6 +5,8 @@ import type { Session } from "@supabase/supabase-js";
 import L from "leaflet";
 import { checked, client, preparePhoto, publishObservation, rpc, validateMedia, viewportQueries } from "./client";
 import type { Observation, Place, Taxon } from "./client";
+import { inLifeTree } from "./lifeTree";
+import { showLifeTreeReveal } from "./revealStore";
 import RankEntry from "./RankEntry";
 import { MediaView, Modal } from "./Shared";
 import { deepest, lineageFor, resolveTaxon } from "./taxonomyEntry";
@@ -122,7 +124,15 @@ export default function DiscoveryComposer({ session, point, place, onClose, onSa
           onProgress: (text) => setProgress(`${index + 1}/${drafts.length} · ${text}`) });
         completed.current.add(draft.id); update(draft.id, { saved: true });
       }
+      // The payoff, as on iOS: the tree lights up for every identified family.
+      const lit = new Map<string, string>();
+      for (const draft of drafts) {
+        const family = draft.lineage.family;
+        if (family?.id && inLifeTree(family.id)) lit.set(family.id, family.name);
+      }
       onSaved();
+      showLifeTreeReveal({ userId: session.user.id, familyIds: [...lit.keys()], familyNames: [...lit.values()],
+        placeName: share && !obscure ? savedPlace.current?.name ?? nearby?.name ?? (name.trim() || undefined) : undefined });
     } catch (err) {
       if (uploadedCover) await client().storage.from("place-media").remove([uploadedCover]);
       setError(`${(err as Error).message}${completed.current.size ? ` ${completed.current.size} discoveries saved. Retry continues with the remaining files.` : ""}`);

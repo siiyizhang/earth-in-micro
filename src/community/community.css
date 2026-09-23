@@ -847,3 +847,23 @@
 .micro-taxon-chip a { padding:4px 9px 4px 6px; color:#09bfa1; text-decoration:none; border-left:1px solid #ffffff1a; font-size:12px; }
 .micro-taxon-chip a:hover { background:#09bfa122; }
 .micro-visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.micro-reveal { position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:#06110e; color:#e8efeb; overflow:hidden; cursor:pointer; font-family:"DM Sans", system-ui, sans-serif; }
+.micro-reveal::backdrop { background:#06110e; }
+.micro-reveal canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+.micro-reveal-top, .micro-reveal-bottom { position:absolute; left:0; right:0; display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 24px; pointer-events:none; }
+.micro-reveal-top { top:calc(26px + env(safe-area-inset-top)); animation:micro-reveal-fade .78s ease-out .52s both; }
+.micro-reveal-bottom { bottom:calc(18px + env(safe-area-inset-bottom)); gap:4px; animation:micro-reveal-fade .52s ease-in 2.08s both; }
+.micro-reveal-bottom > * { pointer-events:auto; }
+.micro-reveal p { margin:0; }
+.micro-reveal-place { display:flex; gap:6px; align-items:center; font-size:16px; font-weight:700; color:#e8efeb; max-width:90vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.micro-reveal-title { margin-top:8px !important; font-size:11px; letter-spacing:2.5px; color:#09bfa1; font-weight:700; }
+.micro-reveal-actions { display:flex; gap:22px; margin-bottom:10px; }
+.micro-reveal-actions button { display:flex; flex-direction:column; align-items:center; gap:4px; background:none; border:0; padding:0; color:#ffffff8a; font:inherit; font-size:11px; cursor:pointer; }
+.micro-reveal-actions svg { width:48px; height:48px; padding:13px; border-radius:50%; background:#09bfa114; fill:none; stroke:#2de8c8; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.micro-reveal-actions button:hover svg { background:#09bfa12e; }
+.micro-reveal-actions button:disabled { opacity:.5; }
+.micro-reveal-bottom > p { font-size:12px; color:#ffffff61; }
+.micro-reveal .micro-reveal-open { background:none; border:0; color:#09bfa1; font:inherit; font-size:13px; font-weight:700; padding:8px 12px; cursor:pointer; }
+.micro-reveal-hint { font-size:11px !important; color:#ffffff3d !important; }
+@keyframes micro-reveal-fade { from { opacity:0; } to { opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .micro-reveal-top, .micro-reveal-bottom { animation:none; } }

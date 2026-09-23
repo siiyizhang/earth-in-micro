@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { inLifeTree } from "./lifeTree";
+import { showLifeTreeReveal } from "./revealStore";
 import { checked, client, currentUser, loadPlaceLog, rpc } from "./client";
 import type { Find, Observation, Place, TreeNode, Visit } from "./client";
 import { FindViewer } from "./FindViewer";
@@ -186,12 +189,15 @@ export function Gallery({
   revision: number;
   onUpload: () => void;
 }) {
+  // In the URL, so the reveal's "Open Life Tree" can link straight to it.
+  const [params, setParams] = useSearchParams();
+  const view = params.get("view") === "tree" ? "tree" : "timeline";
+  const setView = (next: "timeline" | "tree") => setParams(next === "tree" ? { view: "tree" } : {}, { replace: true });
   const [items, setItems] = useState<Observation[]>([]),
     [error, setError] = useState(""),
     [loading, setLoading] = useState(true),
     [filter, setFilter] = useState(userId === "guest" ? "public" : "mine"),
     [localRevision, setLocalRevision] = useState(0),
-    [view, setView] = useState<"timeline" | "tree">("timeline"),
     [selected, setSelected] = useState<Observation | null>(null);
   useEffect(() => {
     let alive = true;
@@ -359,6 +365,7 @@ export function DiscoveryDetail({
     [cropping, setCropping] = useState<{ kind: MediaTarget; url: string; rect: CropRect; frame?: Blob } | null>(null),
     [edit, setEdit] = useState<PendingImage | null>(null),
     [picking, setPicking] = useState<string | null>(null),
+    [storedFamily, setStoredFamily] = useState<string | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false);
@@ -366,7 +373,7 @@ export function DiscoveryDetail({
   useEffect(() => {
     let alive = true;
     sourceIdOf(observation.community_taxon_id ?? observation.initial_taxon_id)
-      .then((id) => { if (alive) setLineage(lineageFor(id, observation.title)); })
+      .then((id) => { if (alive) { const found = lineageFor(id, observation.title); setLineage(found); setStoredFamily(found.family?.id ?? null); } })
       .catch(() => { if (alive) setLineage(lineageFor(null, observation.title)); });
     return () => { alive = false; };
   }, [observation]);
@@ -541,6 +548,10 @@ export function DiscoveryDetail({
                   .single(),
               );
               onClose();
+              const family = lineage?.family;
+              if (family?.id && family.id !== storedFamily && inLifeTree(family.id)) {
+                showLifeTreeReveal({ userId, familyIds: [family.id], familyNames: [family.name] });
+              }
             } catch (err) {
               setError((err as Error).message);
             } finally {

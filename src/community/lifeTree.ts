@@ -41,6 +41,9 @@ for (const n of records.values()) {
 }
 for (const list of children.values()) list.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 
+/** Whether the Life Tree snapshot (and so the drawn tree) has this NCBI id. */
+export const inLifeTree = (id: string) => records.has(id);
+
 export function familyByName(name: string): string | undefined {
   const target = name.trim().toLowerCase();
   if (!target) return undefined;
