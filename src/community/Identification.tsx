@@ -17,6 +17,7 @@ function identifyPhoto(file: File) {
 }
 
 import { buildChains, modelTaxon, ranks } from "./taxonChains";
+import { useWiki } from "./wiki";
 import type { ModelTaxon } from "./taxonChains";
 
 export default function Identification({ file, onSelect, automatic = false }: {
@@ -81,15 +82,19 @@ export default function Identification({ file, onSelect, automatic = false }: {
         const alternatives = predictions.filter(p => p.rank === rank).flatMap(p => { const taxon = modelTaxon(p); return taxon && taxon.rank === rank ? [{ taxon, probability: p.probability }] : []; });
         const options = [...new Map(alternatives.map(a => [a.taxon.id, a])).values()];
         if (link && !options.some(o => o.taxon.id === link.id)) options.unshift({taxon: link, probability: link.probability ?? 0});
+        const others = options.filter(o => o.taxon.id !== link?.id);
+        const pick = (taxon: ModelTaxon) => {
+          setConstraints(old => ({...Object.fromEntries(Object.entries(old).filter(([r]) => ranks.indexOf(r) < ranks.indexOf(rank))), [rank]: taxon}));
+          setChainIndex(0); setCommittedRank(rank); setConfirmation("");
+        };
         return <div className="micro-lineage-rank" key={rank}>
           <button type="button" className="micro-rank-choice" disabled={!link || busy} aria-pressed={committed?.rank === rank} onClick={() => { setCommittedRank(rank); setConfirmation(""); }}><span>{rank.toUpperCase()}</span><span>{committed?.rank === rank ? "●" : "○"}</span></button>
-          <select aria-label={`${rank} suggestions`} disabled={busy || !options.length} value={link?.id ?? ""} onChange={e => {
-            const taxon = options.find(o => o.taxon.id === e.target.value)?.taxon;
-            if (!taxon) return;
-            setConstraints(old => ({...Object.fromEntries(Object.entries(old).filter(([r]) => ranks.indexOf(r) < ranks.indexOf(rank))), [rank]: taxon}));
-            setChainIndex(0); setCommittedRank(rank); setConfirmation("");
-          }}><option value="" disabled>{options.length ? "Choose a candidate" : "No suggestion"}</option>{options.map(o => <option key={o.taxon.id} value={o.taxon.id}>{o.taxon.name}</option>)}</select>
-          <span className="micro-rank-confidence">{link?.probability == null ? "—" : `${Math.round(link.probability * 100)}%`}</span>
+          <div className="micro-rank-candidates">
+            {link ? <TaxonCard name={link.name} probability={link.probability} /> : <span className="micro-muted">No suggestion at this rank</span>}
+            {!!others.length && <div className="micro-rank-alternatives" role="group" aria-label={`Other ${rank} candidates`}>
+              {others.map(o => <TaxonChip key={o.taxon.id} name={o.taxon.name} probability={o.probability} disabled={busy} onPick={() => pick(o.taxon)} />)}
+            </div>}
+          </div>
         </div>;
       })}
       {chains.length > 1 && <details className="micro-other-lineages"><summary>Other suggested lineages</summary>{chains.map((c,i) => <button key={c.links.map(l => l.id).join(">")} type="button" aria-pressed={chainIndex === i} disabled={busy} onClick={() => { setChainIndex(i); setCommittedRank(""); setConfirmation(""); }}>{c.links.map(l => l.name).join(" › ")}</button>)}</details>}
@@ -100,4 +105,37 @@ export default function Identification({ file, onSelect, automatic = false }: {
     {confirmation && <p role="status" className="micro-success">{confirmation}</p>}
     {error && <p className="micro-error" role="alert">{error}</p>}
   </div>;
+}
+
+const percent = (p: number | null | undefined) => (p == null ? null : `${Math.round(p * 100)}%`);
+
+function Thumb({ src, name, size }: { src?: string; name: string; size: "large" | "small" }) {
+  return src
+    ? <img className={`micro-taxon-thumb is-${size}`} src={src} alt="" loading="lazy" referrerPolicy="no-referrer" />
+    : <span className={`micro-taxon-thumb is-${size} is-empty`} aria-hidden="true">{name.slice(0, 1)}</span>;
+}
+
+/** The candidate chosen at a rank: its picture, and its name linking to Wikipedia. */
+function TaxonCard({ name, probability }: { name: string; probability: number | null }) {
+  const wiki = useWiki(name);
+  return <div className="micro-taxon-card">
+    <Thumb src={wiki?.thumbnail} name={name} size="large" />
+    <a href={wiki?.url ?? `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer" title={`Open ${name} on Wikipedia`}>
+      <i>{name}</i> <span aria-hidden="true">↗</span><span className="micro-visually-hidden"> (Wikipedia, opens in a new tab)</span>
+    </a>
+    <span className="micro-rank-confidence">{percent(probability) ?? "—"}</span>
+  </div>;
+}
+
+/** Another candidate at the same rank: click to switch to it, ↗ to read about it. */
+function TaxonChip({ name, probability, disabled, onPick }: { name: string; probability: number; disabled: boolean; onPick: () => void }) {
+  const wiki = useWiki(name);
+  return <span className="micro-taxon-chip">
+    <button type="button" disabled={disabled} onClick={onPick} title={`Use ${name}`}>
+      <Thumb src={wiki?.thumbnail} name={name} size="small" />
+      <i>{name}</i>
+      {percent(probability) && <small>{percent(probability)}</small>}
+    </button>
+    <a href={wiki?.url ?? `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer" aria-label={`${name} on Wikipedia (opens in a new tab)`}>↗</a>
+  </span>;
 }

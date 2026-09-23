@@ -750,10 +750,9 @@
 }
 
 .micro-lineage { display:grid; gap:8px; margin-top:12px; }
-.micro-lineage-rank { display:grid; grid-template-columns:88px minmax(0,1fr) 42px; gap:8px; align-items:center; }
+.micro-lineage-rank { display:grid; grid-template-columns:88px minmax(0,1fr); gap:8px; align-items:start; }
 .micro-lineage-rank .micro-rank-choice { display:flex; align-items:center; justify-content:space-between; padding:9px 7px; font-size:10px; letter-spacing:.5px; background:transparent; }
 .micro-rank-choice[aria-pressed="true"] { color:#63e3c0; border-color:#09bfa1; }
-.micro-lineage-rank select { width:100%; min-width:0; background:#172923; border:1px solid #ffffff25; border-radius:9px; color:#e8efeb; padding:9px 5px; font:inherit; font-size:13px; }
 .micro-rank-confidence { text-align:right; color:#a1b4a8; font-size:12px; }
 .micro-other-lineages summary { cursor:pointer; padding:10px 0; font-size:12px; color:#9db7aa; }
 .micro-other-lineages button { display:block; width:100%; text-align:left; margin-bottom:7px; font-size:12px; }
@@ -828,3 +827,19 @@
    so rows of buttons never touch or overlap. :where() keeps this at zero
    specificity: any component that sets its own margin still wins. */
 :where(.micro-dialog > * + *) { margin-top: 12px; }
+.micro-rank-candidates { display:grid; gap:6px; min-width:0; }
+.micro-taxon-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; padding:6px 10px 6px 6px; background:#172923; border:1px solid #09bfa155; border-radius:12px; }
+.micro-taxon-card a { color:#e8efeb; text-decoration:none; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.micro-taxon-card a:hover i { text-decoration:underline; }
+.micro-taxon-card a span[aria-hidden] { color:#09bfa1; }
+.micro-taxon-thumb { display:grid; place-items:center; flex-shrink:0; object-fit:cover; background:#0b1512; border:1px solid #ffffff1f; color:#9db7aa; font-weight:700; }
+.micro-taxon-thumb.is-large { width:44px; height:44px; border-radius:9px; }
+.micro-taxon-thumb.is-small { width:24px; height:24px; border-radius:6px; font-size:11px; }
+.micro-rank-alternatives { display:flex; flex-wrap:wrap; gap:6px; }
+.micro-taxon-chip { display:inline-flex; align-items:center; border:1px solid #ffffff25; border-radius:999px; overflow:hidden; background:#12211d; }
+.micro-app .micro-taxon-chip button, .micro-dialog .micro-taxon-chip button { display:inline-flex; align-items:center; gap:6px; padding:3px 8px 3px 3px; border:0; border-radius:0; background:transparent; font-size:12px; }
+.micro-taxon-chip button .micro-taxon-thumb { border-radius:999px; }
+.micro-taxon-chip small { color:#9db7aa; font-size:10px; }
+.micro-taxon-chip a { padding:4px 9px 4px 6px; color:#09bfa1; text-decoration:none; border-left:1px solid #ffffff1a; font-size:12px; }
+.micro-taxon-chip a:hover { background:#09bfa122; }
+.micro-visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
