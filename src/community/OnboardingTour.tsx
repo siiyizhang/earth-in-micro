@@ -130,7 +130,7 @@ export default function OnboardingTour({ onClose }: { onClose: () => void }) {
       {index > 0 && !last && <button type="button" className="micro-tour-skip" onClick={onClose} aria-label="Skip the tour">✕</button>}
     </div>}
     {step.reveal && <LifeTreeReveal
-      request={{ userId: "", familyIds: DEMO_FAMILIES.map((name) => familyByName(name) ?? ""), familyNames: DEMO_FAMILIES, placeName: "Your first pond" }}
+      request={{ userId: "", familyIds: DEMO_FAMILIES.map((name) => familyByName(name) ?? ""), familyNames: DEMO_FAMILIES, placeName: "Your first location" }}
       demo={{ caption: step.body, next: "Next" }}
       onClose={next}
     />}
