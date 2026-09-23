@@ -5,6 +5,9 @@ import { FindViewer } from "./FindViewer";
 import GalleryLifeTree from "./GalleryLifeTree";
 import PlaceTree from "./PlaceTree";
 import Identification from "./Identification";
+import ImageCropper from "./ImageCropper";
+import { cropPath, fullRect, isFull, originalOf, parseCrop, renderCrop } from "./mediaCrop";
+import type { CropRect } from "./mediaCrop";
 import RankEntry, { LineageView } from "./RankEntry";
 import { MediaView, Modal } from "./Shared";
 import { deepest, lineageFor, resolveTaxon, sourceIdOf } from "./taxonomyEntry";
@@ -338,6 +341,9 @@ export function DiscoveryDetail({
     [titleEdited, setTitleEdited] = useState(false),
     [note, setNote] = useState(observation.note),
     [photo, setPhoto] = useState<File>(),
+    [photoReload, setPhotoReload] = useState(0),
+    [cropping, setCropping] = useState<{ url: string; rect: CropRect } | null>(null),
+    [crop, setCrop] = useState<{ rect: CropRect; blob: Blob; url: string; width: number; height: number } | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [deleting, setDeleting] = useState(false);
@@ -360,7 +366,50 @@ export function DiscoveryDetail({
       if (alive && data) setPhoto(new File([data], path.split("/").pop() || "photo.jpg", { type: data.type || "image/jpeg" }));
     });
     return () => { alive = false; };
-  }, [mine, observation]);
+  }, [mine, observation, photoReload]);
+  const firstMedia = observation.observation_media[0];
+  const canCrop = mine && firstMedia?.kind === "photo";
+  useEffect(() => () => { if (crop) URL.revokeObjectURL(crop.url); }, [crop]);
+  useEffect(() => () => { if (cropping) URL.revokeObjectURL(cropping.url); }, [cropping]);
+  // Cropping always starts from the uploaded original, with the last crop box restored.
+  async function startCrop() {
+    setError("");
+    try {
+      const current = firstMedia.storage_path;
+      const bucket = client().storage.from("observation-media");
+      let { data } = await bucket.download(originalOf(current));
+      let rect = parseCrop(current)?.rect ?? fullRect;
+      if (!data) { data = (await bucket.download(current)).data; rect = fullRect; }
+      if (!data) throw new Error("The photo could not be loaded for cropping.");
+      setCropping({ url: URL.createObjectURL(data), rect: crop?.rect ?? rect });
+    } catch (err) { setError((err as Error).message); }
+  }
+  async function applyCrop(rect: CropRect) {
+    if (!cropping) return;
+    setBusy(true);
+    try {
+      const source = await (await fetch(cropping.url)).blob();
+      const result = await renderCrop(source, rect);
+      setCrop({ rect, ...result, url: URL.createObjectURL(result.blob) });
+      setPhoto(new File([result.blob], "cropped.jpg", { type: "image/jpeg" }));
+      setCropping(null);
+    } catch (err) { setError((err as Error).message); }
+    finally { setBusy(false); }
+  }
+  /** Swaps the listed photo for the cropped copy; the original is never deleted. */
+  async function saveCrop() {
+    if (!crop) return;
+    const db = client(), old = firstMedia.storage_path, original = originalOf(old);
+    const path = isFull(crop.rect) ? original : cropPath(original, crop.rect);
+    if (path === old) return;
+    if (path !== original) checked(await db.storage.from("observation-media").upload(path, crop.blob, { contentType: "image/jpeg", upsert: false }));
+    checked(await db.from("observation_media").insert({
+      observation_id: observation.id, owner_id: userId, storage_path: path, thumbnail_path: path, kind: "photo",
+      width: crop.width, height: crop.height, captured_at: (firstMedia as { captured_at?: string }).captured_at ?? null,
+    }));
+    checked(await db.from("observation_media").delete().eq("storage_path", old).eq("observation_id", observation.id).select("storage_path"));
+    if (old !== original) await db.storage.from("observation-media").remove([old]);
+  }
   function changeLineage(next: Lineage) {
     setLineage(next);
     const name = deepest(next)?.name.trim();
@@ -368,9 +417,19 @@ export function DiscoveryDetail({
   }
   return (
     <Modal title={observation.title} onClose={onClose} busy={busy}>
-      {observation.observation_media.map((m) => (
-        <MediaView key={m.storage_path} media={m} />
+      {observation.observation_media.map((m, index) => (
+        index === 0 && crop
+          ? <img key="cropped" className="micro-media" src={crop.url} alt="Cropped preview" />
+          : <MediaView key={m.storage_path} media={m} />
       ))}
+      {canCrop && <div className="micro-row">
+        <button type="button" disabled={busy} onClick={() => void startCrop()}>✂ {crop || parseCrop(firstMedia.storage_path) ? "Re-crop photo" : "Crop photo"}</button>
+        {crop && <><span className="micro-muted">Cropped · saved when you press Save changes</span>
+          <button type="button" disabled={busy} onClick={() => { setCrop(null); setPhoto(undefined); setPhotoReload((n) => n + 1); }}>Undo crop</button></>}
+      </div>}
+      {cropping && <Modal title="Crop photo" onClose={() => setCropping(null)} busy={busy} className="micro-crop-dialog">
+        <ImageCropper src={cropping.url} initial={cropping.rect} busy={busy} onCancel={() => setCropping(null)} onApply={(rect) => void applyCrop(rect)} />
+      </Modal>}
       {!mine && lineage && <LineageView lineage={lineage} />}
       <p>{observation.note}</p>
       <Interactions observationId={observation.id} />
@@ -382,6 +441,7 @@ export function DiscoveryDetail({
             setBusy(true);
             setError("");
             try {
+              await saveCrop();
               const taxon = lineage ? await resolveTaxon(lineage) : undefined;
               checked(
                 await client()
@@ -460,7 +520,7 @@ export function DiscoveryDetail({
                       const paths = [
                         ...new Set(
                           observation.observation_media.flatMap((m) =>
-                            [m.storage_path, m.thumbnail_path].filter(
+                            [m.storage_path, m.thumbnail_path, originalOf(m.storage_path)].filter(
                               (p): p is string => !!p,
                             ),
                           ),

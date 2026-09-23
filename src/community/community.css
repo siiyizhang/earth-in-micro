@@ -802,3 +802,21 @@
   .micro-app .micro-feedback-button { padding:11px; }
   .micro-feedback-button span { display:none; }
 }
+.micro-crop-dialog { width:min(900px, calc(100vw - 28px)); }
+.micro-cropper { display:grid; gap:12px; }
+.micro-crop-stage { display:flex; justify-content:center; background:#030704; border-radius:12px; padding:12px; }
+.micro-crop-frame { position:relative; display:inline-block; line-height:0; overflow:hidden; touch-action:none; user-select:none; }
+.micro-crop-frame img { display:block; max-width:100%; max-height:62dvh; pointer-events:none; }
+.micro-crop-box { position:absolute; box-shadow:0 0 0 9999px #000000a6; outline:1.5px solid #fff; cursor:move; touch-action:none; }
+.micro-crop-box:focus-visible { outline:2px solid #90ffdc; }
+.micro-crop-grid { position:absolute; inset:0; pointer-events:none; background:
+  linear-gradient(90deg, transparent calc(33.33% - .5px), #ffffff59 calc(33.33% - .5px), #ffffff59 calc(33.33% + .5px), transparent calc(33.33% + .5px), transparent calc(66.66% - .5px), #ffffff59 calc(66.66% - .5px), #ffffff59 calc(66.66% + .5px), transparent calc(66.66% + .5px)),
+  linear-gradient(180deg, transparent calc(33.33% - .5px), #ffffff59 calc(33.33% - .5px), #ffffff59 calc(33.33% + .5px), transparent calc(33.33% + .5px), transparent calc(66.66% - .5px), #ffffff59 calc(66.66% - .5px), #ffffff59 calc(66.66% + .5px), transparent calc(66.66% + .5px)); }
+.micro-crop-handle { position:absolute; width:22px; height:22px; border:3px solid #fff; touch-action:none; }
+.micro-crop-handle.is-nw { left:-3px; top:-3px; border-right:0; border-bottom:0; cursor:nwse-resize; }
+.micro-crop-handle.is-ne { right:-3px; top:-3px; border-left:0; border-bottom:0; cursor:nesw-resize; }
+.micro-crop-handle.is-sw { left:-3px; bottom:-3px; border-right:0; border-top:0; cursor:nesw-resize; }
+.micro-crop-handle.is-se { right:-3px; bottom:-3px; border-left:0; border-top:0; cursor:nwse-resize; }
+.micro-crop-aspects { display:flex; gap:6px; flex-wrap:wrap; }
+.micro-app .micro-crop-aspects button, .micro-dialog .micro-crop-aspects button { padding:6px 11px; font-size:12px; border-radius:999px; }
+.micro-crop-aspects button[aria-pressed="true"] { background:#09bfa1; color:#062b25; border-color:#09bfa1; }
