@@ -9,6 +9,8 @@ import { AuthForm } from "./Forms";
 import DiscoveryComposer from "./DiscoveryComposer";
 import FeedbackWidget from "./FeedbackWidget";
 import LifeTreeReveal from "./LifeTreeReveal";
+import OnboardingTour from "./OnboardingTour";
+import { markTourSeen, tourSeen } from "./tour";
 import { closeLifeTreeReveal, useLifeTreeReveal } from "./revealStore";
 import { Gallery, PlaceLog } from "./Collection";
 import "./community.css";
@@ -17,6 +19,8 @@ export default function WebApp() {
   const route = useLocation();
   const navigate = useNavigate();
   const reveal = useLifeTreeReveal();
+  // First visit: the tour opens once Explore has rendered; Settings can replay it.
+  const [touring, setTouring] = useState(() => !tourSeen());
   const [session, setSession] = useState<Session | null>(null),
     [ready, setReady] = useState(!community),
     [auth, setAuth] = useState(false),
@@ -69,7 +73,7 @@ export default function WebApp() {
             ["gallery", "▧", "Gallery"],
             ["settings", "⚙", "Settings"],
           ].map(([path, icon, label]) => (
-            <NavLink key={path} to={`/app/${path}`}>
+            <NavLink key={path} to={`/app/${path}`} data-tour={path}>
               <span aria-hidden="true">{icon}</span>
               {label}
             </NavLink>
@@ -140,7 +144,7 @@ export default function WebApp() {
             <Route
               path="settings"
               element={
-                <Settings session={session} onSignIn={() => setAuth(true)} />
+                <Settings session={session} onSignIn={() => setAuth(true)} onTour={() => { setTouring(true); navigate("/app/explore"); }} />
               }
             />
             <Route path="*" element={<Navigate to="/app/explore" replace />} />
@@ -164,6 +168,8 @@ export default function WebApp() {
           onChanged={() => setRevision((n) => n + 1)}
         />
       )}
+      {touring && ready && community && route.pathname.endsWith("/explore") && !auth && !upload &&
+        <OnboardingTour onClose={() => { markTourSeen(); setTouring(false); }} />}
       <FeedbackWidget accountEmail={session?.user.email} />
       {reveal && <LifeTreeReveal key={reveal.familyIds.join("|")} request={reveal} onClose={closeLifeTreeReveal}
         onOpenTree={() => { closeLifeTreeReveal(); navigate("/app/gallery?view=tree"); }} />}
@@ -186,9 +192,11 @@ export default function WebApp() {
 function Settings({
   session,
   onSignIn,
+  onTour,
 }: {
   session: Session | null;
   onSignIn: () => void;
+  onTour: () => void;
 }) {
   const [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
@@ -239,6 +247,11 @@ function Settings({
         <p>
           Unuploaded mobile photos remain on your phone.
         </p>
+      </div>
+      <div className="micro-card">
+        <h2>Getting started</h2>
+        <p>Take the short tour of Explore, identification and your Life Tree again.</p>
+        <button onClick={onTour}>Show the welcome tour</button>
       </div>
       <Link to="/">← Back to Earth in Micro</Link>
     </section>

@@ -867,3 +867,40 @@
 .micro-reveal-hint { font-size:11px !important; color:#ffffff3d !important; }
 @keyframes micro-reveal-fade { from { opacity:0; } to { opacity:1; } }
 @media(prefers-reduced-motion:reduce) { .micro-reveal-top, .micro-reveal-bottom { animation:none; } }
+/* Onboarding tour */
+.micro-tour { position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:transparent; overflow:hidden; color:#e8efeb; font-family:"DM Sans", system-ui, sans-serif; }
+.micro-tour::backdrop { background:transparent; }
+.micro-tour-dim { position:absolute; inset:0; background:#020806c4; backdrop-filter:blur(2px); animation:micro-tour-in .3s ease-out; }
+.micro-tour-hole { position:absolute; border-radius:16px; box-shadow:0 0 0 200vmax #020806c4, 0 0 0 2px #2de8c8, 0 0 28px 4px #09bfa166; pointer-events:none; transition:left .35s ease, top .35s ease, width .35s ease, height .35s ease; }
+.micro-tour-card { position:absolute; width:min(380px, calc(100vw - 32px)); padding:20px 20px 16px; background:#0f1f1a; border:1px solid #09bfa155; border-radius:20px; box-shadow:0 18px 50px #000c; animation:micro-tour-in .3s ease-out; }
+.micro-tour-card.is-centered { left:50%; top:50%; transform:translate(-50%, -50%); }
+.micro-tour-card.is-welcome { width:min(460px, calc(100vw - 32px)); text-align:center; padding:30px 28px 20px; }
+.micro-tour-card h2 { margin:0 0 8px; font-size:20px; line-height:1.3; color:#fff; }
+.micro-tour-card.is-welcome h2 { font-size:25px; }
+.micro-tour-card p { margin:0; color:#b9cac2; font-size:14px; line-height:1.6; }
+.micro-tour-badge { display:flex; justify-content:center; margin:0 auto 16px; }
+.micro-tour-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; }
+.micro-tour-card.is-welcome .micro-tour-footer { flex-direction:column-reverse; }
+.micro-tour-dots { display:flex; gap:6px; }
+.micro-tour-dots span { width:7px; height:7px; border-radius:50%; background:#ffffff33; transition:background .2s, width .2s; }
+.micro-tour-dots span.is-active { width:18px; border-radius:4px; background:#09bfa1; }
+.micro-tour-buttons { display:flex; gap:8px; }
+.micro-app .micro-tour-buttons button { padding:9px 15px; font-size:14px; }
+.micro-app .micro-tour-buttons .micro-tour-next { background:#09bfa1; color:#062b25; border-color:#09bfa1; font-weight:650; }
+.micro-app .micro-tour-skip { position:absolute; top:10px; right:10px; padding:4px 8px; background:transparent; border:0; color:#ffffff80; font-size:13px; }
+.micro-tour-sample { display:grid; gap:6px; margin-top:14px; padding:10px; background:#0a1512; border:1px solid #ffffff14; border-radius:12px; }
+.micro-tour-sample-row { display:grid; grid-template-columns:62px auto minmax(0,1fr) auto; align-items:center; gap:8px; font-size:13px; }
+.micro-tour-sample-rank { font-size:9px; letter-spacing:1px; color:#9db7aa; font-weight:700; }
+.micro-tour-sample-row .micro-taxon-thumb.is-small { width:26px; height:26px; border-radius:7px; }
+.micro-tour-sample-row i { color:#e8efeb; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.micro-tour-sample-score { color:#09bfa1; font-size:12px; font-weight:600; }
+.micro-tour-new-place { position:absolute; display:flex; flex-direction:column; justify-content:flex-end; gap:5px; padding:14px; border-radius:22px; background:linear-gradient(160deg, #1d4a3e, #0b1814 70%); border:2px solid #2de8c8; box-shadow:0 0 30px #09bfa177; animation:micro-tour-card-in .7s cubic-bezier(.2,.9,.3,1.2) .25s both; }
+.micro-tour-new-place strong { font-size:16px; color:#fff; }
+.micro-tour-new-place > span:last-child { font-size:11px; color:#c1cec6; }
+.micro-tour-new-thumbs { display:flex; gap:6px; margin-bottom:auto; }
+.micro-tour-new-badge { position:absolute; top:12px; right:12px; padding:3px 8px; border-radius:999px; background:#09bfa1; color:#062b25; font-size:10px; font-weight:800; letter-spacing:1px; }
+.micro-reveal-caption { max-width:420px; font-size:14px !important; color:#d5e3dc !important; }
+.micro-reveal .micro-reveal-next { margin-top:10px; padding:10px 26px; border-radius:999px; background:#09bfa1; color:#062b25; border:0; font:inherit; font-weight:700; cursor:pointer; }
+@keyframes micro-tour-in { from { opacity:0; } }
+@keyframes micro-tour-card-in { from { opacity:0; transform:translateY(40px) scale(.9); } }
+@media(prefers-reduced-motion:reduce) { .micro-tour-dim, .micro-tour-card, .micro-tour-new-place { animation:none; } .micro-tour-hole { transition:none; } }

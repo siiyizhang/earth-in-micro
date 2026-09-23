@@ -189,7 +189,7 @@ export default function ExploreMap({
             map.flyTo([lat, lng], 14, { duration: .9 });
           }} />
         <div className="micro-floating-actions">
-          <div><button onClick={() => changePicking(true)}>＋ Create</button></div>
+          <div><button data-tour="create" onClick={() => changePicking(true)}>＋ Create</button></div>
           <button className="micro-round" onClick={locate} disabled={locating} aria-busy={locating} aria-label={locating ? "Finding your location" : "My location"} title="My location">
             {locating ? <svg className="micro-location-spinner" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" /><path d="M12 1v3m0 16v3M1 12h3m16 0h3" /></svg>}
           </button>
@@ -198,7 +198,7 @@ export default function ExploreMap({
         {error && <div role="alert" className="micro-map-status">{error}<button onClick={() => setRetry((n) => n + 1)}>Retry</button></div>}
       </div>}
       {picking && <div className="micro-pick-banner" role="status">Tap a point on the map to pin your discovery site.<button onClick={() => changePicking(false)}>Cancel</button></div>}
-      <section className="micro-place-deck" aria-label="Places in this view">
+      <section className="micro-place-deck" aria-label="Places in this view" data-tour="places">
         <div className="micro-deck-heading">
 
           <div className="micro-deck-controls">

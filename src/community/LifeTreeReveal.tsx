@@ -50,24 +50,28 @@ function partialBezier(curve: Bezier, portion: number): Point[] {
   return points;
 }
 
-export default function LifeTreeReveal({ request, onClose, onOpenTree }: {
+export default function LifeTreeReveal({ request, onClose, onOpenTree, demo }: {
   request: RevealRequest;
   onClose: () => void;
-  onOpenTree: () => void;
+  onOpenTree?: () => void;
+  /** The onboarding tour's preview: no account lookup, and a Next button in
+   * place of the export actions. Closing it moves the tour on. */
+  demo?: { caption: string; next: string };
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const [known, setKnown] = useState<string[] | null>(null);
+  const [known, setKnown] = useState<string[] | null>(demo ? [] : null);
   const [shareable, setShareable] = useState(false);
   const [exporting, setExporting] = useState(false);
 
   // Earlier discoveries stay lit; if the account cannot be read the new
   // branches still grow against an otherwise dim tree.
   useEffect(() => {
+    if (demo) return;
     let alive = true;
     accountFamilies(request.userId).then((ids) => { if (alive) setKnown(ids); }).catch(() => { if (alive) setKnown([]); });
     return () => { alive = false; };
-  }, [request.userId]);
+  }, [request.userId, demo]);
   useEffect(() => { dialog.current?.showModal(); }, []);
 
   const scene = useMemo(() => {
@@ -237,7 +241,10 @@ export default function LifeTreeReveal({ request, onClose, onOpenTree }: {
       <p className="micro-reveal-title">NEW LIGHT ON THE TREE OF LIFE</p>
       {scene && <p className="micro-visually-hidden">{scene.chains.map((c) => c.name).filter(Boolean).join(", ")}</p>}
     </header>
-    <footer className="micro-reveal-bottom">
+    {demo ? <footer className="micro-reveal-bottom">
+      <p className="micro-reveal-caption">{demo.caption}</p>
+      <button type="button" className="micro-reveal-next" onClick={(e) => { stop(e); onClose(); }}>{demo.next}</button>
+    </footer> : <footer className="micro-reveal-bottom">
       <div className="micro-reveal-actions">
         <button type="button" disabled={exporting || !scene} onClick={(e) => { stop(e); void save(); }}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg><span>Save</span>
@@ -247,8 +254,8 @@ export default function LifeTreeReveal({ request, onClose, onOpenTree }: {
         </button>}
       </div>
       <p>Explore these branches in detail on the Life Tree page in Gallery.</p>
-      <button type="button" className="micro-reveal-open" onClick={(e) => { stop(e); onOpenTree(); }}>🌳 Open Life Tree</button>
+      {onOpenTree && <button type="button" className="micro-reveal-open" onClick={(e) => { stop(e); onOpenTree(); }}>🌳 Open Life Tree</button>}
       <p className="micro-reveal-hint">Click anywhere to continue</p>
-    </footer>
+    </footer>}
   </dialog>;
 }
