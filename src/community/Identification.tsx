@@ -17,6 +17,7 @@ function identifyPhoto(file: File) {
 }
 
 import { buildChains, modelTaxon, ranks } from "./taxonChains";
+import TaxonThumb from "./TaxonThumb";
 import { useWiki } from "./wiki";
 import type { ModelTaxon } from "./taxonChains";
 
@@ -109,17 +110,11 @@ export default function Identification({ file, onSelect, automatic = false }: {
 
 const percent = (p: number | null | undefined) => (p == null ? null : `${Math.round(p * 100)}%`);
 
-function Thumb({ src, name, size }: { src?: string; name: string; size: "large" | "small" }) {
-  return src
-    ? <img className={`micro-taxon-thumb is-${size}`} src={src} alt="" loading="lazy" referrerPolicy="no-referrer" />
-    : <span className={`micro-taxon-thumb is-${size} is-empty`} aria-hidden="true">{name.slice(0, 1)}</span>;
-}
-
 /** The candidate chosen at a rank: its picture, and its name linking to Wikipedia. */
 function TaxonCard({ name, probability }: { name: string; probability: number | null }) {
   const wiki = useWiki(name);
   return <div className="micro-taxon-card">
-    <Thumb src={wiki?.thumbnail} name={name} size="large" />
+    <TaxonThumb src={wiki?.thumbnail ?? ""} name={name} size="large" />
     <a href={wiki?.url ?? `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer" title={`Open ${name} on Wikipedia`}>
       <i>{name}</i> <span aria-hidden="true">↗</span><span className="micro-visually-hidden"> (Wikipedia, opens in a new tab)</span>
     </a>
@@ -132,7 +127,7 @@ function TaxonChip({ name, probability, disabled, onPick }: { name: string; prob
   const wiki = useWiki(name);
   return <span className="micro-taxon-chip">
     <button type="button" disabled={disabled} onClick={onPick} title={`Use ${name}`}>
-      <Thumb src={wiki?.thumbnail} name={name} size="small" />
+      <TaxonThumb src={wiki?.thumbnail ?? ""} name={name} size="small" />
       <i>{name}</i>
       {percent(probability) && <small>{percent(probability)}</small>}
     </button>

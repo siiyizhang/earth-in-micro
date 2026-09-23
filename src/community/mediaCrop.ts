@@ -1,5 +1,6 @@
 // Re-cropping keeps the uploaded original untouched. A cropped copy is stored
-// beside it as `<original>~crop~x_y_w_h~<id>.jpg` (fractions of the original),
+// beside it as `<original>__crop__x_y_w_h__<id>.jpg` (fractions of the original;
+// Supabase Storage keys only allow a limited character set, so no "~"),
 // and only the copy is listed in observation_media — so the original stays
 // private to its owner, and a later re-crop starts from the full photo with
 // the previous crop box restored.
@@ -7,7 +8,7 @@
 export type CropRect = { x: number; y: number; w: number; h: number };
 export const fullRect: CropRect = { x: 0, y: 0, w: 1, h: 1 };
 
-const pattern = /^(.*)~crop~([\d.]+)_([\d.]+)_([\d.]+)_([\d.]+)~[^/~]+\.jpg$/;
+const pattern = /^(.*)__crop__([\d.]+)_([\d.]+)_([\d.]+)_([\d.]+)__[0-9a-f]+\.jpg$/;
 
 export function parseCrop(path: string): { original: string; rect: CropRect } | null {
   const m = path.match(pattern);
@@ -26,7 +27,7 @@ export function isFull(rect: CropRect) {
 
 export function cropPath(original: string, rect: CropRect) {
   const f = (n: number) => n.toFixed(4);
-  return `${original}~crop~${f(rect.x)}_${f(rect.y)}_${f(rect.w)}_${f(rect.h)}~${crypto.randomUUID().slice(0, 8)}.jpg`;
+  return `${original}__crop__${f(rect.x)}_${f(rect.y)}_${f(rect.w)}_${f(rect.h)}__${crypto.randomUUID().slice(0, 8)}.jpg`;
 }
 
 /** Cuts `rect` out of the image at full resolution (capped at 4096px), as JPEG. */

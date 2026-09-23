@@ -768,7 +768,9 @@
 .micro-combobox input { width:100%; margin:0; padding-right:30px; }
 .micro-rank-linked { position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#09bfa1; font-weight:800; pointer-events:none; }
 .micro-suggestions { position:absolute; z-index:5; top:calc(100% + 4px); left:0; right:0; margin:0; padding:4px; list-style:none; background:#12211d; border:1px solid #ffffff25; border-radius:12px; box-shadow:0 10px 28px #0008; max-height:280px; overflow:auto; }
-.micro-suggestions li { display:flex; flex-direction:column; padding:7px 10px; border-radius:8px; cursor:pointer; }
+.micro-suggestions li { display:flex; align-items:center; gap:10px; padding:6px 10px 6px 6px; border-radius:8px; cursor:pointer; }
+.micro-suggestions li > span { display:flex; flex-direction:column; min-width:0; }
+.micro-suggestions .micro-taxon-thumb.is-small { width:32px; height:32px; border-radius:7px; }
 .micro-suggestions li[aria-selected="true"] { background:#09bfa12e; }
 .micro-suggestions small { color:#9db7aa; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .micro-lineage-view { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
@@ -824,9 +826,11 @@
 .micro-cover-preview img { width:96px; height:72px; object-fit:cover; border-radius:10px; border:1px solid #ffffff25; }
 .micro-cover-preview figcaption { font-size:12px; color:#9db7aa; }
 /* Every block stacked directly in a dialog keeps a gap from the one before it,
-   so rows of buttons never touch or overlap. :where() keeps this at zero
-   specificity: any component that sets its own margin still wins. */
-:where(.micro-dialog > * + *) { margin-top: 12px; }
+   so rows of buttons and messages never touch or overlap. It needs real
+   specificity: Tailwind's base styles zero the margins of p, form, h2 and
+   others with element selectors, which beat a zero-specificity rule. */
+.micro-dialog > * + * { margin-top: 12px; }
+.micro-dialog > .micro-place-tree { margin-top: 20px; }
 .micro-rank-candidates { display:grid; gap:6px; min-width:0; }
 .micro-taxon-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; padding:6px 10px 6px 6px; background:#172923; border:1px solid #09bfa155; border-radius:12px; }
 .micro-taxon-card a { color:#e8efeb; text-decoration:none; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

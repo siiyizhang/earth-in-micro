@@ -430,10 +430,19 @@ export function DiscoveryDetail({
     } catch (err) { setError((err as Error).message); }
     finally { setBusy(false); }
   }
-  /** Stores the cropped image beside its untouched original and lists it. */
+  /** Stores the cropped image beside its untouched original and lists it.
+   * Files uploaded by a save that then fails are removed again. */
   async function saveMedia() {
+    const uploaded: string[] = [];
+    try { await replaceMedia(uploaded); }
+    catch (err) {
+      if (uploaded.length) await bucket().remove(uploaded);
+      throw err;
+    }
+  }
+  async function replaceMedia(uploaded: string[]) {
     if (!edit || !firstMedia) return;
-    const db = client(), uploaded: string[] = [];
+    const db = client();
     const put = async (path: string, blob: Blob) => { checked(await bucket().upload(path, blob, { contentType: "image/jpeg", upsert: false })); uploaded.push(path); };
     if (edit.kind === "photo") {
       const old = firstMedia.storage_path, original = originalOf(old);
@@ -444,6 +453,7 @@ export function DiscoveryDetail({
         observation_id: observation.id, owner_id: userId, storage_path: path, thumbnail_path: path, kind: "photo",
         width: edit.width, height: edit.height, captured_at: firstMedia.captured_at ?? null,
       }));
+      uploaded.length = 0; // now referenced: keep them
       checked(await db.from("observation_media").delete().eq("storage_path", old).eq("observation_id", observation.id).select("storage_path"));
       if (old !== original) await bucket().remove([old]);
       return;
@@ -465,9 +475,9 @@ export function DiscoveryDetail({
     const inserted = await db.from("observation_media").insert({ ...row, thumbnail_path: thumb });
     if (inserted.error) {
       await db.from("observation_media").insert({ ...row, thumbnail_path: oldThumb });
-      if (uploaded.length) await bucket().remove(uploaded);
       throw new Error(inserted.error.message);
     }
+    uploaded.length = 0; // now referenced: keep them
     const stale = oldThumb ? [oldThumb, ...(edit.frame ? [originalOf(oldThumb)] : [])].filter((p) => p !== thumb && p !== original) : [];
     if (stale.length) await bucket().remove([...new Set(stale)]);
   }

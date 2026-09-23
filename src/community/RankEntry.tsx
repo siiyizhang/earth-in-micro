@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import TaxonThumb from "./TaxonThumb";
 import { choose, entryRanks, findByName, lineagePath, suggestions } from "./taxonomyEntry";
 import type { Candidate, EntryRank, Lineage } from "./taxonomyEntry";
 
@@ -81,8 +82,11 @@ function RankField({ rank, lineage, onChange }: { rank: EntryRank; lineage: Line
           onMouseDown={(e) => { e.preventDefault(); pick(option); }}
           onMouseEnter={() => setActive(index)}
         >
-          <strong>{option.name}</strong>
-          <small>{lineagePath(choose({}, option)).slice(0, -1).map((l) => l.name).join(" › ")}</small>
+          <TaxonThumb name={option.name} size="small" />
+          <span>
+            <strong>{option.name}</strong>
+            <small>{lineagePath(choose({}, option)).slice(0, -1).map((l) => l.name).join(" › ")}</small>
+          </span>
         </li>)}
       </ul>}
     </div>
