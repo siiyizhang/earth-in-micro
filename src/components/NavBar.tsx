@@ -23,7 +23,9 @@ const NAV_LINKS = [
   { label: "App",      href: "/app" },
 ];
 
-// alwaysVisible: skip scroll-triggered fade (for pages that scroll inside a div)
+// The logo and links are always shown, so the app is one click away from
+// every page. alwaysVisible: show the bar background immediately instead of
+// fading it in on scroll (for pages that scroll inside a div).
 export default function NavBar({ alwaysVisible = false, scrollRef }: {
   alwaysVisible?: boolean;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
@@ -34,7 +36,7 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (alwaysVisible) { setNavVisible(true); return; }
+    if (alwaysVisible) return; // already true from the initial state
     const el = scrollRef?.current ?? null;
     if (!el) return;
     const onScroll = () => setNavVisible(el.scrollTop > window.innerHeight * 0.02);
@@ -69,7 +71,7 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
             <button
               type="button"
               onClick={() => setMenuOpen(o => !o)}
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5, opacity: navVisible ? 1 : 0, pointerEvents: navVisible ? "auto" : "none", transition: "opacity 0.3s" }}
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", flexDirection: "column", gap: 5,   transition: "opacity 0.3s" }}
               aria-label="Menu"
             >
               {menuOpen ? (
@@ -86,7 +88,7 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
             {/* Logo centered */}
             <EurekaLogo
               onClick={() => navigate("/")}
-              style={{ height: 26, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", margin: "0 auto", cursor: "pointer" }}
+              style={{ height: 26, display: "block", transition: "opacity 0.3s ease", margin: "0 auto", cursor: "pointer" }}
             />
             {/* Join Waitlist right */}
             <div style={{ marginLeft: "auto" }}>
@@ -100,8 +102,8 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
                   padding: "7px 14px",
                   cursor: "pointer", whiteSpace: "nowrap",
                   boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
-                  opacity: navVisible ? 1 : 0,
-                  pointerEvents: navVisible ? "auto" : "none",
+                  
+                  
                   transition: "opacity 0.3s, background 0.2s",
                 }}
               >
@@ -113,7 +115,7 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: 12 }}>
             <EurekaLogo
               onClick={() => navigate("/")}
-              style={{ height: 32, display: "block", opacity: navVisible ? 1 : 0, transition: "opacity 0.3s ease", cursor: "pointer" }}
+              style={{ height: 32, display: "block", transition: "opacity 0.3s ease", cursor: "pointer" }}
             />
             <div style={{ display: "flex", alignItems: "center", gap: "clamp(8px,2vw,20px)" }}>
               {NAV_LINKS.map(({ label, href }) => (
@@ -125,8 +127,8 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
                     textDecoration: "none",
                     transition: "color 0.2s, opacity 0.3s",
                     whiteSpace: "nowrap",
-                    opacity: navVisible ? 1 : 0,
-                    pointerEvents: navVisible ? "auto" : "none",
+                    
+                    
                   }}
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#ffffff"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)"; }}
@@ -144,8 +146,8 @@ export default function NavBar({ alwaysVisible = false, scrollRef }: {
                   padding: "8px 18px",
                   cursor: "pointer", whiteSpace: "nowrap",
                   boxShadow: "0 2px 12px rgba(10,191,188,0.3)",
-                  opacity: navVisible ? 1 : 0,
-                  pointerEvents: navVisible ? "auto" : "none",
+                  
+                  
                   transition: "opacity 0.3s, background 0.2s",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#0dd4d1"; }}
