@@ -12,10 +12,13 @@ import AppBlogPost from './AppBlogPost.tsx'
 
 import WebAppRoute from './community/WebAppRoute'
 
+import AppAIRoute from './AppAIRoute'
+
 createRoot(document.getElementById('root')!).render(
   <HelmetProvider>
     <BrowserRouter>
       <Routes>
+        <Route path="/ai" element={<AppAIRoute />} />
         <Route path="/app/*" element={<WebAppRoute />} />
         <Route path="/" element={<AppLeisure issStyle="line" />} />
         <Route path="/index" element={<AppIndex />} />
