@@ -20,6 +20,7 @@ const NAV_STYLE = {
 const NAV_LINKS = [
   { label: "About Us", href: "/about" },
   { label: "Blog",     href: "/blog" },
+  { label: "AI",       href: "/ai" },
   { label: "App",      href: "/app" },
 ];
 

@@ -1419,6 +1419,15 @@ export default function AppLeisure({ issStyle }: AppProps = {}) {
             }}>
               Capture nature on a new dimension.
             </div>
+            <a href="/ai" style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              marginTop: 22, color: "rgba(255,255,255,0.88)",
+              fontFamily: FONTS.sans, fontSize: 13, letterSpacing: "0.04em",
+              textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.45)",
+              paddingBottom: 6,
+            }}>
+              Explore Eureka AI <span aria-hidden="true">↗</span>
+            </a>
           </div>
 
           {/* Price + subscribe */}
