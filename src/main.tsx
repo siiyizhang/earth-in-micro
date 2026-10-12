@@ -18,9 +18,9 @@ createRoot(document.getElementById('root')!).render(
   <HelmetProvider>
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<AppAIRoute />} />
         <Route path="/ai" element={<AppAIRoute />} />
         <Route path="/app/*" element={<WebAppRoute />} />
-        <Route path="/" element={<AppLeisure issStyle="line" />} />
         <Route path="/index" element={<AppIndex />} />
         <Route path="/education" element={<AppLowPoly issStyle="line" />} />
         <Route path="/leisure" element={<AppLeisure issStyle="line" />} />
