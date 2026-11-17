@@ -873,7 +873,12 @@
 .ai-page .ai-partner-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; padding: 30px 0 34px; border-top: 1px solid #c4e5e51c; border-bottom: 1px solid #c4e5e51c; }
 .ai-page .ai-partner { min-width: 0; }
 .ai-page .ai-partner-institution { display: block; text-decoration: none; }
-.ai-page .ai-partner-institution h3 { margin: 0 0 19px; min-height: 72px; font-size: 16px; line-height: 1.5; font-weight: 450; letter-spacing: 0; color: #a8babc; }
+.ai-page .ai-partner-institution h3 {
+  margin: 0 0 19px;
+  min-height: 72px;
+  font: 400 17px/1.4 'Playfair Display', Georgia, serif;
+  color: #a8babc;
+}
 .ai-page .ai-partner-people { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
 .ai-page .ai-partner-people a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #e3ebec; }
 .ai-page .ai-partner-people img { width: 38px; height: 38px; flex: 0 0 38px; object-fit: cover; border-radius: 50%; border: 1px solid #caeeee26; }
