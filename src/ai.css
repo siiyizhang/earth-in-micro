@@ -873,11 +873,6 @@
 .ai-page .ai-partner-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; padding: 30px 0 34px; border-top: 1px solid #c4e5e51c; border-bottom: 1px solid #c4e5e51c; }
 .ai-page .ai-partner { min-width: 0; }
 .ai-page .ai-partner-institution { display: block; text-decoration: none; }
-.ai-page .ai-partner-logos { height: 60px; display: flex; align-items: center; gap: 12px; margin-bottom: 17px; }
-.ai-page .ai-partner-logos img { display: block; max-width: 100%; width: 154px; height: 50px; object-fit: contain; object-position: left center; filter: brightness(0) invert(1); opacity: .85; }
-.ai-page .ai-partner-zhaw .ai-partner-logos img { width: 58px; height: 58px; }
-.ai-page .ai-partner-basel .ai-partner-logos img:first-child { width: 105px; height: 40px; }
-.ai-page .ai-partner-basel .ai-partner-logos img:last-child { width: 66px; height: 36px; }
 .ai-page .ai-partner-institution h3 { margin: 0 0 19px; min-height: 72px; font-size: 16px; line-height: 1.5; font-weight: 450; letter-spacing: 0; color: #a8babc; }
 .ai-page .ai-partner-people { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
 .ai-page .ai-partner-people a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #e3ebec; }
@@ -891,9 +886,6 @@
 @media (max-width: 650px) {
   .ai-page .ai-design-partners { padding-top: 12px; padding-bottom: 32px; }
   .ai-page .ai-partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 22px; }
-  .ai-page .ai-partner-logos { height: 50px; gap: 8px; }
-  .ai-page .ai-partner-basel .ai-partner-logos img:first-child { width: 86px; }
-  .ai-page .ai-partner-basel .ai-partner-logos img:last-child { width: 50px; }
   .ai-page .ai-partner-people a { gap: 8px; }
   .ai-page .ai-partner-people img { width: 32px; height: 32px; flex-basis: 32px; }
   .ai-page .ai-partner-institution h3 { min-height: 0; }
