@@ -907,17 +907,25 @@
 .ai-page .ai-story-glacier > img { display: block; width: 100%; height: auto; border-radius: 12px; }
 .ai-page .ai-story-glacier p { margin: 10px 0 0; color: #b8d4d4; line-height: 1.5; font-size: 1rem; }
 
+/* Relative device widths use a 32 : 24 : 15 reference in landscape. */
 .ai-page .ai-microscope-devices {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 24fr) minmax(0, 15fr);
   align-items: center;
-  gap: clamp(12px, 2vw, 28px);
+  column-gap: 2.5%;
+  row-gap: clamp(12px, 2vw, 28px);
 }
-.ai-page .ai-device-laptop { grid-column: 1 / -1; }
+.ai-page .ai-device-laptop { grid-column: 1 / -1; width: 80%; justify-self: center; }
 .ai-page .ai-laptop-lid { position: relative; margin-inline: 3%; padding: 2.5% 1.5% 1.5%; background: #232a31; border: 1px solid #707980; border-radius: 10px 10px 3px 3px; }
 .ai-page .ai-device-camera { position: absolute; top: 1.6%; left: 50%; width: 3px; height: 3px; border-radius: 50%; background: #536175; }
-.ai-page .ai-laptop-gallery { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: clamp(1px,.25vw,4px); background: #14191c; }
-.ai-page .ai-laptop-gallery img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.ai-page .ai-laptop-screen { aspect-ratio: 16 / 10; background: #14191c; overflow: hidden; }
+.ai-page .ai-laptop-gallery {
+  display: grid; width: 100%; height: 100%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-content: center;
+  gap: clamp(1px, .25vw, 4px);
+}
+.ai-page .ai-laptop-gallery img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; }
 .ai-page .ai-laptop-base { height: clamp(4px,.75vw,10px); border-radius: 2px 2px 40% 40% / 2px 2px 100% 100%; background: linear-gradient(#929ba1,#555f67 35%,#202830); }
 .ai-page .ai-device-tablet { position: relative; padding: 4%; background: #20262c; border: 1px solid #78858b; border-radius: 8%; }
 .ai-page .ai-device-tablet .ai-device-camera { top: 50%; left: 1%; }
@@ -928,8 +936,9 @@
 
 @media (max-width: 600px) {
   .ai-page .ai-microscope-devices { grid-template-columns: 1fr; gap: 12px; }
-  .ai-page .ai-device-tablet { width: 87%; justify-self: center; }
-  .ai-page .ai-device-phone { width: 77%; justify-self: center; }
+  .ai-page .ai-device-laptop { width: 100%; }
+  .ai-page .ai-device-tablet { width: 75%; justify-self: center; }
+  .ai-page .ai-device-phone { width: 46.875%; justify-self: center; }
   .ai-page .ai-story-glacier p { font-size: .875rem; }
 }
 
