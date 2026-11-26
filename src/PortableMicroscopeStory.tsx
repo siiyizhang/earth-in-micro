@@ -4,7 +4,7 @@ export default function PortableMicroscopeStory() {
   return <div className="ai-portable-story">
     <figure>
       <MicroscopeDevices />
-      <figcaption><h3>A microscope you can take on the go</h3></figcaption>
+      <figcaption><h3>see the result on any digital device</h3></figcaption>
     </figure>
     <figure className="ai-story-glacier">
       <img src="/images/step1/glacier.webp" width="1600" height="2133" loading="lazy"
