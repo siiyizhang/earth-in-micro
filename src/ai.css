@@ -731,7 +731,7 @@
 .ai-page .ai-portable-preview strong { font-weight: 500; color: var(--ai-accent); }
 .ai-page .ai-portable-preview > svg { margin-left: 10px; color: var(--ai-accent); transition: transform .2s; }
 .ai-page .ai-portable-preview:hover > svg { transform: translate(3px, -3px); }
-.ai-page .ai-portability { background: linear-gradient(180deg, #0b202050, transparent); }
+.ai-page .ai-portability { background: linear-gradient(180deg, #07141b, #070b13); }
 .ai-page .ai-portability .ai-section-intro > p { max-width: 375px; font-size: 16px; }
 .ai-page .ai-portability h2 em { color: var(--ai-accent); }
 .ai-page .ai-portable-photos { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: center; gap: 24px; align-items: center; }
@@ -794,27 +794,6 @@
   .ai-page .ai-particle-stage { height: 640px; }
   .ai-page .ai-count-readout { right: 7%; gap: 24px; }
   .ai-page .ai-count-readout strong { font-size: 28px; }
-}
-
-/* Scroll from an assembled instrument to its glacier field application. */
-.ai-page .ai-portable-story { --story-height: min(620px, calc(100dvh - 120px)); position: relative; height: var(--story-height); }
-.ai-page .ai-portable-story-stage { --scope-shift: 0%; --scope-scale: 1; --glacier-opacity: 0; --glacier-offset: 45px; --glacier-scale: .95; position: sticky; top: 100px; height: var(--story-height); }
-.ai-page .ai-story-microscope { position: absolute; inset: 0; margin: 0; transform: translateX(var(--scope-shift)) scale(var(--scope-scale)); transform-origin: center; will-change: transform; }
-.ai-page .ai-story-microscope .ai-portable-particle-visual { height: calc(100% - 72px); }
-.ai-page .ai-story-microscope figcaption { text-align: center; margin-top: -10px; }
-.ai-page .ai-story-microscope h3, .ai-page .ai-story-glacier h3 { font-size: clamp(22px, 2.2vw, 30px); font-weight: 500; letter-spacing: -.03em; line-height: 1.2; color: #efffff; }
-.ai-page .ai-story-microscope figcaption p { color: #b8d4d4; font-size: 15px; margin-top: 10px; }
-.ai-page .ai-story-glacier { position: absolute; right: 2%; top: 2%; width: 43%; height: 94%; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 18px; opacity: var(--glacier-opacity); transform: translateX(var(--glacier-offset)) scale(var(--glacier-scale)); will-change: opacity, transform; pointer-events: none; }
-.ai-page .ai-story-glacier img { display: block; min-height: 0; max-width: 100%; height: calc(100% - 58px); width: auto; object-fit: contain; border-radius: 18px; }
-.ai-page .ai-story-glacier figcaption { text-align: center; }
-.ai-page .ai-portable-story[data-static=true] { height: var(--story-height); }
-.ai-page .ai-portable-story[data-static=true] .ai-portable-story-stage { position: relative; top: 0; }
-@media (max-width: 600px) {
-  .ai-page .ai-portable-story { --story-height: min(510px, calc(100dvh - 110px)); }
-  .ai-page .ai-portable-story-stage { top: 84px; }
-  .ai-page .ai-story-glacier { right: 0; width: 47%; justify-content: center; }
-  .ai-page .ai-story-glacier img { height: auto; width: 100%; max-height: 70%; border-radius: 12px; }
-  .ai-page .ai-story-glacier h3 { font-size: 20px; }
 }
 
 /* Pose-aware Daphnia measurement and sixteen spatially indexed results. */
@@ -910,106 +889,48 @@
   .ai-page .ai-partner-avatar { width: 32px; height: 32px; flex-basis: 32px; }
 }
 
-/* Device screens reuse the original site's microscopy footage and phone UI. */
-.ai-page .ai-microscope-devices { position: relative; width: 100%; height: 100%; isolation: isolate; }
-.ai-page .ai-device-laptop { position: absolute; width: 89%; top: 3%; right: 0; z-index: 1; }
-.ai-page .ai-laptop-lid { position: relative; margin: 0 5%; padding: 2.3% 1.5% 1.5%; border: 1px solid #8c959e; border-radius: 13px 13px 4px 4px; background: linear-gradient(140deg,#333b43,#11151b 55%,#414850); box-shadow: 0 22px 50px #0006; }
-.ai-page .ai-device-camera { position: absolute; top: 1.8%; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: #536175; box-shadow: inset 0 0 0 1px #0a0c12; }
-.ai-page .ai-laptop-screen { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 3px; background: #0a0c12; }
-.ai-page .ai-laptop-screen > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.ai-page .ai-laptop-base { position: relative; height: 12px; margin-top: -1px; border-radius: 2px 2px 45% 45% / 2px 2px 100% 100%; background: linear-gradient(#929ba1,#555f67 35%,#202830); box-shadow: 0 12px 28px #0006; }
-.ai-page .ai-laptop-base::before { content: ''; display: block; width: 14%; height: 5px; margin: auto; border-radius: 0 0 6px 6px; background: #3d4851; }
-.ai-page .ai-device-tablet { position: absolute; width: 66%; top: 9%; left: 0; padding: 2.2%; border-radius: 22px; border: 1px solid #78858b; background: linear-gradient(135deg,#2f363b,#0c1115 40%,#20262c); box-shadow: 0 25px 60px #0008; z-index: 2; }
-.ai-page .ai-tablet-screen { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 12px; background: #141719; }
-.ai-page .ai-tablet-screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* A fixed pair of figures keeps the field photograph and device samples together. */
+.ai-page .ai-portable-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(16px, 5vw, 72px);
+  max-width: 1160px;
+  margin-inline: auto;
+  align-items: start;
+}
+.ai-page .ai-portable-story figure { margin: 0; min-width: 0; }
+.ai-page .ai-portable-story figcaption { margin-top: clamp(12px, 2vw, 24px); }
+.ai-page .ai-portable-story h3 {
+  color: #efffff; font-size: clamp(18px, 2.2vw, 30px);
+  font-weight: 500; letter-spacing: -.03em; line-height: 1.2;
+}
+.ai-page .ai-story-glacier > img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.ai-page .ai-story-glacier p { margin: 10px 0 0; color: #b8d4d4; line-height: 1.5; font-size: 1rem; }
+
+.ai-page .ai-microscope-devices {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+}
+.ai-page .ai-device-laptop { grid-column: 1 / -1; }
+.ai-page .ai-laptop-lid { position: relative; margin-inline: 3%; padding: 2.5% 1.5% 1.5%; background: #232a31; border: 1px solid #707980; border-radius: 10px 10px 3px 3px; }
+.ai-page .ai-device-camera { position: absolute; top: 1.6%; left: 50%; width: 3px; height: 3px; border-radius: 50%; background: #536175; }
+.ai-page .ai-laptop-gallery { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: clamp(1px,.25vw,4px); background: #14191c; }
+.ai-page .ai-laptop-gallery img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.ai-page .ai-laptop-base { height: clamp(4px,.75vw,10px); border-radius: 2px 2px 40% 40% / 2px 2px 100% 100%; background: linear-gradient(#929ba1,#555f67 35%,#202830); }
+.ai-page .ai-device-tablet { position: relative; padding: 4%; background: #20262c; border: 1px solid #78858b; border-radius: 8%; }
 .ai-page .ai-device-tablet .ai-device-camera { top: 50%; left: 1%; }
-.ai-page .ai-device-phone { position: absolute; width: 57%; right: 0; bottom: 4%; z-index: 3; filter: drop-shadow(0 16px 28px #0009); }
-.ai-page .ai-device-phone > video { position: absolute; top: 1%; left: 1%; width: 84%; height: 96%; object-fit: cover; border-radius: 10%; }
-.ai-page .ai-device-phone > img { position: relative; display: block; width: 100%; height: auto; }
-.ai-page .has-computer .ai-device-tablet { width: 54%; top: auto; bottom: 3%; left: 0; }
-.ai-page .has-computer .ai-device-phone { width: 47%; bottom: 0; right: -1%; }
-@media (max-width: 600px) {
-  .ai-page .ai-device-tablet { border-radius: 12px; }
-  .ai-page .ai-tablet-screen { border-radius: 7px; }
-  .ai-page .ai-laptop-lid { border-radius: 8px 8px 3px 3px; }
-  .ai-page .ai-laptop-base { height: 7px; }
-  .ai-page .ai-device-camera { width: 3px; height: 3px; }
-}
-
-
-/* Microscope and three connected screens share the opening portability scene. */
-.ai-page .ai-portable-story { --story-height: min(720px, calc(100dvh - 130px)); }
-.ai-page .ai-story-microscope .ai-portable-particle-visual { position: absolute; left: 0; top: 0; width: 32%; height: calc(100% - 90px); }
-.ai-page .ai-story-device-group { position: absolute; top: 0; right: 0; width: 69%; height: calc(100% - 90px); }
-.ai-page .ai-story-microscope figcaption { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; }
-.ai-page .ai-microscope-devices .ai-device-laptop { width: 86%; top: 0; right: 0; }
-.ai-page .ai-microscope-devices .ai-laptop-screen { aspect-ratio: 1.85; }
-.ai-page .ai-laptop-gallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3px; padding: 3px; width: 100%; height: 100%; background: #1c282a; }
-.ai-page .ai-laptop-gallery img { display: block; min-height: 0; width: 100%; height: 100%; object-fit: cover; }
-.ai-page .ai-microscope-devices .ai-device-tablet { width: 46%; bottom: 0; left: 0; }
-.ai-page .ai-microscope-devices .ai-device-phone { width: 43%; bottom: 0; right: 0; }
-@media (max-width: 800px) {
-  .ai-page .ai-portable-story { --story-height: min(720px, calc(100dvh - 120px)); }
-  .ai-page .ai-story-microscope .ai-portable-particle-visual { width: 50%; height: 43%; left: 25%; top: 0; }
-  .ai-page .ai-story-device-group { width: 100%; height: 45%; top: 40%; right: 0; }
-  .ai-page .ai-microscope-devices .ai-device-laptop { width: 68%; }
-  .ai-page .ai-microscope-devices .ai-device-tablet { width: 43%; }
-  .ai-page .ai-microscope-devices .ai-device-phone { width: 40%; }
-  .ai-page .ai-story-microscope h3 { font-size: clamp(19px, 4.5vw, 26px); }
-  .ai-page .ai-story-microscope figcaption p { font-size: 14px; margin-top: 7px; }
-  .ai-page .ai-laptop-gallery { gap: 2px; padding: 2px; }
-}
+.ai-page .ai-tablet-screen img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 5%; }
+.ai-page .ai-device-phone { position: relative; }
+.ai-page .ai-phone-sample { position: absolute; top: 1%; left: 1%; width: 84%; height: 96%; object-fit: cover; border-radius: 10%; }
+.ai-page .ai-device-phone img:last-child { position: relative; display: block; width: 100%; height: auto; }
 
 @media (max-width: 600px) {
-  .ai-page .ai-portable-story { --story-height: min(590px, calc(100dvh - 240px)); }
-}
-
-
-/* As the glacier enters, reflow the left scene into microscope above screens. */
-.ai-page .ai-portable-story-stage { --portability-progress: 0; }
-.ai-page .ai-story-microscope {
-  right: auto;
-  width: calc(100% - 52% * var(--portability-progress));
-  transform: none;
-  will-change: width;
-}
-.ai-page .ai-story-microscope .ai-portable-particle-visual {
-  left: calc(25% * var(--portability-progress));
-  width: calc(32% + 18% * var(--portability-progress));
-  height: calc(100% - 122px - (56% - 122px) * var(--portability-progress));
-}
-.ai-page .ai-story-device-group {
-  top: calc(47% * var(--portability-progress));
-  width: calc(69% + 31% * var(--portability-progress));
-  height: calc(100% - 122px - 47% * var(--portability-progress));
-}
-.ai-page .ai-microscope-devices .ai-device-laptop { width: calc(86% - 38% * var(--portability-progress)); top: calc(-14% + (14% - 32px) * var(--portability-progress)); }
-.ai-page .ai-microscope-devices .ai-device-tablet { width: calc(48% - 10% * var(--portability-progress)); }
-.ai-page .ai-microscope-devices .ai-device-phone { width: calc(40% - 4% * var(--portability-progress)); }
-@media (max-width: 800px) {
-  .ai-page .ai-story-microscope .ai-portable-particle-visual {
-    left: calc(25% - 25% * var(--portability-progress));
-    width: calc(50% + 50% * var(--portability-progress));
-    height: 43%;
-  }
-  .ai-page .ai-story-device-group { width: 100%; top: 45%; height: calc(55% - 122px); }
-  .ai-page .ai-microscope-devices .ai-device-laptop { width: 68%; }
-  .ai-page .ai-microscope-devices .ai-device-tablet { width: 43%; }
-  .ai-page .ai-microscope-devices .ai-device-phone { width: 40%; }
-  .ai-page .ai-story-microscope h3 { font-size: calc(19px - 3px * var(--portability-progress)); }
-}
-
-
-/* Shared caption baseline for the instrument and its glacier field use. */
-.ai-page .ai-story-glacier { top: 0; height: 100%; display: block; transform: translateX(var(--glacier-offset)); }
-.ai-page .ai-story-glacier img { width: 100%; height: calc(100% - 202px); max-height: none; object-fit: contain; object-position: center top; }
-.ai-page .ai-story-glacier figcaption { position: absolute; bottom: 0; left: 0; width: 100%; }
-.ai-page .ai-story-microscope h3, .ai-page .ai-story-glacier h3 { min-height: 2.4em; }
-.ai-page .ai-glacier-context { max-width: 420px; margin: 0 auto 32px; color: #b8d4d4; font-size: 14px; line-height: 1.5; text-wrap: pretty; }
-@media (max-width: 800px) {
-  .ai-page .ai-story-microscope h3, .ai-page .ai-story-glacier h3 { font-size: calc(19px - 3px * var(--portability-progress)); min-height: 4.8em; }
-  .ai-page .ai-glacier-context { font-size: 14px; margin-bottom: 24px; }
-  .ai-page .ai-story-glacier img { height: calc(100% - 254px); object-position: center; }
+  .ai-page .ai-microscope-devices { grid-template-columns: 1fr; gap: 12px; }
+  .ai-page .ai-device-tablet { width: 87%; justify-self: center; }
+  .ai-page .ai-device-phone { width: 77%; justify-self: center; }
+  .ai-page .ai-story-glacier p { font-size: .875rem; }
 }
 
 .ai-page .ai-product-concept { padding-block: clamp(32px, 5vw, 80px); }
@@ -1027,16 +948,12 @@
 .ai-page .ai-portability { padding-bottom: 48px; }
 .ai-page .ai-portability + .ai-idea { padding-top: 48px; }
 
-/* The scroll-driven reveal needs no empty sticky runway below its captions. */
-.ai-page .ai-portable-story-stage { position: relative; top: 0; }
-
 /* Keep small text readable without squeezing controls and data readouts. */
 .ai-page .ai-idea-steps p,
 .ai-page .ai-example-grid p,
 .ai-page .ai-trust-points p,
 .ai-page .ai-faq details p,
-.ai-page .ai-connected .ai-connected-copy > p,
-.ai-page .ai-glacier-context { font-size: 16px; }
+.ai-page .ai-connected .ai-connected-copy > p { font-size: 16px; }
 .ai-page .ai-parasite-counts > div { flex-wrap: wrap; }
 .ai-page .ai-parasite-counts span { overflow-wrap: anywhere; }
 .ai-page .ai-loop-feedback { flex-wrap: wrap; }
@@ -1052,7 +969,6 @@
   .ai-page .ai-preview-sample .ai-daphnia-visual { height: 470px; }
   .ai-page .ai-parasite-visual.ai-paper-compact,
   .ai-page .ai-preview-sample .ai-parasite-visual { height: 480px; }
-  .ai-page .ai-story-glacier img { height: calc(100% - 278px); }
 }
 
 /* Light workflow workspace against the dark site; specimen viewport stays dark. */

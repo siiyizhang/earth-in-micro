@@ -167,7 +167,7 @@ export default function AppAI() {
       </section>
 
       <section id="lab-to-field" className="ai-section ai-portability" aria-label="Portable microscopy">
-        <PortableMicroscopeStory animate={motionEnabled}/>
+        <PortableMicroscopeStory />
       </section>
 
       <section id="how-it-works" className="ai-section ai-idea"><div className="ai-section-intro"><div><h2>You bring the know-how.<br /><em>The microscope follows through.</em></h2></div></div><div className="ai-idea-steps">
