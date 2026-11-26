@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import PortableMicroscopeParticles from './PortableMicroscopeParticles'
 import MicroscopeDevices from './MicroscopeDevices'
 
 const smooth = (value: number) => {
@@ -60,7 +59,6 @@ export default function PortableMicroscopeStory({ animate }: { animate: boolean 
   return <div ref={trackRef} className="ai-portable-story">
     <div ref={stageRef} className="ai-portable-story-stage">
       <figure className="ai-story-microscope">
-        <PortableMicroscopeParticles animate={animate}/>
         <div className="ai-story-device-group"><MicroscopeDevices animate={animate}/></div>
         <figcaption><h3>A microscope you can take on the go</h3></figcaption>
       </figure>

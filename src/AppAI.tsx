@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import EurekaLogo from './components/EurekaLogo'
 import AIParticles from './AIParticles'
 import PaperParticles from './PaperParticles'
+import conceptVideo from './assets/microscope-concept.mp4'
+import conceptPoster from './assets/microscope-concept.webp'
 import PortableMicroscopeStory from './PortableMicroscopeStory'
 import DesignPartners from './DesignPartners'
 import './ai.css'
@@ -158,6 +160,11 @@ export default function AppAI() {
       <section className="ai-hero ai-section"><div className="ai-hero-copy"><h1><span className="ai-title-line">Create and automate</span>{' '}<span className="ai-title-line"><em>your own</em></span>{' '}<span className="ai-title-line"><em>microscopy workflow</em></span></h1><p className="ai-hero-description">From scanning and focusing to analysis and review. Start your new microscopy experience with our compact, AI-native microscope</p><div className="ai-hero-actions"><a href="#builder" className="ai-button ai-button-primary">Shape your workflow <Arrow/></a><a href="#how-it-works" className="ai-text-link">See how it works <span>↓</span></a></div></div><HeroCanvas selected={heroSelected} onSelect={selectWorkflow} animate={motionEnabled} onCycleComplete={advanceHero}/></section>
 
       <DesignPartners/>
+
+      <section id="product-concept" className="ai-section ai-product-concept" aria-label="Microscope product concept">
+        <video controls playsInline preload="none" width="1280" height="720"
+          poster={conceptPoster} src={conceptVideo} aria-label="Eureka microscope product concept video" />
+      </section>
 
       <section id="lab-to-field" className="ai-section ai-portability" aria-label="Portable microscopy">
         <PortableMicroscopeStory animate={motionEnabled}/>

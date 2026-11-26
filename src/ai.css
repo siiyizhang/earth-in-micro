@@ -1012,6 +1012,17 @@
   .ai-page .ai-story-glacier img { height: calc(100% - 254px); object-position: center; }
 }
 
+.ai-page .ai-product-concept { padding-block: clamp(32px, 5vw, 80px); }
+.ai-page .ai-product-concept video {
+  display: block;
+  margin-inline: auto;
+  width: min(100%, 1060px);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #080909;
+  border-radius: 12px;
+}
+
 /* Avoid stacking two large section paddings after the field story. */
 .ai-page .ai-portability { padding-bottom: 48px; }
 .ai-page .ai-portability + .ai-idea { padding-top: 48px; }
